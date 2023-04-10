@@ -86,7 +86,7 @@ public class Board
             System.out.println();
             for (GamePiece piece : row)
             {
-                String bgColor = i%2 == 0 ? Color.WHITE_BACKGROUND : Color.BLACK_BACKGROUND;
+                String bgColor = i%2 == 0 ? Color.BLACK_BACKGROUND : Color.WHITE_BACKGROUND;
                 if (piece == null) { System.out.print(bgColor + "   " + Color.RESET); }
                 else { System.out.print(piece.getColor() + bgColor +  " " + piece + " " + Color.RESET); }
                 i++;
