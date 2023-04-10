@@ -17,4 +17,17 @@ public class ArrayUtils
         point.set(1, y);
         return point;
     }
+
+    public static int simpleIndexOfPointInArray(int[] point, int[][] array)
+    {
+        int index = 0;
+        while (index < array.length)
+        {
+            int[] arrayPoint = array[index];
+            
+            if (array.equals(arrayPoint)) { return index; }
+            else { index++; }
+        }
+        return -1;
+    }
 }

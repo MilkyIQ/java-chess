@@ -4,7 +4,6 @@ import game.Color;
 
 public class Board
 {
-    private int turn;
     private GamePiece[][] board;
     private final int LENGTH;
     private final int HEIGHT;
@@ -15,7 +14,6 @@ public class Board
         this.LENGTH = Math.min(50, Math.abs(columns));
         this.HEIGHT = Math.min(50, Math.abs(rows));
         this.board = new GamePiece[HEIGHT][LENGTH];
-        this.turn = 0;
 
         // Create empty board
         for (int row = 0; row < LENGTH; row++)
