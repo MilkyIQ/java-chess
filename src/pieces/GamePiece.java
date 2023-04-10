@@ -5,17 +5,17 @@ import java.util.ArrayList;
 
 public class GamePiece
 {
-    private final String COLOR;
     private final String NAME;
-    private int row;
+    private final String COLOR;
     private int col;
+    private int row;
     
-    public GamePiece(String name, String color, int row, int col)
+    public GamePiece(String name, String color, int col, int row)
     {
         this.NAME = name;
         this.COLOR = color;
-        this.row = row;
         this.col = col;
+        this.row = row;
     }
 
     public String getName()
@@ -40,8 +40,8 @@ public class GamePiece
 
     public void setPos(int x, int y)
     {
-        row = y;
         col = x;
+        row = y;
     }
 
     // Return an arary of all points on grid that the gamepiece can move
@@ -53,6 +53,6 @@ public class GamePiece
     // Print corresponding symbol of gamepiece
     public String toString()
     {
-        return COLOR + NAME.substring(0,1) + Color.RESET;
+        return NAME.substring(0,1);
     }
 }

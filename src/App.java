@@ -1,25 +1,39 @@
-import game.Board;
-import game.Color;
+import game.*;
 import pieces.*;
-import java.util.ArrayList;
+import tools.*;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+    public static void main(String[] args) throws Exception
+    {
+        System.out.println("\n");
 
-        Board board = new Board(8, 8);
+        /* ------------------------------------------------------------------------------------ */
 
-        GamePiece a = new Pawn(Color.GREEN, 0, 0);
-        GamePiece b = new Pawn(Color.GREEN, 0, 1);
-        GamePiece c = new Pawn(Color.GREEN, 0, 2);
-        GamePiece d = new Pawn(Color.RED, 3, 3);
+        // Initialize head variables
+        SettingsReader reader = new SettingsReader("src/settings.json");
+        Player[] players = new Player[reader.getNumPlayers()];
 
-        board.place(a);
-        board.place(b);
-        board.place(c);
-        board.place(d);
+        // Create all players and their pieces
+        for (int i = 0; i < reader.getNumPlayers(); i++)
+        {
+            String  color = reader.getPlayerValueOf("color", i);
+            String  name  = reader.getPlayerValueOf("name", i);
+            int[][] pawns = reader.getPlayerPieces("pawn", i);
+
+            players[i] = new Player(name, color);
+            for (int[] p : pawns) { players[i].givePiece(new Pawn(color, p[0], p[1])); }
+        }
+
+        // Create board and populate board
+        int height = (int) reader.getIntValueOf("boardHeight");
+        int length = (int) reader.getIntValueOf("boardLength");
+        Board board = new Board(height, length, players);
+    
 
         board.printBoard();
+
+        /* ------------------------------------------------------------------------------------ */
+
 
         System.out.println("\n");
         

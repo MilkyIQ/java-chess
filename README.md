@@ -1,14 +1,22 @@
-# CSA Final: Chess in Java
+# CSA Final: Chess
+
+## Dependencies
+
+- json.simple
 
 ## TODO
 
-- [ ] Implement tracking of player pieces in Board
-- [ ] Implement settings.json
-- [ ] Clean up temporary code
-- [ ] Create GamePieces
+- [ ] GamePieces
   - [x] Pawn
   - [ ] Rook
   - [ ] Bishop
   - [ ] Knight
   - [ ] King
   - [ ] Queen
+- [ ] settings.json
+  - [x] Player creation
+  - [x] Add pieces to player hands
+  - [ ] Game settings (castling, board size, etc.)
+- [x] Output
+  - [x] Piece colors
+  - [x] Background colors
