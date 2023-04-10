@@ -50,6 +50,11 @@ public class GamePiece
         return null;
     }
 
+    public boolean equals(GamePiece piece)
+    {
+        return (piece.getCol() == col) && (piece.getRow() == row);
+    }
+
     // Print corresponding symbol of gamepiece
     public String toString()
     {

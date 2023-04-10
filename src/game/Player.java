@@ -19,6 +19,15 @@ public class Player {
         return pieces;
     }
 
+    public GamePiece getPiece(int x, int y)
+    {
+        for (GamePiece piece : pieces)
+        {
+            if ((piece.getCol() == x) && (piece.getRow() == y)) { return piece; }
+        }
+        return null;
+    }
+
     public void givePiece(GamePiece piece)
     {
         pieces.add(piece);
