@@ -14,6 +14,16 @@ public class Player {
         this.pieces = new ArrayList<GamePiece>();
     }
 
+    public String getColor()
+    {
+        return COLOR;
+    }
+
+    public String getName()
+    {
+        return NAME;
+    }
+
     public ArrayList<GamePiece> getPieces()
     {
         return pieces;
