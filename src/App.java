@@ -11,6 +11,7 @@ public class App {
         /* ------------------------------------------------------------------------------------ */
 
         // Initialize head variables
+        Scanner user = new Scanner(System.in);
         SettingsReader reader = new SettingsReader("src/settings.json");
         int numPlayers = reader.getNumPlayers();
         Player[] players = new Player[numPlayers];
@@ -37,100 +38,72 @@ public class App {
             Player player = players[i];
             board.printBoard();
 
-            int[] piecePoint = requestPointFromUser("Choose a piece to move (x,y): ");
-            GamePiece piece = player.getPiece(piecePoint[0], piecePoint[1]);
-            int[][] validMoves = piece.getAllValidMoves(board);
-            System.out.println("You have chosen " + piece.getName() + "(" + piece.getCol() + "," + piece.getRow() + ")");
+            // i fucking hate that the user needs to be passed through as an argument but Scanner exceptions have forced my hand
+            GamePiece piece = selectPiece(player, board, user);   
 
-            int[] movePoint = requestPointFromUser("Choose a space to move to (x,y) ");
-            if (ArrayUtils.simpleIndexOfPointInArray(movePoint, validMoves) > -1)
-            {
-                
-            }
+            int[] movePoint = selectMove(piece, board, user);
             
             i = i < numPlayers ? i+1 : 0;
         }
 
-        /* ------------------------------------------------------------------------------------ */
+        user.close();
 
+        /* ------------------------------------------------------------------------------------ */
 
         System.out.println("\n");
     }
 
-    // Repeatedly ask for a coordinate point from user until they input a valid coordinate 
-    public static int[] requestPointFromUser(String prompt)
+    public static GamePiece selectPiece(Player player, Board board, Scanner user)
     {
-        Scanner user = new Scanner(System.in);
-        int[] point = null;
+        GamePiece piece = null;
+        
+        System.out.print("Choose a piece to move (x,y): ");
+        int[] point = ArrayUtils.extractPointFromString(user.nextLine());
+        if (point == null) { return selectPiece(player, board, user); } // edge case for gibberish input
 
-        while (point == null)
+        int col = point[0];
+        int row = point[1];
+        String systemResponse;
+
+        // this could be converted into a switch case if board.checkSpace() was function that returns an int and handles out of bounds inputs
+        // e.g. (-1 = out of bounds, 0 = empty space, 1 = space occupied by color, 2 = space occupied by enemy color)
+        if (col > board.getLength() || row > board.getHeight() || !board.checkSpace(col, row, player.getColor()))
         {
-            System.out.print(prompt);
-            String input = user.nextLine();
-            
-            try
-            {
-                int xStart = input.indexOf("(")+1;
-                int xEnd = input.indexOf(",");
-                int yStart = input.indexOf(",")+1;
-                int yEnd = input.indexOf(")");
+            systemResponse = Color.RED + point + " is not a valid piece. Please try again.";
+        }
         
-                String xString = input.substring(xStart, xEnd);
-                String yString = input.substring(yStart, yEnd);
-        
-                int x = Integer.parseInt(xString);
-                int y = Integer.parseInt(yString);
-                point = new int[2];
-                point[0] = x;
-                point[1] = y;
-            }
-            catch (NumberFormatException|StringIndexOutOfBoundsException e) // TODO: this needs to handle spaces that are empty or are occupied by an enemy piece
-            {
-                System.out.println(Color.RED + "`" + input  + "`" + " is not a valid space, please format your spaces in coordinate-point format (x,y)" + Color.RESET);
-                point = null;
-            }
+        {
+            piece = player.getPiece(col, row);
+            systemResponse = Color.GREEN + "You have chosen " + piece.getName() + "(" + piece.getCol() + "," + piece.getRow() + ")";
         }
 
-        return point;
+        System.out.println(systemResponse + Color.RESET);
+        return piece == null ? selectPiece(player, board, user) : piece;
     }
 
-    public static GamePiece selectPiece(Player player, Board board)
+    public static int[] selectMove(GamePiece piece, Board board, Scanner user)
     {
-        Scanner user = new Scanner(System.in);
-        GamePiece piece = null;
+        int[] move = null;
 
-        while (piece == null)
+        System.out.print("Choose a space to move to (x,y) ");
+        int[] point = ArrayUtils.extractPointFromString(user.nextLine());
+        if (point == null) { return selectMove(piece, board, user); } // edge case for gibberish input
+
+        int col = point[0];
+        int row = point[1];
+        String systemResponse;
+
+        if (col > board.getLength() || row > board.getHeight() || !board.checkSpace(col, row, piece.getColor()))
         {
-            System.out.print("Choose a piece to move (x,y): ");
-            int[] point = ArrayUtils.extractPointFromString(user.nextLine());
-
-            String systemResponse;
-            boolean spaceIsEmpty;
-            boolean spaceIsFriendly;
-
-            try
-            {
-                spaceIsEmpty = board.checkSpace(point[0], point[1]);
-                spaceIsFriendly = board.checkSpace(point[0], point[1], player.getColor());
-            }
-            catch (Exception ArrayIndexOutOfBoundsException)
-            {
-                System.out.println(point + "is not a point on this board! Please choose a valid piece.");
-                piece = null;
-                continue;
-            }
-            
-            if (spaceIsFriendly)
-            {
-                piece = player.getPiece(point[0], point[1]);
-            }
-            else if (spaceIsEmpty)
-            {
-                systemResponse = "Is not a valid piece Please choose a valid piece.";
-                piece = null;
-            }
+            systemResponse = Color.RED + point + " is not a valid piece. Please try again.";
         }
-
-        return null;
+        else
+        {
+            systemResponse = Color.GREEN + "Moving " + piece.getName() + " to " + point + "...";
+            
+        }
+        
+        System.out.println(systemResponse + Color.RESET);
+        return move == null ? selectMove(piece, board, user) : move;
     }
 }
