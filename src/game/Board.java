@@ -56,6 +56,18 @@ public class Board
         return board[y][x] == null ? false : board[y][x].getColor().equals(color);
     }
 
+    public int checkSpaceInt(int x, int y, String color)
+    {
+        int output;
+        GamePiece piece = board[y][x];
+        if      (x >= LENGTH || y >= HEIGHT )    { output = -1; }
+        else if (piece == null)                  { output = 0; }
+        else if (piece.getColor().equals(color)) { output = 1; }
+        else                                     { output = 2; }
+
+        return output;
+    }
+
     // Move given piece from one space to another, update spaces and piece data
     public void move(GamePiece piece, int x, int y)
     {
