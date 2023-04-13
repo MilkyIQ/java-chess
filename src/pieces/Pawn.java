@@ -14,7 +14,7 @@ public class Pawn extends GamePiece
         this.firstMoveMade = false;
         // TODO: this is a TEMPORARY SOLUTION before I implement JSON ruleset
         // i want to be able to grab the board length and height and calculate without passing through a Board object
-        this.DIR = (8/2) < col ? 1 : -1;
+        this.DIR = (8/2) > row+1 ? 1 : -1;
     }
 
     // Return a list of all possible points on board that this piece can move at this turn
@@ -37,9 +37,15 @@ public class Pawn extends GamePiece
         // Check conditions and add to validMoves
         for (int[] movement : baseMovements)
         {
+            if (movement == null) { continue; }
+
             int curX = movement[0];
             int curY = movement[1];
-            if (movement != null && !board.checkSpace(curX, curY, super.getColor()))
+            int boardSpaceStatus = board.checkSpaceInt(curX, curY, super.getColor());
+            boolean validAttack = (curX != x) && (boardSpaceStatus == 2);
+            boolean validForward = (curX == x) && (boardSpaceStatus == 0);
+            
+            if (validAttack || validForward)
             {
                 moves.add(ArrayUtils.createPoint(curX, curY));
             }

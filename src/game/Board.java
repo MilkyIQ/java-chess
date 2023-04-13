@@ -58,20 +58,21 @@ public class Board
 
     public int checkSpaceInt(int x, int y, String color)
     {
-        int output;
-        GamePiece piece = board[y][x];
-        if      (x >= LENGTH || y >= HEIGHT )    { output = -1; }
-        else if (piece == null)                  { output = 0; }
-        else if (piece.getColor().equals(color)) { output = 1; }
-        else                                     { output = 2; }
-
-        return output;
+        if      (x >= LENGTH || x < 0 ||
+                 y >= HEIGHT || y < 0 )                 { return -1; } // space is out of bounds
+        else if (board[y][x] == null)                   { return 0;  } // space is empty
+        else if (board[y][x].getColor().equals(color))  { return 1;  } // space is occupied by color
+        else if (!board[y][x].getColor().equals(color)) { return 2;  } // space is occupied NOT by color
+        else
+        {
+            throw new IllegalArgumentException(Color.RED + "Board.checkSpaceInt() was given bad data." + Color.RESET); // just in case
+        }
     }
 
     // Move given piece from one space to another, update spaces and piece data
     public void move(GamePiece piece, int x, int y)
     {
-        // This feels really janky because I have to update the position in two different objects
+        // This feels really janky because I have to update the position in two different objects... TOO BAD!
         board[y][x] = piece;
         board[piece.getRow()][piece.getCol()] = null;
         piece.setPos(x, y);

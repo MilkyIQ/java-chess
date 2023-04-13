@@ -38,10 +38,12 @@ public class App {
             Player player = players[i];
             board.printBoard();
 
-            // i fucking hate that the user needs to be passed through as an argument but Scanner exceptions have forced my hand
+            // passing through a Scanner object is fucking stupid but my hands are tied
             GamePiece piece = selectPiece(player, board, user);   
 
-            int[] movePoint = selectMove(piece, board, user);
+            int[] move = selectMove(piece, piece.getAllValidMoves(board), board, user);
+
+            board.move(piece, move[0], move[1]);
             
             i = i < numPlayers ? i+1 : 0;
         }
@@ -65,45 +67,42 @@ public class App {
         int row = point[1];
         String systemResponse;
 
-        // this could be converted into a switch case if board.checkSpace() was function that returns an int and handles out of bounds inputs
-        // e.g. (-1 = out of bounds, 0 = empty space, 1 = space occupied by color, 2 = space occupied by enemy color)
-        if (col > board.getLength() || row > board.getHeight() || !board.checkSpace(col, row, player.getColor()))
+        switch (board.checkSpaceInt(col, row, player.getColor()))
         {
-            systemResponse = Color.RED + point + " is not a valid piece. Please try again.";
-        }
-        
-        {
-            piece = player.getPiece(col, row);
-            systemResponse = Color.GREEN + "You have chosen " + piece.getName() + "(" + piece.getCol() + "," + piece.getRow() + ")";
+            case -1: systemResponse = Color.RED + "Out of bounds! Please try again."; break;
+            case 0:  systemResponse = Color.RED + "Space is empty. Please try again."; break;
+            case 2:  systemResponse = Color.RED + "Cannot move enemy piece. Please try again."; break;
+            default:
+                piece = player.getPiece(col, row);
+                systemResponse = Color.GREEN + "You have chosen " + piece.getName() + "(" + piece.getCol() + "," + piece.getRow() + ")";
+                break;
         }
 
         System.out.println(systemResponse + Color.RESET);
         return piece == null ? selectPiece(player, board, user) : piece;
     }
 
-    public static int[] selectMove(GamePiece piece, Board board, Scanner user)
+    public static int[] selectMove(GamePiece piece, int[][] validMoves, Board board, Scanner user)
     {
         int[] move = null;
-
         System.out.print("Choose a space to move to (x,y) ");
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
-        if (point == null) { return selectMove(piece, board, user); } // edge case for gibberish input
-
-        int col = point[0];
-        int row = point[1];
         String systemResponse;
-
-        if (col > board.getLength() || row > board.getHeight() || !board.checkSpace(col, row, piece.getColor()))
+        
+        // edge case for bad input and invalidMovements
+        if (point == null || ArrayUtils.simpleIndexOfPointInArray(point, validMoves) < 0 )
         {
-            systemResponse = Color.RED + point + " is not a valid piece. Please try again.";
+            return selectMove(piece, validMoves, board, user);
         }
-        else
+        
+        switch (board.checkSpaceInt(point[0], point[1], piece.getColor()))
         {
-            systemResponse = Color.GREEN + "Moving " + piece.getName() + " to " + point + "...";
-            
+            case -1: systemResponse = Color.RED + "Out of bounds! Please try again."; break;
+            case 1:  systemResponse = Color.RED + "Cannot attack your own piece. Please try again."; break;
+            default: systemResponse = Color.GREEN + "Moving " + piece.getName() + "(" + piece.getCol() + "," + piece.getRow() + ")" + " to " + point; break;
         }
         
         System.out.println(systemResponse + Color.RESET);
-        return move == null ? selectMove(piece, board, user) : move;
+        return move == null ? selectMove(piece, validMoves, board, user) : move;
     }
 }

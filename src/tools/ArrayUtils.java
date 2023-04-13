@@ -1,5 +1,6 @@
 package tools;
 import java.util.ArrayList;
+import game.Color;
 
 public class ArrayUtils
 {
@@ -12,12 +13,13 @@ public class ArrayUtils
     // Return an arraylist with two numbers x and y (used for creating points on board)
     public static ArrayList<Integer> createPoint(int x, int y)
     {
-        ArrayList<Integer> point = new ArrayList<Integer>(2);
-        point.set(0, x);
-        point.set(1, y);
+        ArrayList<Integer> point = new ArrayList<Integer>();
+        point.add(x);
+        point.add(y);
         return point;
     }
 
+    // TODO: this needs an error message
     public static int simpleIndexOfPointInArray(int[] point, int[][] array)
     {
         int index = 0;
@@ -51,7 +53,7 @@ public class ArrayUtils
         }
         catch (NumberFormatException|StringIndexOutOfBoundsException e)
         {
-            System.out.println("`" + input  + "`" + " is not a valid space, please format your spaces in coordinate-point format (x,y)");
+            System.out.println(Color.RED + "`" + input  + "`" + " is not a valid space, please format your spaces in coordinate-point format (x,y)" + Color.RESET);
             output = null;
         }
         return output;
