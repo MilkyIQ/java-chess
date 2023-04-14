@@ -105,4 +105,20 @@ public class Board
         }
         System.out.println();
     }
+    
+    public void printBoardReverse()
+    {
+        for (int row = board.length-1; row > 0; row++)
+        {
+            for (int col = board[row].length-1; col > 0; col++)
+            {
+                System.out.println();
+                GamePiece piece = board[row][col];
+                String bgColor = col%2 == 0 ? Color.BLACK_BACKGROUND : Color.WHITE_BACKGROUND;
+                if (piece == null) { System.out.print(bgColor + "   " + Color.RESET); }
+                else { System.out.print(piece.getColor() + bgColor +  " " + piece + " " + Color.RESET); }
+            }
+        }
+        System.out.println();
+    }
 }

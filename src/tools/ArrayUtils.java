@@ -22,14 +22,13 @@ public class ArrayUtils
     // TODO: this needs an error message
     public static int simpleIndexOfPointInArray(int[] point, int[][] array)
     {
-        int index = 0;
-        while (index < array.length)
+        int i = 0;
+        while (i < array.length)
         {
-            int[] arrayPoint = array[index];
-            
-            if (array.equals(arrayPoint)) { return index; }
-            else { index++; }
+            if (point[0] == array[i][0] && point[1] == array[i][1]) { return i; }
+            else { i++; }
         }
+        System.out.println(Color.RED + point + " is not a valid move.");
         return -1;
     }
 

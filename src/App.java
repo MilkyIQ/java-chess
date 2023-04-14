@@ -87,22 +87,25 @@ public class App {
         int[] move = null;
         System.out.print("Choose a space to move to (x,y) ");
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
-        String systemResponse;
         
-        // edge case for bad input and invalidMovements
-        if (point == null || ArrayUtils.simpleIndexOfPointInArray(point, validMoves) < 0 )
+        // edge case for bad input and invalidMovements, i don't like that i'm writing the return statement twice though
+        if (point == null || ArrayUtils.simpleIndexOfPointInArray(point, validMoves) < 0)
         {
             return selectMove(piece, validMoves, board, user);
         }
         
+        // Error checking
         switch (board.checkSpaceInt(point[0], point[1], piece.getColor()))
         {
-            case -1: systemResponse = Color.RED + "Out of bounds! Please try again."; break;
-            case 1:  systemResponse = Color.RED + "Cannot attack your own piece. Please try again."; break;
-            default: systemResponse = Color.GREEN + "Moving " + piece.getName() + "(" + piece.getCol() + "," + piece.getRow() + ")" + " to " + point; break;
+            case -1: System.out.print(Color.RED + "Out of bounds! Please try again."); break;
+            case 1:  System.out.print(Color.RED + "Cannot attack your own piece. Please try again."); break;
+            default:
+                move = point;
+                System.out.print(Color.GREEN + "Moving " + piece.getName() + "(" + piece.getCol() + "," + piece.getRow() + ")" + " to " + point);
+                break;
         }
         
-        System.out.println(systemResponse + Color.RESET);
+        System.out.print(Color.RESET);
         return move == null ? selectMove(piece, validMoves, board, user) : move;
     }
 }
