@@ -98,24 +98,19 @@ public class Board
     // Print out board to console with fancy graphics
     public void printBoard()
     {
-        System.out.print("   ");
-        for (int col = 0; col < LENGTH; col++)
-        {
-            String letter = "abcdefghijklmnopqrstuvwxyz".substring(col, col+1).toUpperCase();
-            System.out.print(colors[2] + " " + letter + " " + Color.RESET);
-        }
-
+        // row in board
         int i = 0;
         for (int row = HEIGHT-1; row >= 0; row--)
         {
             i++;
             System.out.println();
-            System.out.print(colors[2] + (row+1) + " " + Color.RESET);
-
+            System.out.print(colors[2] + (row+1) + " " + Color.RESET); // row number
+            
+            // column in row
             for (int col = LENGTH-1; col >= 0; col--)
             {
                 GamePiece piece = board[row][col];
-                String bgColor  = i%2   == 0    ? colors[0] : colors[1];
+                String bgColor  = i%2   == 0    ? colors[1] : colors[0];
                 String fgColor  = piece == null ? Color.CYAN : piece.getColor();
                 String output   = piece == null ? " " : piece.toString();
                 
@@ -123,6 +118,14 @@ public class Board
                 i++;
             }
         }
+
+        // column numbers
+        System.out.print("\n  ");
+        for (int col = 0; col < LENGTH; col++)
+        {
+            System.out.print(colors[2] + " " + (col+1) + " " + Color.RESET);
+        }
         System.out.println();
     }
+
 }
