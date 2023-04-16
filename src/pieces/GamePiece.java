@@ -50,6 +50,11 @@ public class GamePiece
         return null;
     }
 
+    public String toFormattedPositon()
+    {
+        return NAME + "(" + (col+1) + "," + (row+1) + ")";
+    }
+
     public boolean equals(GamePiece piece)
     {
         return (piece.getCol() == col) && (piece.getRow() == row);

@@ -38,17 +38,17 @@ public class ArrayUtils
         try
         {
             int xStart = input.indexOf("(")+1;
-            int xEnd = input.indexOf(",");
+            int xEnd   = input.indexOf(",");
             int yStart = input.indexOf(",")+1;
-            int yEnd = input.indexOf(")");
+            int yEnd   = input.indexOf(")");
     
             String xString = input.substring(xStart, xEnd);
             String yString = input.substring(yStart, yEnd);
     
             int x = Integer.parseInt(xString);
             int y = Integer.parseInt(yString);
-            output[0] = x;
-            output[1] = y;
+            output[0] = x-1;
+            output[1] = y-1;
         }
         catch (NumberFormatException|StringIndexOutOfBoundsException e)
         {

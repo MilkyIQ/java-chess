@@ -66,6 +66,7 @@ public class App {
     {
         GamePiece piece = null;
         
+        System.out.print(player.getColor() + "[" + player.getName() + "] " + Color.RESET);
         System.out.print("Choose a piece to move (x,y): ");
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
         if (point == null) { return selectPiece(player, board, user); } // edge case for gibberish input
@@ -81,7 +82,7 @@ public class App {
             case 2:  systemResponse = Color.RED + "Cannot move enemy piece. Please try again."; break;
             default:
                 piece = player.getPiece(col, row);
-                systemResponse = Color.GREEN + "You have chosen " + piece.getName() + "(" + piece.getCol() + "," + piece.getRow() + ")";
+                systemResponse = Color.GREEN + "You have chosen " + piece.toFormattedPositon();
                 break;
         }
 
@@ -109,7 +110,8 @@ public class App {
             case 1:  System.out.print(Color.RED + "Cannot attack your own piece. Please try again."); break;
             default:
                 move = point;
-                System.out.print(Color.GREEN + "Moving " + piece.getName() + "(" + piece.getCol() + "," + piece.getRow() + ")" + " to " + point);
+                System.out.print(Color.GREEN + "Moving " + piece.toFormattedPositon() + " to " + point);
+                System.out.println("\n");
                 break;
         }
         
