@@ -95,26 +95,8 @@ public class Board
         piece.setPos(col, row);
     }
 
-    // Print out board to console
+    // Print out board to console with fancy graphics
     public void printBoard()
-    {
-        int i = 0;
-        for (GamePiece[] row : board)
-        {
-            i++;
-            System.out.println();
-            for (GamePiece piece : row)
-            {
-                String bgColor = i%2 == 0 ? Color.BLACK_BACKGROUND : Color.WHITE_BACKGROUND;
-                if (piece == null) { System.out.print(bgColor + "   " + Color.RESET); }
-                else { System.out.print(piece.getColor() + bgColor +  " " + piece + " " + Color.RESET); }
-                i++;
-            }
-        }
-        System.out.println();
-    }
-    
-    public void printBoardReverse()
     {
         System.out.print("   ");
         for (int col = 0; col < LENGTH; col++)
@@ -128,7 +110,7 @@ public class Board
         {
             i++;
             System.out.println();
-            System.out.print(Color.WHITE_BOLD + (row+1) + " " + Color.RESET);
+            System.out.print(colors[2] + (row+1) + " " + Color.RESET);
 
             for (int col = LENGTH-1; col >= 0; col--)
             {

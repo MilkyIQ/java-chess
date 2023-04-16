@@ -19,21 +19,22 @@ public class App {
         // Create all players and their pieces
         for (int i = 1; i < numPlayers+1; i++)
         {
-            String  color = reader.getStringValueOf("color", i);
-            String  name  = reader.getStringValueOf("name", i);
+            String color = Color.getColorCodeOf(reader.getStringValueOf("color", i));
+            String name = reader.getStringValueOf("name", i);
             int[][] pawns = reader.getPlayerPieces("pawn", i);
 
             players[i-1] = new Player(name, color);
             for (int[] p : pawns) { players[i-1].givePiece(new Pawn(color, p[0], p[1])); }
         }
 
-        // Create board and populate board
-        int height           = reader.getIntValueOf("boardHeight", 0);
-        int length           = reader.getIntValueOf("boardLength", 0);
-        String evensColor    = reader.getStringValueOf("evenSpacesColor", 0);
-        String oddsColor     = reader.getStringValueOf("oddSpacesColor", 0);
-        String notationColor = reader.getStringValueOf("notationColor", 0);
-
+        // Initialize board variables
+        int height = reader.getIntValueOf("boardHeight", 0);
+        int length = reader.getIntValueOf("boardLength", 0);
+        String evensColor    = Color.getColorCodeOf(reader.getStringValueOf("evenSpacesColor", 0));
+        String oddsColor     = Color.getColorCodeOf(reader.getStringValueOf("oddSpacesColor", 0));
+        String notationColor = Color.getColorCodeOf(reader.getStringValueOf("notationColor", 0));
+        
+        // Create and populate board
         Board board = new Board(height, length, players);
         board.setColors(evensColor, oddsColor, notationColor);
 
@@ -42,11 +43,10 @@ public class App {
         while (i < numPlayers*5)
         {
             Player player = players[i];
-            board.printBoardReverse();
+            board.printBoard();
 
             // passing through a Scanner object is fucking stupid but my hands are tied
             GamePiece piece = selectPiece(player, board, user);   
-
             int[] move = selectMove(piece, piece.getAllValidMoves(board), board, user);
 
             board.move(piece, move[0], move[1]);
