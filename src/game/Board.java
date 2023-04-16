@@ -7,7 +7,8 @@ public class Board
     private GamePiece[][] board;
     private final int LENGTH;
     private final int HEIGHT;
-
+    public String[] colors = new String[3]; 
+    
     // Game Board Constructor
     public Board(int rows, int columns, Player[] players)
     {
@@ -42,6 +43,13 @@ public class Board
     public int getHeight()
     {
         return HEIGHT;
+    }
+
+    public void setColors(String evens, String odds, String notation)
+    {
+        colors[0] = evens;
+        colors[1] = odds;
+        colors[2] = notation;
     }
     
     // Return true if space IS occupied
@@ -108,15 +116,29 @@ public class Board
     
     public void printBoardReverse()
     {
-        for (int row = board.length-1; row > 0; row++)
+        System.out.print("   ");
+        for (int col = 0; col < LENGTH; col++)
         {
-            for (int col = board[row].length-1; col > 0; col++)
+            String letter = "abcdefghijklmnopqrstuvwxyz".substring(col, col+1).toUpperCase();
+            System.out.print(colors[2] + " " + letter + " " + Color.RESET);
+        }
+
+        int i = 0;
+        for (int row = HEIGHT-1; row >= 0; row--)
+        {
+            i++;
+            System.out.println();
+            System.out.print(Color.WHITE_BOLD + (row+1) + " " + Color.RESET);
+
+            for (int col = LENGTH-1; col >= 0; col--)
             {
-                System.out.println();
                 GamePiece piece = board[row][col];
-                String bgColor = col%2 == 0 ? Color.BLACK_BACKGROUND : Color.WHITE_BACKGROUND;
-                if (piece == null) { System.out.print(bgColor + "   " + Color.RESET); }
-                else { System.out.print(piece.getColor() + bgColor +  " " + piece + " " + Color.RESET); }
+                String bgColor  = i%2   == 0    ? colors[0] : colors[1];
+                String fgColor  = piece == null ? Color.CYAN : piece.getColor();
+                String output   = piece == null ? " " : piece.toString();
+                
+                System.out.print(fgColor + bgColor + " " + output + " " + Color.RESET);
+                i++;
             }
         }
         System.out.println();

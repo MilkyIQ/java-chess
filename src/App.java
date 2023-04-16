@@ -17,26 +17,32 @@ public class App {
         Player[] players = new Player[numPlayers];
 
         // Create all players and their pieces
-        for (int i = 0; i < numPlayers; i++)
+        for (int i = 1; i < numPlayers+1; i++)
         {
-            String  color = reader.getPlayerValueOf("color", i);
-            String  name  = reader.getPlayerValueOf("name", i);
+            String  color = reader.getStringValueOf("color", i);
+            String  name  = reader.getStringValueOf("name", i);
             int[][] pawns = reader.getPlayerPieces("pawn", i);
 
-            players[i] = new Player(name, color);
-            for (int[] p : pawns) { players[i].givePiece(new Pawn(color, p[0], p[1])); }
+            players[i-1] = new Player(name, color);
+            for (int[] p : pawns) { players[i-1].givePiece(new Pawn(color, p[0], p[1])); }
         }
 
         // Create board and populate board
-        int height = (int) reader.getIntValueOf("boardHeight");
-        int length = (int) reader.getIntValueOf("boardLength");
-        Board board = new Board(height, length, players);
+        int height           = reader.getIntValueOf("boardHeight", 0);
+        int length           = reader.getIntValueOf("boardLength", 0);
+        String evensColor    = reader.getStringValueOf("evenSpacesColor", 0);
+        String oddsColor     = reader.getStringValueOf("oddSpacesColor", 0);
+        String notationColor = reader.getStringValueOf("notationColor", 0);
 
+        Board board = new Board(height, length, players);
+        board.setColors(evensColor, oddsColor, notationColor);
+
+        // Primary game loop
         int i = 0;
         while (i < numPlayers*5)
         {
             Player player = players[i];
-            board.printBoard();
+            board.printBoardReverse();
 
             // passing through a Scanner object is fucking stupid but my hands are tied
             GamePiece piece = selectPiece(player, board, user);   
@@ -55,6 +61,7 @@ public class App {
         System.out.println("\n");
     }
 
+    // Ask user for the piece they'd like to move and return that piece
     public static GamePiece selectPiece(Player player, Board board, Scanner user)
     {
         GamePiece piece = null;
@@ -82,6 +89,7 @@ public class App {
         return piece == null ? selectPiece(player, board, user) : piece;
     }
 
+    // Ask user for the move they want to make and return
     public static int[] selectMove(GamePiece piece, int[][] validMoves, Board board, Scanner user)
     {
         int[] move = null;

@@ -21,15 +21,15 @@ public class SettingsReader
     }
 
     // Returns int value of specified variable from given index in settings.json
-    public int getIntValueOf(String datapoint)
+    public int getIntValueOf(String datapoint, int index)
     {
-        JSONObject item = (JSONObject) FILE.get(FILE.size()-1);
+        JSONObject item = (JSONObject) FILE.get(index);
         Long value = (Long) item.get(datapoint);
         return (int) value.longValue();
     }
 
     // Returns String value of specified variable from given index in settings.json (index starts from 1)
-    public String getPlayerValueOf(String datapoint, int index)
+    public String getStringValueOf(String datapoint, int index)
     {
         JSONObject item = (JSONObject) FILE.get(index);
         return (String) item.get(datapoint);
