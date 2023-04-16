@@ -1,7 +1,5 @@
 package pieces;
 import game.Board;
-import game.Color;
-import java.util.ArrayList;
 
 public class GamePiece
 {

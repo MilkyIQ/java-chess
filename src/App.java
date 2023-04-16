@@ -19,12 +19,13 @@ public class App {
         // Create all players and their pieces
         for (int i = 1; i < numPlayers+1; i++)
         {
-            String color = Color.getColorCodeOf(reader.getStringValueOf("color", i));
-            String name = reader.getStringValueOf("name", i);
-            int[][] pawns = reader.getPlayerPieces("pawn", i);
+            String color     = Color.getColorCodeOf(reader.getStringValueOf("color", i));
+            String name      = reader.getStringValueOf("name", i);
+            String direction = reader.getStringValueOf("pawnDirection", i);
+            int[][] pawns    = reader.getPlayerPieces("pawn", i);
 
             players[i-1] = new Player(name, color);
-            for (int[] p : pawns) { players[i-1].givePiece(new Pawn(color, p[0], p[1])); }
+            for (int[] p : pawns) { players[i-1].givePiece(new Pawn(color, p[0], p[1], direction)); }
         }
 
         // Initialize board variables
@@ -41,7 +42,7 @@ public class App {
         // Primary game loop
         int i = 0;
         int k = 0;
-        while (k < 100)
+        while (k < 5)
         {
             Player player = players[i];
             board.printBoard();
@@ -50,6 +51,7 @@ public class App {
             GamePiece piece = selectPiece(player, board, user);   
             int[] move = selectMove(piece, piece.getAllValidMoves(board), board, user);
 
+            // TODO: need to figure out a way to update the enemy player's hand when their piece has been claimed
             board.move(piece, move[0], move[1]);
             
             i = i < numPlayers-1 ? i+1 : 0;
@@ -84,7 +86,7 @@ public class App {
             case 2:  systemResponse = Color.RED + "Cannot move enemy piece. Please try again."; break;
             default:
                 piece = player.getPiece(col, row);
-                systemResponse = Color.GREEN + "You have chosen " + piece.toFormattedPositon();
+                systemResponse = Color.PURPLE + "You have chosen " + piece.toFormattedPositon();
                 break;
         }
 
@@ -99,7 +101,7 @@ public class App {
         System.out.print("Choose a space to move to (x,y): ");
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
         
-        // edge case for bad input and invalidMovements, i don't like that i'm writing the return statement twice though
+        // edge case for bad input and invalid movements
         if (point == null || ArrayUtils.simpleIndexOfPointInArray(point, validMoves) < 0)
         {
             return selectMove(piece, validMoves, board, user);
@@ -112,7 +114,7 @@ public class App {
             case 1:  System.out.print(Color.RED + "Cannot attack your own piece. Please try again."); break;
             default:
                 move = point;
-                System.out.print(Color.GREEN + "Moving " + piece.toFormattedPositon() + " to " + point);
+                System.out.print(Color.PURPLE + "Moving " + piece.toFormattedPositon() + " to " + point);
                 System.out.println("\n");
                 break;
         }

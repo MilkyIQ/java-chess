@@ -1,6 +1,5 @@
 package game;
 import pieces.*;
-import game.Color;
 
 public class Board
 {
@@ -45,6 +44,11 @@ public class Board
         return HEIGHT;
     }
 
+    public GamePiece getSpace(int x, int y)
+    {
+        return board[y][x];
+    }
+
     public void setColors(String evens, String odds, String notation)
     {
         colors[0] = evens;
@@ -86,7 +90,7 @@ public class Board
         piece.setPos(x, y);
     }
 
-    // Place given piece at specified space, replacing any object previously there
+    // Place given piece at its specified position, replacing any object previously there
     public void place(GamePiece piece)
     {
         int row = piece.getRow();
