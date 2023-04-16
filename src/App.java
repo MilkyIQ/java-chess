@@ -40,7 +40,8 @@ public class App {
 
         // Primary game loop
         int i = 0;
-        while (i < numPlayers*5)
+        int k = 0;
+        while (k < 100)
         {
             Player player = players[i];
             board.printBoard();
@@ -51,7 +52,8 @@ public class App {
 
             board.move(piece, move[0], move[1]);
             
-            i = i < numPlayers ? i+1 : 0;
+            i = i < numPlayers-1 ? i+1 : 0;
+            k++;
         }
 
         user.close();
@@ -94,7 +96,7 @@ public class App {
     public static int[] selectMove(GamePiece piece, int[][] validMoves, Board board, Scanner user)
     {
         int[] move = null;
-        System.out.print("Choose a space to move to (x,y) ");
+        System.out.print("Choose a space to move to (x,y): ");
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
         
         // edge case for bad input and invalidMovements, i don't like that i'm writing the return statement twice though

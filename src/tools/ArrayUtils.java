@@ -28,7 +28,7 @@ public class ArrayUtils
             if (point[0] == array[i][0] && point[1] == array[i][1]) { return i; }
             else { i++; }
         }
-        System.out.println(Color.RED + point + " is not a valid move.");
+        System.out.println(Color.RED + point + " is not a valid move." + Color.RESET);
         return -1;
     }
 
