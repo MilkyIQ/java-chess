@@ -32,6 +32,40 @@ public class ArrayUtils
         return -1;
     }
 
+    public static void insertionSort2D(int[][] arr)
+    {
+        for (int index = 1; index < arr.length; index++)
+        {
+            int curIndexVal = arr[index][0];
+            int sortedIndex = index - 1;
+
+            while (sortedIndex > -1 && arr[sortedIndex][0] < curIndexVal)
+            {
+                arr[sortedIndex + 1] = arr[sortedIndex];
+                sortedIndex--;
+            }
+
+            arr[sortedIndex + 1][0] = curIndexVal;
+        }
+    }
+
+    public static void insertionSort(int[] arr)
+    {
+        for (int index = 1; index < arr.length; index++)
+        {
+            int curIndexVal = arr[index];
+            int sortedIndex = index - 1;
+
+            while (sortedIndex > -1 && arr[sortedIndex] < curIndexVal)
+            {
+                arr[sortedIndex + 1] = arr[sortedIndex];
+                sortedIndex--;
+            }
+
+            arr[sortedIndex + 1] = curIndexVal;
+        }
+    }
+
     public static int[] extractPointFromString(String input)
     {
         int[] output = new int[2];

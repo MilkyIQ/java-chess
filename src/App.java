@@ -42,7 +42,7 @@ public class App {
         // Primary game loop
         int i = 0;
         int k = 0;
-        while (k < 5)
+        while (k < 0)
         {
             Player player = players[i];
             board.printBoard();
@@ -62,8 +62,39 @@ public class App {
 
         /* ------------------------------------------------------------------------------------ */
 
+
+        int[][] foo = {
+            {0,2},
+            {0,5},
+            {0,6},
+            {0,7},
+            {0,5},
+            {9,10},
+            {1,1},
+            {5,3},
+            {7,7},
+            {0,1},
+            {1,7},
+            {2,7}
+        };
+        
+        ArrayUtils.insertionSort2D(foo);
+
+        for (int[] point : foo)
+        {
+            System.out.println(point[0] + "," + point[1]);
+        }
+
         System.out.println("\n");
     }
+
+
+
+
+    /* ------------------------------------------------------------------------------------ */
+
+
+
 
     // Ask user for the piece they'd like to move and return that piece
     public static GamePiece selectPiece(Player player, Board board, Scanner user)
@@ -123,3 +154,12 @@ public class App {
         return move == null ? selectMove(piece, validMoves, board, user) : move;
     }
 }
+
+/*
+ * TODO:
+ * [ ] "Undo" case for user input
+ * [ ] "Draw" case for user input
+ * [ ] Insertion sort
+ * [ ] Binary search
+ * [ ] What happens if pawn is placed outside of possible area?
+ */
