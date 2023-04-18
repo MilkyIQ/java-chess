@@ -10,6 +10,7 @@ public class App {
 
         /* ------------------------------------------------------------------------------------ */
 
+        /*
         // Initialize head variables
         Scanner user = new Scanner(System.in);
         SettingsReader reader = new SettingsReader("src/settings.json");
@@ -59,33 +60,10 @@ public class App {
         }
 
         user.close();
+        */
 
         /* ------------------------------------------------------------------------------------ */
 
-
-        int[][] foo = {
-            {0,2},
-            {0,5},
-            {0,6},
-            {0,7},
-            {0,5},
-            {9,10},
-            {1,1},
-            {5,3},
-            {7,7},
-            {0,1},
-            {1,7},
-            {2,7}
-        };
-        
-        ArrayUtils.insertionSort2D(foo);
-
-        for (int[] point : foo)
-        {
-            System.out.println(point[0] + "," + point[1]);
-        }
-
-        System.out.println("\n");
     }
 
 
