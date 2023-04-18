@@ -48,6 +48,11 @@ public class GamePiece
         return null;
     }
 
+    public boolean checkMove(int x, int y, Board board)
+    {
+        return false;
+    }
+
     public String toFormattedPositon()
     {
         return NAME + "(" + (col+1) + "," + (row+1) + ")";

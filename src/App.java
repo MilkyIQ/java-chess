@@ -10,8 +10,7 @@ public class App {
 
         /* ------------------------------------------------------------------------------------ */
 
-        /*
-        // Initialize head variables
+        /*// Initialize head variables
         Scanner user = new Scanner(System.in);
         SettingsReader reader = new SettingsReader("src/settings.json");
         int numPlayers = reader.getNumPlayers();
@@ -63,6 +62,18 @@ public class App {
         */
 
         /* ------------------------------------------------------------------------------------ */
+
+        Board board = new Board(8,8);
+        GamePiece rat = new Bishop(Color.GREEN, 4, 4);
+        GamePiece enemy = new Pawn(Color.RED, 3, 3, "up");
+        board.place(rat);
+        board.place(enemy);
+        board.setColors(Color.BLACK_BACKGROUND, Color.WHITE_BACKGROUND, Color.BLACK);
+        
+        board.printBoard();
+        int[] move = {7,7};
+        boolean test = rat.checkMove(move[0], move[1], board);
+        System.out.println(test);
 
     }
 

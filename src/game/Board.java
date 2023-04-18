@@ -34,6 +34,22 @@ public class Board
         }
     }
 
+    public Board(int rows, int columns)
+    {
+        this.LENGTH = Math.min(50, Math.abs(columns));
+        this.HEIGHT = Math.min(50, Math.abs(rows));
+        this.board = new GamePiece[HEIGHT][LENGTH];
+
+        // Create empty board
+        for (int row = 0; row < LENGTH; row++)
+        {
+            for (int col = 0; col < HEIGHT; col++)
+            {
+                board[row][col] = null;
+            }
+        }
+    }
+
     public int getLength()
     {
         return LENGTH;
