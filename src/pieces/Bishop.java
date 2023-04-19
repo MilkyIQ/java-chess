@@ -11,34 +11,26 @@ public class Bishop extends GamePiece
     @Override
     public boolean checkMove(int x, int y, Board board)
     {
-        int pieceX = super.getCol(); // 5,5 - > 8,8
+        int pieceX = super.getCol();
         int pieceY = super.getRow();
-
-        int deltaX = x - pieceX; 
+        int deltaX = x - pieceX;
         int deltaY = y - pieceY;
 
-        if ((Math.abs(deltaX) != Math.abs(deltaY)) || (deltaX == 0 || deltaY == 0) ) { return false; }
+        if (Math.abs(deltaX) != Math.abs(deltaY)) { return false; }
 
-        System.out.println("Move is diagonal!");
+        int xDir = Math.abs(deltaX) / deltaX;
+        int yDir = Math.abs(deltaY) / deltaY;
 
-        int xDir = (deltaX > 0) ? 1 : -1;
-        int yDir = (deltaY > 0) ? 1 : -1;
-
-        int col = pieceX + xDir;
-        int row = pieceY + yDir;
-        while (col != x && row != y)
+        pieceX += xDir;
+        pieceY += yDir;
+        while (pieceX != x && pieceY != y)
         {
-            if (board.checkSpaceInt(col, row, super.getColor()) > 0)
+            if (board.checkSpaceInt(pieceX, pieceY, super.getColor()) > 0)
             {
-                System.out.println("occupied space.");
                 return false;
             }
-            else
-            {
-                System.out.println("space is clear!");
-            }
-            col += xDir;
-            row += yDir;
+            pieceX += xDir;
+            pieceY += yDir;
         }
 
         return true;

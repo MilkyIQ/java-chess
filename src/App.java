@@ -64,14 +64,14 @@ public class App {
         /* ------------------------------------------------------------------------------------ */
 
         Board board = new Board(8,8);
-        GamePiece rat = new Bishop(Color.GREEN, 4, 4);
-        GamePiece enemy = new Pawn(Color.RED, 3, 3, "up");
+        GamePiece rat = new Rook(Color.GREEN_BOLD, 4, 4);
+        GamePiece enemy = new Pawn(Color.RED_BOLD, 3, 3, "up");
         board.place(rat);
         board.place(enemy);
         board.setColors(Color.BLACK_BACKGROUND, Color.WHITE_BACKGROUND, Color.BLACK);
         
         board.printBoard();
-        int[] move = {7,7};
+        int[] move = {4,5};
         boolean test = rat.checkMove(move[0], move[1], board);
         System.out.println(test);
 
