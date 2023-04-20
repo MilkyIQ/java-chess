@@ -16,9 +16,9 @@ public class Board
         this.board = new GamePiece[HEIGHT][LENGTH];
 
         // Create empty board
-        for (int row = 0; row < LENGTH; row++)
+        for (int row = 0; row < HEIGHT; row++)
         {
-            for (int col = 0; col < HEIGHT; col++)
+            for (int col = 0; col < LENGTH; col++)
             {
                 board[row][col] = null;
             }
@@ -41,9 +41,9 @@ public class Board
         this.board = new GamePiece[HEIGHT][LENGTH];
 
         // Create empty board
-        for (int row = 0; row < LENGTH; row++)
+        for (int row = 0; row < HEIGHT; row++)
         {
-            for (int col = 0; col < HEIGHT; col++)
+            for (int col = 0; col < LENGTH; col++)
             {
                 board[row][col] = null;
             }
