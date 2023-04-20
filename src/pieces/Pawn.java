@@ -53,7 +53,7 @@ public class Pawn extends GamePiece
 
             int curX = movement[0];
             int curY = movement[1];
-            int boardSpaceStatus = board.checkSpaceInt(curX, curY, super.getColor());
+            int boardSpaceStatus = board.checkSpace(curX, curY, super.getColor());
             boolean validAttack = (curX != x) && (boardSpaceStatus == 2);
             boolean validForward = (curX == x || curY == y) && (boardSpaceStatus == 0);
             

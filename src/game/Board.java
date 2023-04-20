@@ -40,6 +40,20 @@ public class Board
         return board[y][x];
     }
 
+    // Returns representative int value -1 to 2 to show whether or not a space is occupied by the given color
+    public int checkSpace(int x, int y, String color)
+    {
+        if      (x >= LENGTH || x < 0 ||
+                 y >= HEIGHT || y < 0 )                 { return -1; } // space is out of bounds
+        else if (board[y][x] == null)                   { return 0;  } // space is empty
+        else if (board[y][x].getColor().equals(color))  { return 1;  } // space is occupied by color
+        else if (!board[y][x].getColor().equals(color)) { return 2;  } // space is occupied NOT by color
+        else
+        {
+            throw new IllegalArgumentException(Color.RED + "Board.checkSpace() was given bad data." + Color.RESET); // just in case
+        }
+    }
+
     public void setColors(String evens, String odds, String notation)
     {
         colors[0] = evens;
@@ -55,31 +69,6 @@ public class Board
             {
                 this.place(piece);
             }
-        }
-    }
-    
-    // Return true if space IS occupied
-    public boolean checkSpace(int x, int y)
-    {
-        return board[y][x] != null;
-    }
-
-    // Return true if space IS occupied AND by the specified color
-    public boolean checkSpace(int x, int y, String color)
-    {
-        return board[y][x] == null ? false : board[y][x].getColor().equals(color);
-    }
-
-    public int checkSpaceInt(int x, int y, String color)
-    {
-        if      (x >= LENGTH || x < 0 ||
-                 y >= HEIGHT || y < 0 )                 { return -1; } // space is out of bounds
-        else if (board[y][x] == null)                   { return 0;  } // space is empty
-        else if (board[y][x].getColor().equals(color))  { return 1;  } // space is occupied by color
-        else if (!board[y][x].getColor().equals(color)) { return 2;  } // space is occupied NOT by color
-        else
-        {
-            throw new IllegalArgumentException(Color.RED + "Board.checkSpaceInt() was given bad data." + Color.RESET); // just in case
         }
     }
 

@@ -25,7 +25,7 @@ public class Bishop extends GamePiece
         pieceY += yDir;
         while (pieceX != x && pieceY != y)
         {
-            if (board.checkSpaceInt(pieceX, pieceY, super.getColor()) > 0)
+            if (board.checkSpace(pieceX, pieceY, super.getColor()) > 0)
             {
                 return false;
             }

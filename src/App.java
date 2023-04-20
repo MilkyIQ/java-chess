@@ -99,7 +99,7 @@ public class App {
         int row = point[1];
         String systemResponse;
 
-        switch (board.checkSpaceInt(col, row, player.getColor()))
+        switch (board.checkSpace(col, row, player.getColor()))
         {
             case -1: systemResponse = Color.RED + "Out of bounds! Please try again."; break;
             case 0:  systemResponse = Color.RED + "Space is empty. Please try again."; break;
@@ -137,7 +137,7 @@ public class App {
         }
         
         // Error checking
-        switch (board.checkSpaceInt(point[0], point[1], piece.getColor()))
+        switch (board.checkSpace(point[0], point[1], piece.getColor()))
         {
             case -1: System.out.print(Color.RED + "Out of bounds! Please try again."); break;
             case 1:  System.out.print(Color.RED + "Cannot attack your own piece. Please try again."); break;

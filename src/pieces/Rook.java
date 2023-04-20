@@ -23,7 +23,7 @@ public class Rook extends GamePiece
         piecePt[axis] += dir;
         while (piecePt[axis] != movePt[axis])
         {
-            if (board.checkSpaceInt(piecePt[0], piecePt[1], super.getColor()) > 0)
+            if (board.checkSpace(piecePt[0], piecePt[1], super.getColor()) > 0)
             {
                 return false;
             }
