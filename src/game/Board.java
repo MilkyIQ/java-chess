@@ -120,10 +120,8 @@ public class Board
         }
         
         // row in board
-        int i = 0;
         for (int row = HEIGHT-1; row >= 0; row--)
         {
-            i++;
             System.out.println();
             System.out.print(colors[2] + (row+1) + " " + Color.RESET); // row number (left)
             
@@ -131,12 +129,11 @@ public class Board
             for (int col = 0; col < LENGTH; col++)
             {
                 GamePiece piece = board[row][col];
-                String bgColor  = i%2   == 0    ? colors[1] : colors[0];
-                String fgColor  = piece == null ? Color.CYAN : piece.getColor();
-                String output   = piece == null ? " " : piece.toString();
+                String bgColor  = (row+col) % 2 == 0    ? colors[1]  : colors[0];
+                String fgColor  = piece         == null ? Color.CYAN : piece.getColor();
+                String output   = piece         == null ? " "        : piece.toString();
                 
                 System.out.print(fgColor + bgColor + " " + output + " " + Color.RESET);
-                i++;
             }
 
             System.out.print(" " + colors[2] + (row+1) + " " + Color.RESET); // row number (right)
