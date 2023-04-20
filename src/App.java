@@ -10,14 +10,20 @@ public class App {
 
         /* ------------------------------------------------------------------------------------ */
 
-        /*// Initialize head variables
-        Scanner user = new Scanner(System.in);
+        // Initialize game variables
         SettingsReader reader = new SettingsReader("src/settings.json");
-        int numPlayers = reader.getNumPlayers();
-        Player[] players = new Player[numPlayers];
+        Scanner user          = new Scanner(System.in);
+        Player[] players      = new Player[reader.getNumPlayers()];
+
+        // Initialize board variables
+        int height           = reader.getIntValueOf("boardHeight", 0);
+        int length           = reader.getIntValueOf("boardLength", 0);
+        String evensColor    = Color.getColorCodeOf(reader.getStringValueOf("evenSpacesColor", 0));
+        String oddsColor     = Color.getColorCodeOf(reader.getStringValueOf("oddSpacesColor", 0));
+        String notationColor = Color.getColorCodeOf(reader.getStringValueOf("notationColor", 0));
 
         // Create all players and their pieces
-        for (int i = 1; i < numPlayers+1; i++)
+        for (int i = 1; i < players.length+1; i++)
         {
             String color     = Color.getColorCodeOf(reader.getStringValueOf("color", i));
             String name      = reader.getStringValueOf("name", i);
@@ -28,21 +34,16 @@ public class App {
             for (int[] p : pawns) { players[i-1].givePiece(new Pawn(color, p[0], p[1], direction)); }
         }
 
-        // Initialize board variables
-        int height = reader.getIntValueOf("boardHeight", 0);
-        int length = reader.getIntValueOf("boardLength", 0);
-        String evensColor    = Color.getColorCodeOf(reader.getStringValueOf("evenSpacesColor", 0));
-        String oddsColor     = Color.getColorCodeOf(reader.getStringValueOf("oddSpacesColor", 0));
-        String notationColor = Color.getColorCodeOf(reader.getStringValueOf("notationColor", 0));
         
         // Create and populate board
-        Board board = new Board(height, length, players);
+        Board board = new Board(length, height);
+        board.populateBoard(players);
         board.setColors(evensColor, oddsColor, notationColor);
 
         // Primary game loop
         int i = 0;
         int k = 0;
-        while (k < 0)
+        while (k < 10)
         {
             Player player = players[i];
             board.printBoard();
@@ -54,26 +55,25 @@ public class App {
             // TODO: need to figure out a way to update the enemy player's hand when their piece has been claimed
             board.move(piece, move[0], move[1]);
             
-            i = i < numPlayers-1 ? i+1 : 0;
+            i = i < players.length-1 ? i+1 : 0;
             k++;
         }
 
         user.close();
-        */
 
         /* ------------------------------------------------------------------------------------ */
 
-        Board board = new Board(8,8);
-        GamePiece rat = new Rook(Color.GREEN_BOLD, 4, 4);
-        GamePiece enemy = new Pawn(Color.RED_BOLD, 3, 3, "up");
-        board.place(rat);
-        board.place(enemy);
-        board.setColors(Color.BLACK_BACKGROUND, Color.WHITE_BACKGROUND, Color.BLACK);
+        // Board board = new Board(8,8);
+        // GamePiece rat = new Rook(Color.GREEN_BOLD, 4, 4);
+        // GamePiece enemy = new Pawn(Color.RED_BOLD, 3, 3, "up");
+        // board.place(rat);
+        // board.place(enemy);
+        // board.setColors(Color.BLACK_BACKGROUND, Color.WHITE_BACKGROUND, Color.BLACK);
         
-        board.printBoard();
-        int[] move = {4,5};
-        boolean test = rat.checkMove(move[0], move[1], board);
-        System.out.println(test);
+        // board.printBoard();
+        // int[] move = {4,5};
+        // boolean test = rat.checkMove(move[0], move[1], board);
+        // System.out.println(test);
 
     }
 
@@ -113,6 +113,15 @@ public class App {
         System.out.println(systemResponse + Color.RESET);
         return piece == null ? selectPiece(player, board, user) : piece;
     }
+
+    
+
+
+
+    /* ------------------------------------------------------------------------------------ */
+
+
+
 
     // Ask user for the move they want to make and return
     public static int[] selectMove(GamePiece piece, int[][] validMoves, Board board, Scanner user)

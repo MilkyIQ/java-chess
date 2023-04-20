@@ -9,32 +9,7 @@ public class Board
     public String[] colors = new String[3]; 
     
     // Game Board Constructor
-    public Board(int rows, int columns, Player[] players)
-    {
-        this.LENGTH = Math.min(50, Math.abs(columns));
-        this.HEIGHT = Math.min(50, Math.abs(rows));
-        this.board = new GamePiece[HEIGHT][LENGTH];
-
-        // Create empty board
-        for (int row = 0; row < HEIGHT; row++)
-        {
-            for (int col = 0; col < LENGTH; col++)
-            {
-                board[row][col] = null;
-            }
-        }
-
-        // Populate board
-        for (Player player : players)
-        {
-            for (GamePiece piece : player.getPieces())
-            {
-                this.place(piece);
-            }
-        }
-    }
-
-    public Board(int rows, int columns)
+    public Board(int columns, int rows)
     {
         this.LENGTH = Math.min(50, Math.abs(columns));
         this.HEIGHT = Math.min(50, Math.abs(rows));
@@ -71,6 +46,17 @@ public class Board
         colors[1] = odds;
         colors[2] = notation;
     }
+
+    public void populateBoard(Player[] players)
+    {
+        for (Player player : players)
+        {
+            for (GamePiece piece : player.getPieces())
+            {
+                this.place(piece);
+            }
+        }
+    }
     
     // Return true if space IS occupied
     public boolean checkSpace(int x, int y)
@@ -106,13 +92,21 @@ public class Board
         piece.setPos(x, y);
     }
 
-    // Place given piece at its specified position, replacing any object previously there
+    // Place given piece at its already specified position, replacing any object previously there
     public void place(GamePiece piece)
     {
-        int row = piece.getRow();
-        int col = piece.getCol();
-        board[row][col] = piece;
-        piece.setPos(col, row);
+        try
+        {
+            int row = piece.getRow();
+            int col = piece.getCol();
+            board[row][col] = piece;
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            System.out.print(Color.YELLOW + "[WARNING]: Skipping placement of ");
+            System.out.print(piece.getColor() + piece.toFormattedPositon());
+            System.out.println(Color.YELLOW + ", piece out of bounds." + Color.RESET);
+        }
     }
 
     // Print out board to console with fancy graphics
