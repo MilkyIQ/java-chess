@@ -144,7 +144,8 @@ public class App {
             case 1:  System.out.print(Color.RED + "Cannot attack your own piece. Please try again."); break;
             default:
                 move = point;
-                System.out.print(Color.PURPLE + "Moving " + piece.toFormattedPositon() + " to " + point);
+                System.out.print(Color.PURPLE + "Moving " + piece.toFormattedPositon() + " to ");
+                System.out.print("(" + point[0] + "," + point[1] + ")");
                 System.out.println("\n");
                 break;
         }
