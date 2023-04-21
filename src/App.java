@@ -31,7 +31,7 @@ public class App {
             int[][] pawns    = reader.getPlayerPieces("pawn", i);
 
             players[i-1] = new Player(name, color);
-            for (int[] p : pawns) { players[i-1].givePiece(new Pawn(color, p[0], p[1], direction)); }
+            for (int[] p : pawns) { players[i-1].give(new Pawn(color, p[0], p[1], direction)); }
         }
 
         
@@ -51,8 +51,9 @@ public class App {
             // passing through a Scanner object is fucking stupid but my hands are tied
             GamePiece piece = selectPiece(player, board, user);   
             int[] move = selectMove(piece, piece.getAllValidMoves(board), board, user);
+            GamePiece space = board.getSpace(move[0], move[1]);
+            if (space != null) { players[Player.indexOf(space.getColor(), players)].remove(space); } // remove piece from enemy hand if attacking
 
-            // TODO: need to figure out a way to update the enemy player's hand when their piece has been claimed
             board.move(piece, move[0], move[1]);
             
             i = i < players.length-1 ? i+1 : 0;

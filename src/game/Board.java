@@ -65,7 +65,7 @@ public class Board
     {
         for (Player player : players)
         {
-            for (GamePiece piece : player.getPieces())
+            for (GamePiece piece : player.getHand())
             {
                 this.place(piece);
             }

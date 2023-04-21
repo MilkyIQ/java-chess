@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import pieces.*;
 
 public class Player {
-    private ArrayList<GamePiece> pieces;
+    private ArrayList<GamePiece> hand;
     private final String NAME;
     private final String COLOR;
 
@@ -11,7 +11,7 @@ public class Player {
     {
         this.NAME = name;
         this.COLOR = color;
-        this.pieces = new ArrayList<GamePiece>();
+        this.hand = new ArrayList<GamePiece>();
     }
 
     public String getColor()
@@ -24,22 +24,41 @@ public class Player {
         return NAME;
     }
 
-    public ArrayList<GamePiece> getPieces()
+    public ArrayList<GamePiece> getHand()
     {
-        return pieces;
+        return hand;
     }
 
     public GamePiece getPiece(int x, int y)
     {
-        for (GamePiece piece : pieces)
+        for (GamePiece piece : hand)
         {
             if ((piece.getCol() == x) && (piece.getRow() == y)) { return piece; }
         }
         return null;
     }
 
-    public void givePiece(GamePiece piece)
+    public void give(GamePiece piece)
     {
-        pieces.add(piece);
+        hand.add(piece);
+    }
+
+    public void remove(GamePiece piece)
+    {
+        hand.remove(piece);
+    }
+
+    // Loop through a list of players and return the index of the specified color,
+    // not too sure about where to put this, but a static method here seemed fitting
+    public static int indexOf(String color, Player[] players)
+    {
+        for (int i = 0; i < players.length; i++)
+        {
+            if (players[i].getColor().equals(color))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }
