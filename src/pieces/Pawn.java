@@ -22,32 +22,32 @@ public class Pawn extends GamePiece
         int[] pos = {super.getCol(), super.getRow()};
 
         // Initialize all possible pawn movements
-        int[][] baseMovements = new int[4][2];
-        for (int i = 0; i < baseMovements.length; i++)
+        int[][] baseMoves = new int[4][2];
+        for (int i = 0; i < baseMoves.length; i++)
         {
-            baseMovements[i][0] = pos[0];
-            baseMovements[i][1] = pos[1];
+            baseMoves[i][0] = pos[0];
+            baseMoves[i][1] = pos[1];
         }
 
         // Adjust values accorsding to direction
         int axis = DIR.equals("up") || DIR.equals("down")  ? 1 : 0;
         int dir = DIR.equals("up") || DIR.equals("right") ? 1 : -1;
         int anti = Math.abs(axis-1);
-        baseMovements[0][axis] += 1*dir;
-        baseMovements[1][axis] += 2*dir;
-        baseMovements[2][axis] += 1*dir;
-        baseMovements[2][anti] += 1;
-        baseMovements[3][axis] += 1*dir;
-        baseMovements[3][anti] -= 1;
+        baseMoves[0][axis] += 1*dir;
+        baseMoves[1][axis] += 2*dir;
+        baseMoves[2][axis] += 1*dir;
+        baseMoves[2][anti] += 1;
+        baseMoves[3][axis] += 1*dir;
+        baseMoves[3][anti] -= 1;
 
         // edge case
-        if (super.getMoveCount() != 0 || board.checkSpace(baseMovements[0][0], baseMovements[0][1], super.getColor()) != 0)
+        if (super.getMoveCount() != 0 || board.checkSpace(baseMoves[0][0], baseMoves[0][1], super.getColor()) != 0)
         { 
-            baseMovements[1] = null;
+            baseMoves[1] = null;
         }
 
         // Check conditions and continue until match reaced or list exhausted
-        for (int[] move : baseMovements)
+        for (int[] move : baseMoves)
         {
             if (move == null) { continue; }
 
