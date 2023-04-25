@@ -127,23 +127,23 @@ public class App {
     public static int[] selectMove(GamePiece piece, Board board, Scanner user)
     {
         int[] move = null;
-        String systemResponse = Color.RED + "Something went wrong.";
+        String systemResponse = Color.RED;
         System.out.print("Choose a space to move to (x,y): ");
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
 
-        // edge case for bad input (error message printed in extract function)
+        // Error checking
         if (point == null)
         {
-            systemResponse = ""; //placeholder
+            systemResponse += "Invalid input. Please try again.";
         }
         else if (piece.checkMove(point[0], point[1], board))
         {
             move = point;
-            systemResponse = Color.PURPLE + "Moving " + piece.toFormattedPositon() + " to " + "(" + point[0] + "," + point[1] + ")\n";
+            systemResponse = Color.PURPLE;
+            systemResponse += "Moving " + piece.toFormattedPositon() + " to " + "(" + point[0] + "," + point[1] + ")\n";
         }
         else
         {
-            systemResponse = Color.RED;
             switch (board.checkSpace(point[0], point[1], piece.getColor()))
             {
                 case -1: systemResponse += "Out of bounds! Please try again."; break;
