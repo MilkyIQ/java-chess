@@ -5,7 +5,7 @@ public class Rook extends GamePiece
 {
     public Rook(String color, int col, int row)
     {
-        super("R", color, col, row);
+        super("\u265C", color, col, row);
     }
 
     @Override

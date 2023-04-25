@@ -29,9 +29,14 @@ public class App {
             String name      = reader.getStringValueOf("name", i);
             String direction = reader.getStringValueOf("pawnDirection", i);
             int[][] pawns    = reader.getPlayerPieces("pawn", i);
+            int[][] rooks    = reader.getPlayerPieces("rook", i);
+            int[][] bishops  = reader.getPlayerPieces("bishop", i);
 
             players[i-1] = new Player(name, color);
-            for (int[] p : pawns) { players[i-1].give(new Pawn(color, p[0], p[1], direction)); }
+            for (int[] p : pawns  ) { players[i-1].give(new   Pawn(color, p[0], p[1], direction)); }
+            for (int[] p : rooks  ) { players[i-1].give(new   Rook(color, p[0], p[1])); }
+            for (int[] p : bishops) { players[i-1].give(new Bishop(color, p[0], p[1])); }
+
         }
 
         
