@@ -90,23 +90,22 @@ public class App {
     public static GamePiece selectPiece(Player player, Board board, Scanner user)
     {
         GamePiece piece = null;
-        
+        String systemResponse = Color.RED;
         System.out.print(player.getColor() + "[" + player.getName() + "] " + Color.RESET);
         System.out.print("Choose a piece to move (x,y): ");
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
-        if (point == null) { return selectPiece(player, board, user); } // edge case for gibberish input
-
-        int col = point[0];
-        int row = point[1];
-        String systemResponse;
-
-        switch (board.checkSpace(col, row, player.getColor()))
+        
+        // Error checking
+        int returnCode = piece != null ? board.checkSpace(point[0], point[1], player.getColor()) : -2;
+        switch (returnCode)
         {
-            case -1: systemResponse = Color.RED + "Out of bounds! Please try again."; break;
-            case 0:  systemResponse = Color.RED + "Space is empty. Please try again."; break;
-            case 2:  systemResponse = Color.RED + "Cannot move enemy piece. Please try again."; break;
-            default:
-                piece = player.getPiece(col, row);
+            default: systemResponse += "Something went wrong."; break;
+            case -2: systemResponse += "Invalid input. Pleas try again."; break;
+            case -1: systemResponse += "Out of bounds! Please try again."; break;
+            case 0:  systemResponse += "Space is empty. Please try again."; break;
+            case 2:  systemResponse += "Cannot move enemy piece. Please try again."; break;
+            case 1:
+                piece = player.getPiece(point[0], point[1]);
                 systemResponse = Color.PURPLE + "You have chosen " + piece.toFormattedPositon();
                 break;
         }
