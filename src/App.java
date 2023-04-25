@@ -49,8 +49,10 @@ public class App {
             board.printBoard();
 
             // passing through a Scanner object is fucking stupid but my hands are tied
-            GamePiece piece = selectPiece(player, board, user);   
+            GamePiece piece = selectPiece(player, board, user);
             int[] move = selectMove(piece, board, user);
+            if (move == null) { System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); continue; }
+
             GamePiece space = board.getSpace(move[0], move[1]);
             if (space != null) { players[Player.indexOf(space.getColor(), players)].remove(space); } // remove piece from enemy hand if attacking
 
@@ -89,18 +91,19 @@ public class App {
     // Ask user for the piece they'd like to move and return that piece
     public static GamePiece selectPiece(Player player, Board board, Scanner user)
     {
-        GamePiece piece = null;
-        String systemResponse = Color.RED;
         System.out.print(player.getColor() + "[" + player.getName() + "] " + Color.RESET);
         System.out.print("Choose a piece to move (x,y): ");
+
+        GamePiece piece = null;
+        String systemResponse = Color.RED;
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
         
         // Error checking
-        int returnCode = piece != null ? board.checkSpace(point[0], point[1], player.getColor()) : -2;
+        int returnCode = point != null ? board.checkSpace(point[0], point[1], player.getColor()) : -2;
         switch (returnCode)
         {
             default: systemResponse += "Something went wrong."; break;
-            case -2: systemResponse += "Invalid input. Pleas try again."; break;
+            case -2: systemResponse += "Invalid input. Please try again."; break;
             case -1: systemResponse += "Out of bounds! Please try again."; break;
             case 0:  systemResponse += "Space is empty. Please try again."; break;
             case 2:  systemResponse += "Cannot move enemy piece. Please try again."; break;
@@ -126,10 +129,14 @@ public class App {
     // Ask user for the move they want to make and return
     public static int[] selectMove(GamePiece piece, Board board, Scanner user)
     {
+        System.out.print("Choose a space to move to (x,y): ");
+
         int[] move = null;
         String systemResponse = Color.RED;
-        System.out.print("Choose a space to move to (x,y): ");
-        int[] point = ArrayUtils.extractPointFromString(user.nextLine());
+        String userInput = user.nextLine().toLowerCase();
+        int[] point = ArrayUtils.extractPointFromString(userInput);
+
+        if (userInput.equals("back") || userInput.equals("undo")) { return null; }
 
         // Error checking
         if (point == null)

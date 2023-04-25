@@ -3,13 +3,11 @@ import game.Board;
 
 public class Pawn extends GamePiece
 {
-    private boolean firstMoveMade;
     private final String DIR;
 
     public Pawn(String color, int col, int row, String direction)
     {
         super("\u265F", color, col, row);
-        this.firstMoveMade = false;
         this.DIR = direction;
 
         if (!(DIR.equals("up") || DIR.equals("down") || DIR.equals("left") || DIR.equals("right")))
@@ -41,7 +39,12 @@ public class Pawn extends GamePiece
         baseMovements[2][anti] += 1;
         baseMovements[3][axis] += 1*dir;
         baseMovements[3][anti] -= 1;
-        if (firstMoveMade) { baseMovements[1] = null; } // edge case
+
+        // edge case
+        if (super.getMoveCount() != 0 || board.checkSpace(baseMovements[0][0], baseMovements[0][1], super.getColor()) != 0)
+        { 
+            baseMovements[1] = null;
+        }
 
         // Check conditions and continue until match reaced or list exhausted
         for (int[] move : baseMovements)

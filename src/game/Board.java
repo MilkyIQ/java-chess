@@ -79,6 +79,7 @@ public class Board
         board[y][x] = piece;
         board[piece.getRow()][piece.getCol()] = null;
         piece.setPos(x, y);
+        piece.updateMoveCount();
     }
 
     // Place given piece at its already specified position, replacing any object previously there

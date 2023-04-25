@@ -7,6 +7,7 @@ public class GamePiece
     private final String COLOR;
     private int col;
     private int row;
+    private int moveCount;
     
     public GamePiece(String name, String color, int col, int row)
     {
@@ -14,6 +15,7 @@ public class GamePiece
         this.COLOR = color;
         this.col = col;
         this.row = row;
+        this.moveCount = 0;
     }
 
     public String getName()
@@ -36,10 +38,20 @@ public class GamePiece
         return col;
     }
 
+    public int getMoveCount()
+    {
+        return moveCount;
+    }
+
     public void setPos(int x, int y)
     {
         col = x;
         row = y;
+    }
+
+    public void updateMoveCount()
+    {
+        moveCount++;
     }
 
     // Return an arary of all points on grid that the gamepiece can move
