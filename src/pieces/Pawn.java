@@ -1,6 +1,4 @@
 package pieces;
-import java.util.ArrayList;
-import tools.ArrayUtils;
 import game.Board;
 
 public class Pawn extends GamePiece
