@@ -97,7 +97,7 @@ public class Pawn extends GamePiece
         {
             if (move == null) { continue; }
 
-            int spaceStatus = board.checkSpace(pos[0], pos[1], super.getColor());
+            int spaceStatus = board.checkSpace(move[0], move[1], super.getColor());
             boolean validAttack = (move[0] != pos[0]) && (spaceStatus == 2);
             boolean validForward = (move[axis] == pos[axis] && move[anti] == pos[anti]) && (spaceStatus == 0);
 

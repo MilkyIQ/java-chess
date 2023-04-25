@@ -50,7 +50,7 @@ public class App {
 
             // passing through a Scanner object is fucking stupid but my hands are tied
             GamePiece piece = selectPiece(player, board, user);   
-            int[] move = selectMove(piece, piece.getAllValidMoves(board), board, user);
+            int[] move = selectMove(piece, board, user);
             GamePiece space = board.getSpace(move[0], move[1]);
             if (space != null) { players[Player.indexOf(space.getColor(), players)].remove(space); } // remove piece from enemy hand if attacking
 
@@ -125,33 +125,37 @@ public class App {
 
 
     // Ask user for the move they want to make and return
-    public static int[] selectMove(GamePiece piece, int[][] validMoves, Board board, Scanner user)
+    public static int[] selectMove(GamePiece piece, Board board, Scanner user)
     {
         int[] move = null;
+        String systemResponse = Color.RED + "Something went wrong.";
         System.out.print("Choose a space to move to (x,y): ");
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
-        
-        // edge case for bad input and invalid movements
-        if (point == null || ArrayUtils.simpleIndexOfPointInArray(point, validMoves) < 0)
+
+        // edge case for bad input (error message printed in extract function)
+        if (point == null)
         {
-            return selectMove(piece, validMoves, board, user);
+            systemResponse = ""; //placeholder
+        }
+        else if (piece.checkMove(point[0], point[1], board))
+        {
+            move = point;
+            systemResponse = Color.PURPLE + "Moving " + piece.toFormattedPositon() + " to " + "(" + point[0] + "," + point[1] + ")\n";
+        }
+        else
+        {
+            systemResponse = Color.RED;
+            switch (board.checkSpace(point[0], point[1], piece.getColor()))
+            {
+                case -1: systemResponse += "Out of bounds! Please try again."; break;
+                case 0:  systemResponse += "Invalid move. Please try again."; break;
+                case 1:  systemResponse += "Cannot attack your own piece. Please try again."; break;
+                case 2:  systemResponse += "Invalid attack. Please try again."; break;
+            }
         }
         
-        // Error checking
-        switch (board.checkSpace(point[0], point[1], piece.getColor()))
-        {
-            case -1: System.out.print(Color.RED + "Out of bounds! Please try again."); break;
-            case 1:  System.out.print(Color.RED + "Cannot attack your own piece. Please try again."); break;
-            default:
-                move = point;
-                System.out.print(Color.PURPLE + "Moving " + piece.toFormattedPositon() + " to ");
-                System.out.print("(" + point[0] + "," + point[1] + ")");
-                System.out.println("\n");
-                break;
-        }
-        
-        System.out.print(Color.RESET);
-        return move == null ? selectMove(piece, validMoves, board, user) : move;
+        System.out.println(systemResponse + Color.RESET);
+        return move == null ? selectMove(piece, board, user) : move;
     }
 }
 
