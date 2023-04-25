@@ -53,7 +53,7 @@ public class ArrayUtils
         }
         catch (NumberFormatException|StringIndexOutOfBoundsException e)
         {
-            System.out.println(Color.RED + "`" + input  + "`" + " is not a valid space, please format your spaces in coordinate-point format (x,y)" + Color.RESET);
+            System.out.println(Color.RED + "`" + input  + "`" + " is not a coordinate (x,y)" + Color.RESET);
             output = null;
         }
         return output;
