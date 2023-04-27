@@ -36,10 +36,8 @@ public class App {
             for (int[] p : pawns  ) { players[i-1].give(new   Pawn(color, p[0], p[1], direction)); }
             for (int[] p : rooks  ) { players[i-1].give(new   Rook(color, p[0], p[1])); }
             for (int[] p : bishops) { players[i-1].give(new Bishop(color, p[0], p[1])); }
-
         }
 
-        
         // Create and populate board
         Board board = new Board(length, height);
         board.populateBoard(players);
@@ -68,21 +66,6 @@ public class App {
         }
 
         user.close();
-
-        /* ------------------------------------------------------------------------------------ */
-
-        // Board board = new Board(8,8);
-        // GamePiece rat = new Rook(Color.GREEN_BOLD, 4, 4);
-        // GamePiece enemy = new Pawn(Color.RED_BOLD, 3, 3, "up");
-        // board.place(rat);
-        // board.place(enemy);
-        // board.setColors(Color.BLACK_BACKGROUND, Color.WHITE_BACKGROUND, Color.BLACK);
-        
-        // board.printBoard();
-        // int[] move = {4,5};
-        // boolean test = rat.checkMove(move[0], move[1], board);
-        // System.out.println(test);
-
     }
 
 
