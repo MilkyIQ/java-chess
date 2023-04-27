@@ -17,7 +17,7 @@ public class Rook extends GamePiece
 
         if ( !(delta[0] == 0 || delta[1] == 0) ) { return false; }
 
-        int axis = (delta[0] > delta[1]) ? 0 : 1;
+        int axis = (Math.abs(delta[0]) > Math.abs(delta[1])) ? 0 : 1;
         int dir = Math.abs(delta[axis]) / delta[axis];
 
         piecePt[axis] += dir;
