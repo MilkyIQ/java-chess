@@ -19,20 +19,6 @@ public class ArrayUtils
         return point;
     }
 
-    // TODO: this needs an error message
-    public static int simpleIndexOfPointInArray(int[] point, int[][] array)
-    {
-        int i = 0;
-        while (i < array.length)
-        {
-            if (point[0] == array[i][0] && point[1] == array[i][1]) { return i; }
-            else { i++; }
-        }
-        System.out.println(Color.RED + point + " is not a valid move." + Color.RESET);
-        return -1;
-    }
-
-
     public static int[] extractPointFromString(String input)
     {
         int[] output = new int[2];
