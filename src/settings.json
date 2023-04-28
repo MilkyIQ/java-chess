@@ -2,8 +2,8 @@
     {
         "boardLength": 8,
         "boardHeight": 8,
-        "evenSpacesColor": "white_background",
-        "oddSpacesColor": "black_background",
+        "evenSpacesColor": "black_background",
+        "oddSpacesColor": "blank",
         "notationColor": "black_bold",
     
         "castling": true
@@ -11,7 +11,7 @@
 
     {
         "name": "player1",
-        "color": "purple_bold",
+        "color": "white",
         "pawnDirection": "up",
         "pawn":   [ [0,1], [1,1], [2,1], [3,1], [4,1], [5,1], [6,1], [7,1] ],
         "rook":   [ [0,0], [7,0] ],
@@ -23,7 +23,7 @@
 
     {
         "name": "player2",
-        "color": "black_bold",
+        "color": "black",
         "pawnDirection": "down",
         "pawn":   [ [0,6], [1,6], [2,6], [3,6], [4,6], [5,6], [6,6], [7,6] ],
         "rook":   [ [0,7], [7,7] ],
