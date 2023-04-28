@@ -135,6 +135,8 @@ public class Color {
             case "PURPLE_BACKGROUND_BRIGHT": return PURPLE_BACKGROUND_BRIGHT; 
             case "CYAN_BACKGROUND_BRIGHT": return CYAN_BACKGROUND_BRIGHT; 
             case "WHITE_BACKGROUND_BRIGHT": return WHITE_BACKGROUND_BRIGHT;
+            case "RESET": return RESET;
+            case "BLANK": return "";
             default: return null;
         }
     }
