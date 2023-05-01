@@ -12,7 +12,7 @@ public class App
         /* ------------------------------------------------------------------------------------ */
 
         // Initialize game variables
-        SettingsReader reader = new SettingsReader("src/settings.json");
+        SettingsReader reader = new SettingsReader("src/game/settings/settings.json");
         Scanner user          = new Scanner(System.in);
         Player[] players      = new Player[reader.getNumPlayers()];
 
