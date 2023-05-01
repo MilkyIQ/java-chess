@@ -1,5 +1,5 @@
 package pieces;
-import game.*;
+import game.Board;
 
 public class Queen extends GamePiece
 {
