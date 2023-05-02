@@ -5,7 +5,6 @@
         "evenSpacesColor": "black_background",
         "oddSpacesColor": "blank",
         "notationColor": "black_bold",
-    
         "castling": true
     },
 
