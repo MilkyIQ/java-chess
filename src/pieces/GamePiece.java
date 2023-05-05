@@ -61,7 +61,7 @@ public class GamePiece
 
     public String toFormattedPositon()
     {
-        return NAME + "(" + (col+1) + "," + (row+1) + ")";
+        return NAME + "(" + (col) + "," + (row) + ")";
     }
 
     // Print corresponding symbol of gamepiece

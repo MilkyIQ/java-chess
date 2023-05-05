@@ -106,14 +106,14 @@ public class Board
         System.out.print("  ");
         for (int col = 0; col < LENGTH; col++)
         {
-            System.out.print(colors[2] + " " + (col+1) + " " + Color.RESET);
+            System.out.print(colors[2] + " " + (col) + " " + Color.RESET);
         }
         
         // row in board
         for (int row = HEIGHT-1; row >= 0; row--)
         {
             System.out.println();
-            System.out.print(colors[2] + (row+1) + " " + Color.RESET); // row number (left)
+            System.out.print(colors[2] + (row) + " " + Color.RESET); // row number (left)
             
             // column in row
             for (int col = 0; col < LENGTH; col++)
@@ -126,14 +126,14 @@ public class Board
                 System.out.print(fgColor + bgColor + " " + output + " " + Color.RESET);
             }
 
-            System.out.print(" " + colors[2] + (row+1) + " " + Color.RESET); // row number (right)
+            System.out.print(" " + colors[2] + (row) + " " + Color.RESET); // row number (right)
         }
 
         // column numbers (bottom)
         System.out.print("\n  ");
         for (int col = 0; col < LENGTH; col++)
         {
-            System.out.print(colors[2] + " " + (col+1) + " " + Color.RESET);
+            System.out.print(colors[2] + " " + (col) + " " + Color.RESET);
         }
         System.out.println();
     }

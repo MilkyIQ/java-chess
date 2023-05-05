@@ -34,8 +34,8 @@ public class ArrayUtils
     
             int x = Integer.parseInt(xString);
             int y = Integer.parseInt(yString);
-            output[0] = x-1;
-            output[1] = y-1;
+            output[0] = x;
+            output[1] = y;
         }
         catch (NumberFormatException|StringIndexOutOfBoundsException e)
         {
