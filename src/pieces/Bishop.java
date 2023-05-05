@@ -11,12 +11,15 @@ public class Bishop extends GamePiece
     @Override
     public boolean checkMove(int x, int y, Board board)
     {
+        String color = super.getColor();
         int pieceX = super.getCol();
         int pieceY = super.getRow();
         int deltaX = x - pieceX;
         int deltaY = y - pieceY;
 
-        if (Math.abs(deltaX) != Math.abs(deltaY)) { return false; }
+        boolean invalidMove = Math.abs(deltaX) != Math.abs(deltaY);
+        boolean spaceFriendly = board.checkSpace(x, y, color) == 1;
+        if (invalidMove || spaceFriendly) { return false; }
 
         int xDir = Math.abs(deltaX) / deltaX;
         int yDir = Math.abs(deltaY) / deltaY;
