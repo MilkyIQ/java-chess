@@ -11,15 +11,16 @@ public class Rook extends GamePiece
     @Override
     public boolean checkMove(int x, int y, Board board)
     {
-        String color = super.getColor();
+        String color =super.getColor();
         int[] piecePt = {super.getCol(), super.getRow()};
         int[] movePt = {x, y};
         int[] delta = {movePt[0] - piecePt[0], movePt[1] - piecePt[1]};
 
         boolean invalidMove = !(delta[0] == 0 || delta[1] == 0);
-        boolean spaceFriendly = board.checkSpace(movePt[0], movePt[1], color) == 1;
+        boolean spaceFriendly = board.checkSpace(x, y, color) == 1;
         if (invalidMove || spaceFriendly) { return false; }
 
+        // Determine which side of coordinate [x,y] to incremement, and in what direction
         int axis = (Math.abs(delta[0]) > Math.abs(delta[1])) ? 0 : 1;
         int dir = Math.abs(delta[axis]) / delta[axis];
 
