@@ -54,12 +54,6 @@ public class GamePiece
         moveCount++;
     }
 
-    // Return an arary of all points on grid that the gamepiece can move
-    public int[][] getAllValidMoves(Board board)
-    {
-        return null;
-    }
-
     public boolean checkMove(int x, int y, Board board)
     {
         return false;
@@ -68,11 +62,6 @@ public class GamePiece
     public String toFormattedPositon()
     {
         return NAME + "(" + (col+1) + "," + (row+1) + ")";
-    }
-
-    public boolean equals(GamePiece piece)
-    {
-        return (piece.getCol() == col) && (piece.getRow() == row);
     }
 
     // Print corresponding symbol of gamepiece
