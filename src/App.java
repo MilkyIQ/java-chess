@@ -159,12 +159,3 @@ public class App
         return move == null ? selectMove(piece, board, user) : move;
     }
 }
-
-/*
- * TODO:
- * [ ] "Undo" case for user input
- * [ ] "Draw" case for user input
- * [ ] Insertion sort
- * [ ] Binary search
- * [ ] What happens if pawn is placed outside of possible area?
- */
