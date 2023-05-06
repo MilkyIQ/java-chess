@@ -1,0 +1,59 @@
+[
+    {
+        "boardLength": 14,
+        "boardHeight": 14,
+        "evenSpacesColor": "black_background",
+        "oddSpacesColor": "blank",
+        "notationColor": "black_bold",
+        "castling": true
+    },
+
+    {
+        "name": "player1",
+        "color": "red",
+        "pawnDirection": "up",
+        "pawn":   [ [3,1], [4,1], [5,1], [6,1], [7,1], [8,1], [9,1], [10,1] ],
+        "rook":   [ [3,0], [10,0] ],
+        "knight": [ [4,0], [9,0] ],
+        "bishop": [ [5,0], [8,0] ],
+        "queen":  [ [6,0] ],
+        "king":   [ [7,0] ]
+    }, 
+
+    {
+        "name": "player2",
+        "color": "yellow",
+        "pawnDirection": "down",
+        "pawn":   [ [3,12], [4,12], [5,12], [6,12], [7,12], [8,12], [9,12], [10,12] ],
+        "rook":   [ [3,13], [10,13] ],
+        "knight": [ [4,13], [9,13] ],
+        "bishop": [ [5,13], [8,13] ],
+        "queen":  [ [6,13] ],
+        "king":   [ [7,13] ]
+    },
+
+    {
+        "name": "player3",
+        "color": "green",
+        "pawnDirection": "left",
+        "pawn":   [ [12,3], [12,4], [12,5], [12,6], [12,7], [12,8], [12,9], [12,10] ],
+        "rook":   [ [13,3], [13,10] ],
+        "knight": [ [13,4], [13,9] ],
+        "bishop": [ [13,5], [13,8] ],
+        "queen":  [ [13,6] ],
+        "king":   [ [13,7] ]
+    },
+
+    {
+        "name": "player4",
+        "color": "blue",
+        "pawnDirection": "right",
+        "pawn":   [ [1,3], [1,4], [1,5], [1,6], [1,7], [1,8], [1,9], [1,10] ],
+        "rook":   [ [0,3], [0,10] ],
+        "knight": [ [0,4], [0,9] ],
+        "bishop": [ [0,5], [0,8] ],
+        "queen":  [ [0,6] ],
+        "king":   [ [0,7] ]
+    }
+
+]
