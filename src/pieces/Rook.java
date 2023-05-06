@@ -5,21 +5,21 @@ import tools.ArrayUtils;
 
 public class Rook extends GamePiece
 {
-    public Rook(String color, int col, int row)
+    public Rook(String COLOR, int col, int row)
     {
-        super("\u265C", color, col, row);
+        super("\u265C", COLOR, col, row);
     }
 
     @Override
     public boolean checkMove(int x, int y, Board board)
     {
-        String color =super.getColor();
+        String COLOR =super.getColor();
         int[] piecePt = {super.getCol(), super.getRow()};
         int[] movePt = {x, y};
         int[] delta = {movePt[0] - piecePt[0], movePt[1] - piecePt[1]};
 
         boolean invalidMove = !(delta[0] == 0 || delta[1] == 0);
-        boolean spaceFriendly = board.checkSpace(x, y, color) == 1;
+        boolean spaceFriendly = board.checkSpace(x, y, COLOR) == 1;
         if (invalidMove || spaceFriendly) { return false; }
 
         // Determine which side of coordinate [x,y] to incremement, and in what direction
@@ -29,7 +29,7 @@ public class Rook extends GamePiece
         piecePt[axis] += dir;
         while (piecePt[axis] != movePt[axis])
         {
-            if (board.checkSpace(piecePt[0], piecePt[1], color) > 0)
+            if (board.checkSpace(piecePt[0], piecePt[1], COLOR) > 0)
             {
                 return false;
             }
@@ -48,43 +48,43 @@ public class Rook extends GamePiece
     public int[][] getAllValidMoves(Board board)
     {
         ArrayList<ArrayList<Integer>> moves = new ArrayList<ArrayList<Integer>>();
-        int pieceX = super.getCol();
-        int pieceY = super.getRow();
-        String color = super.getColor();
+        final int COL = super.getCol();
+        final int ROW = super.getRow();
+        final String COLOR = super.getColor();
 
-        // Check x axis left of piece
-        for (int x = pieceX-1; x >= 0; x--)
+        // LEFT
+        for (int x = COL-1; x >= 0; x--)
         {
-            int spaceStatus = board.checkSpace(x, pieceY, color);
+            int spaceStatus = board.checkSpace(x, ROW, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, pieceY));
+            moves.add(ArrayUtils.createPoint(x, ROW));
             if (spaceStatus == 2) { break; }
         }
 
-        // Check x axis right of piece
-        for (int x = pieceX+1; x < board.getLength(); x++)
+        // RIGHT
+        for (int x = COL+1; x < board.getLength(); x++)
         {
-            int spaceStatus = board.checkSpace(x, pieceY, color);
+            int spaceStatus = board.checkSpace(x, ROW, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, pieceY));
+            moves.add(ArrayUtils.createPoint(x, ROW));
             if (spaceStatus == 2) { break; }
         }
 
-        // Check y axis south of piece
-        for (int y = pieceY-1; y >= 0; y--)
+        // DOWN
+        for (int y = ROW-1; y >= 0; y--)
         {
-            int spaceStatus = board.checkSpace(pieceX, y, color);
+            int spaceStatus = board.checkSpace(COL, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(pieceX, y));
+            moves.add(ArrayUtils.createPoint(COL, y));
             if (spaceStatus == 2) { break; }
         }
 
-        // Check y axis north of piece
-        for (int y = pieceY+1; y < board.getHeight(); y++)
+        // UP
+        for (int y = ROW+1; y < board.getHeight(); y++)
         {
-            int spaceStatus = board.checkSpace(pieceX, y, color);
+            int spaceStatus = board.checkSpace(COL, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(pieceX, y));
+            moves.add(ArrayUtils.createPoint(COL, y));
             if (spaceStatus == 2) { break; }
         }
 
