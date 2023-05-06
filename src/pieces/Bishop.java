@@ -1,5 +1,7 @@
 package pieces;
 import game.Board;
+import java.util.ArrayList;
+import tools.ArrayUtils;
 
 public class Bishop extends GamePiece
 {
@@ -12,9 +14,9 @@ public class Bishop extends GamePiece
     public boolean checkMove(int x, int y, Board board)
     {
         String color = super.getColor();
-        int pieceX = super.getCol();
+        int COL = super.getCol();
         int pieceY = super.getRow();
-        int deltaX = x - pieceX;
+        int deltaX = x - COL;
         int deltaY = y - pieceY;
 
         boolean invalidMove = Math.abs(deltaX) != Math.abs(deltaY);
@@ -24,18 +26,84 @@ public class Bishop extends GamePiece
         int xDir = Math.abs(deltaX) / deltaX;
         int yDir = Math.abs(deltaY) / deltaY;
 
-        pieceX += xDir;
+        COL += xDir;
         pieceY += yDir;
-        while (pieceX != x && pieceY != y)
+        while (COL != x && pieceY != y)
         {
-            if (board.checkSpace(pieceX, pieceY, super.getColor()) > 0)
+            if (board.checkSpace(COL, pieceY, super.getColor()) > 0)
             {
                 return false;
             }
-            pieceX += xDir;
+            COL += xDir;
             pieceY += yDir;
         }
 
         return true;
+    }
+
+    public int[][] getAllValidMoves(Board board)
+    {
+        ArrayList<ArrayList<Integer>> moves = new ArrayList<ArrayList<Integer>>();
+        final String COLOR  = super.getColor();
+        final int    COL    = super.getCol();
+        final int    ROW    = super.getRow();
+        final int    LENGTH = board.getLength();
+        final int    HEIGHT = board.getHeight();
+        int x;
+        int y;
+        
+        // Check x axis left of piece
+        x = COL - 1;
+        y = ROW - 1;
+        while (x > 0 || y > 0)
+        {
+            int spaceStatus = board.checkSpace(x, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(ArrayUtils.createPoint(x, y));
+            if (spaceStatus == 2) { break; }
+            x--;
+            y--;
+        }
+
+        // Check x axis right of piece
+        x = COL + 1;
+        y = ROW + 1;
+        while (x < LENGTH || y < HEIGHT)
+        {
+            int spaceStatus = board.checkSpace(x, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(ArrayUtils.createPoint(x, y));
+            if (spaceStatus == 2) { break; }
+            x++;
+            y++;
+        }
+
+        // Check y axis south of piece
+        x = COL - 1;
+        y = ROW + 1;
+        while (x > 0 || y < HEIGHT)
+        {
+            int spaceStatus = board.checkSpace(x, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(ArrayUtils.createPoint(x, y));
+            if (spaceStatus == 2) { break; }
+            x--;
+            y++;
+        }
+
+        // Check y axis north of piece
+        x = COL + 1;
+        y = ROW - 1;
+        while (x < LENGTH || y > 0)
+        {
+            int spaceStatus = board.checkSpace(x, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(ArrayUtils.createPoint(x, y));
+            if (spaceStatus == 2) { break; }
+            x++;
+            y--;
+        }
+
+        return ArrayUtils.convert2DArrayList(moves);
     }
 }
