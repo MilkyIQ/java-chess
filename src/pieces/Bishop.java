@@ -44,15 +44,15 @@ public class Bishop extends GamePiece
     public int[][] getAllValidMoves(Board board)
     {
         ArrayList<ArrayList<Integer>> moves = new ArrayList<ArrayList<Integer>>();
-        final String COLOR  = super.getColor();
-        final int    COL    = super.getCol();
-        final int    ROW    = super.getRow();
-        final int    LENGTH = board.getLength();
-        final int    HEIGHT = board.getHeight();
+        final String COLOR = super.getColor();
+        final int COL = super.getCol();
+        final int ROW = super.getRow();
+        final int LENGTH = board.getLength();
+        final int HEIGHT = board.getHeight();
         int x;
         int y;
         
-        // Check x axis left of piece
+        // LEFT-DOWN
         x = COL - 1;
         y = ROW - 1;
         while (x > 0 || y > 0)
@@ -65,7 +65,7 @@ public class Bishop extends GamePiece
             y--;
         }
 
-        // Check x axis right of piece
+        // RIGHT-UP
         x = COL + 1;
         y = ROW + 1;
         while (x < LENGTH || y < HEIGHT)
@@ -78,7 +78,7 @@ public class Bishop extends GamePiece
             y++;
         }
 
-        // Check y axis south of piece
+        // LEFT-UP
         x = COL - 1;
         y = ROW + 1;
         while (x > 0 || y < HEIGHT)
@@ -91,7 +91,7 @@ public class Bishop extends GamePiece
             y++;
         }
 
-        // Check y axis north of piece
+        // RIGHT-DOWN
         x = COL + 1;
         y = ROW - 1;
         while (x < LENGTH || y > 0)
