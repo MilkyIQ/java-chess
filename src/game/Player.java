@@ -29,15 +29,6 @@ public class Player {
         return hand;
     }
 
-    public GamePiece getPiece(int x, int y)
-    {
-        for (GamePiece piece : hand)
-        {
-            if ((piece.getCol() == x) && (piece.getRow() == y)) { return piece; }
-        }
-        return null;
-    }
-
     public void give(GamePiece piece)
     {
         hand.add(piece);

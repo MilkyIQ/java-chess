@@ -103,7 +103,7 @@ public class App
             case 0:  systemResponse += "Space is empty. Please try again."; break;
             case 2:  systemResponse += "Cannot move enemy piece. Please try again."; break;
             case 1:
-                piece = player.getPiece(point[0], point[1]);
+                piece = board.getSpace(point[0], point[1]);
                 systemResponse = Color.PURPLE + "You have chosen " + piece.toFormattedPositon();
                 break;
         }
