@@ -7,7 +7,7 @@ public class Bishop extends GamePiece
 {
     public Bishop(String color, int col, int row)
     {
-        super("\u265D", color, col, row);
+        super("Bishop", "\u265D", color, col, row);
     }
 
     @Override

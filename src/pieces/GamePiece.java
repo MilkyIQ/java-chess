@@ -3,24 +3,31 @@ import game.Board;
 
 public class GamePiece
 {
-    private final String NAME;
+    private final String TITLE;
+    private final String SYMBOL;
     private final String COLOR;
     private int col;
     private int row;
     private int moveCount;
     
-    public GamePiece(String name, String color, int col, int row)
+    public GamePiece(String title, String symbol, String color, int col, int row)
     {
-        this.NAME = name;
+        this.TITLE = title;
+        this.SYMBOL = symbol;
         this.COLOR = color;
         this.col = col;
         this.row = row;
         this.moveCount = 0;
     }
 
-    public String getName()
+    public String getTitle()
     {
-        return NAME;
+        return TITLE;
+    }
+
+    public String getSymbol()
+    {
+        return SYMBOL;
     }
 
     public String getColor()
@@ -61,12 +68,12 @@ public class GamePiece
 
     public String toFormattedPositon()
     {
-        return NAME + "(" + (col) + "," + (row) + ")";
+        return SYMBOL + "(" + (col) + "," + (row) + ")";
     }
 
     // Print corresponding symbol of gamepiece
     public String toString()
     {
-        return NAME.substring(0,1);
+        return SYMBOL.substring(0,1);
     }
 }
