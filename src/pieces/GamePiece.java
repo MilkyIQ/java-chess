@@ -1,5 +1,6 @@
 package pieces;
 import game.Board;
+import game.Color;
 
 public class GamePiece
 {
@@ -18,6 +19,16 @@ public class GamePiece
         this.col = col;
         this.row = row;
         this.moveCount = 0;
+    }
+
+    // For use with ghost board point placement only
+    public GamePiece(String symbol, int col, int row)
+    {
+        this.SYMBOL = symbol;
+        this.col = col;
+        this.row = row;
+        this.TITLE = "GenericGamePiece";
+        this.COLOR = Color.PURPLE_UNDERLINED;
     }
 
     public String getTitle()
