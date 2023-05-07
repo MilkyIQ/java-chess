@@ -5,6 +5,9 @@ import java.util.Scanner;
 
 public class App
 {
+    public static Scanner user = new Scanner(System.in);
+    public static Board board;
+
     public static void main(String[] args) throws Exception
     {
         System.out.println("\n");
@@ -13,7 +16,6 @@ public class App
 
         // Initialize game variables
         SettingsReader reader = new SettingsReader("src/game/settings/settings.json");
-        Scanner user          = new Scanner(System.in);
         Player[] players      = new Player[reader.getNumPlayers()];
 
         // Initialize board variables
@@ -46,7 +48,7 @@ public class App
         }
 
         // Create and populate board
-        Board board = new Board(length, height);
+        board = new Board(length, height);
         board.populateBoard(players);
         board.setColors(evensColor, oddsColor, notationColor);
 
@@ -59,8 +61,8 @@ public class App
             board.printBoard();
 
             // passing through a Scanner object is fucking stupid but my hands are tied
-            GamePiece piece = selectPiece(player, board, user);
-            int[] move = selectMove(piece, board, user);
+            GamePiece piece = selectPiece(player);
+            int[] move = selectMove(piece);
             if (move == null) { System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); continue; }
 
             GamePiece space = board.getSpace(move[0], move[1]);
@@ -84,7 +86,7 @@ public class App
 
 
     // Ask user for the piece they'd like to move and return that piece
-    public static GamePiece selectPiece(Player player, Board board, Scanner user)
+    public static GamePiece selectPiece(Player player)
     {
         System.out.print(player.getColor() + "[" + player.getName() + "] " + Color.RESET);
         System.out.print("Choose a piece to move (x,y): ");
@@ -109,7 +111,7 @@ public class App
         }
 
         System.out.println(systemResponse + Color.RESET);
-        return piece == null ? selectPiece(player, board, user) : piece;
+        return piece == null ? selectPiece(player) : piece;
     }
 
     
@@ -122,7 +124,7 @@ public class App
 
 
     // Ask user for the move they want to make and return
-    public static int[] selectMove(GamePiece piece, Board board, Scanner user)
+    public static int[] selectMove(GamePiece piece)
     {
         System.out.print("Choose a space to move to (x,y): ");
 
@@ -156,6 +158,6 @@ public class App
         }
         
         System.out.println(systemResponse + Color.RESET);
-        return move == null ? selectMove(piece, board, user) : move;
+        return move == null ? selectMove(piece) : move;
     }
 }
