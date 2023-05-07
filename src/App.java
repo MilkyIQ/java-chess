@@ -60,14 +60,12 @@ public class App
             Player player = players[i];
             board.printBoard();
 
-            // passing through a Scanner object is fucking stupid but my hands are tied
             GamePiece piece = selectPiece(player);
             int[] move = selectMove(piece);
-            if (move == null) { System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); continue; }
+            if (move == null) { System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); continue; } // undo case
 
             GamePiece space = board.getSpace(move[0], move[1]);
             if (space != null) { players[Player.indexOf(space.getColor(), players)].remove(space); } // remove piece from enemy hand if attacking
-
             board.move(piece, move[0], move[1]);
             
             i = i < players.length-1 ? i+1 : 0;
