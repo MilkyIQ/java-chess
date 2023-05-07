@@ -19,17 +19,18 @@ public class Pawn extends GamePiece
     @Override
     public boolean checkMove(int x, int y, Board board)
     {
-        int[] pos = {super.getCol(), super.getRow()};
+        final String COLOR = super.getColor();
+        final int[] POS = {super.getCol(), super.getRow()};
 
         // Initialize all possible pawn movements
         int[][] baseMoves = new int[4][2];
         for (int i = 0; i < baseMoves.length; i++)
         {
-            baseMoves[i][0] = pos[0];
-            baseMoves[i][1] = pos[1];
+            baseMoves[i][0] = POS[0];
+            baseMoves[i][1] = POS[1];
         }
 
-        // Adjust values accorsding to direction
+        // Adjust values according to direction
         int axis = DIR.equals("up") || DIR.equals("down")  ? 1 : 0;
         int dir = DIR.equals("up") || DIR.equals("right") ? 1 : -1;
         int anti = Math.abs(axis-1);
@@ -40,8 +41,8 @@ public class Pawn extends GamePiece
         baseMoves[3][axis] += 1*dir;
         baseMoves[3][anti] -= 1;
 
-        // edge case
-        if (super.getMoveCount() != 0 || board.checkSpace(baseMoves[0][0], baseMoves[0][1], super.getColor()) != 0)
+        // Edge case for starting skip 2
+        if (super.getMoveCount() != 0 || board.checkSpace(baseMoves[0][0], baseMoves[0][1], COLOR) != 0)
         { 
             baseMoves[1] = null;
         }
@@ -51,9 +52,9 @@ public class Pawn extends GamePiece
         {
             if (move == null) { continue; }
 
-            int spaceStatus = board.checkSpace(move[0], move[1], super.getColor());
-            boolean validAttack = (move[0] != pos[0]) && (spaceStatus == 2);
-            boolean validForward = (move[axis] != pos[axis] && move[anti] == pos[anti]) && (spaceStatus == 0);
+            int spaceStatus = board.checkSpace(move[0], move[1], COLOR);
+            boolean validAttack = (move[0] != POS[0]) && (spaceStatus == 2);
+            boolean validForward = (move[axis] != POS[axis] && move[anti] == POS[anti]) && (spaceStatus == 0);
 
             if ( (validAttack || validForward) && (move[0] == x && move[1] == y) )
             {
