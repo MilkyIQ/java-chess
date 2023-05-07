@@ -1,22 +1,21 @@
-# CSA Final: Chess
+# CSA Final Project: Chess
+
+A weak attempt at learning Java and algorithms surrounding video games and 2D datasets.
 
 ## Dependencies
 
-- json.simple
+- json.simple (soon to be deprecated)
+
+## Installation
+
+Don't.
 
 ## TODO
 
-- [ ] GamePieces
-  - [x] Pawn
-  - [ ] Rook
-  - [ ] Bishop
-  - [ ] Knight
-  - [ ] King
-  - [ ] Queen
-- [ ] settings.json
-  - [x] Player creation
-  - [x] Add pieces to player hands
-  - [ ] Game settings (castling, board size, etc.)
-- [x] Output
-  - [x] Piece colors
-  - [x] Background colors
+- [ ] Check, Checkmate, Stalemate, Forfeit
+  - [x] getAllValidMoves()
+  - [ ] Ghost board
+  - [ ] gameState() 
+  - [ ] Implement into main game loop
+- [ ] Switch to GUI
+- [ ] Switch to GSON
