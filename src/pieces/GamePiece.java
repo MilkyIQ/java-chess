@@ -59,7 +59,7 @@ public class GamePiece
     {
         return null;
     }
-
+    // why is this here if you override it for every piece?
     public boolean checkMove(int x, int y, Board board)
     {
         return false;
@@ -74,7 +74,8 @@ public class GamePiece
     {
         return (piece.getCol() == col) && (piece.getRow() == row);
     }
-
+    // include @Override for complier and other people
+    @Override
     // Print corresponding symbol of gamepiece
     public String toString()
     {

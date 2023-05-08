@@ -5,8 +5,11 @@ import java.util.Scanner;
 
 public class App
 {
+    // Solution to scanner issues. One scanner and can be referenced in other classes by App.user
+    public static Scanner user = new Scanner(System.in);
     public static void main(String[] args) throws Exception
     {
+        
         System.out.println("\n");
 
         /* ------------------------------------------------------------------------------------ */

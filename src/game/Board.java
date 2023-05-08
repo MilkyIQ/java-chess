@@ -15,14 +15,15 @@ public class Board
         this.HEIGHT = Math.min(50, Math.abs(rows));
         this.board = new GamePiece[HEIGHT][LENGTH];
 
+        // this is redundant, the constructor already does this
         // Create empty board
-        for (int row = 0; row < HEIGHT; row++)
-        {
-            for (int col = 0; col < LENGTH; col++)
-            {
-                board[row][col] = null;
-            }
-        }
+        // for (int row = 0; row < HEIGHT; row++)
+        // {
+        //     for (int col = 0; col < LENGTH; col++)
+        //     {
+        //         board[row][col] = null;
+        //     }
+        // }
     }
 
     public int getLength()
@@ -75,6 +76,7 @@ public class Board
     // Move given piece from one space to another, update spaces and piece data
     public void move(GamePiece piece, int x, int y)
     {
+        // Are there any checks for valid moves?
         // This feels really janky because I have to update the position in two different objects... TOO BAD!
         board[y][x] = piece;
         board[piece.getRow()][piece.getCol()] = null;
