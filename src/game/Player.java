@@ -1,9 +1,10 @@
 package game;
 import java.util.ArrayList;
+import java.util.HashMap;
 import pieces.*;
 
 public class Player {
-    private ArrayList<GamePiece> hand;
+    private HashMap<String,ArrayList<GamePiece>> hand;
     private final String NAME;
     private final String COLOR;
 
@@ -11,7 +12,10 @@ public class Player {
     {
         this.NAME = name;
         this.COLOR = color;
-        this.hand = new ArrayList<GamePiece>();
+        this.hand = new HashMap<String,ArrayList<GamePiece>>();
+
+        String[] titles = {"King", "Queen", "Rook", "Bishop", "Knight", "Pawn"};
+        for (String t : titles) { hand.put(t, new ArrayList<GamePiece>()); };
     }
 
     public String getColor()
@@ -24,14 +28,19 @@ public class Player {
         return NAME;
     }
 
-    public ArrayList<GamePiece> getHand()
+    public HashMap<String,ArrayList<GamePiece>> getHand()
     {
         return hand;
     }
 
+    public ArrayList<GamePiece> getPieces(String title)
+    {
+        return hand.get(title);
+    }
+
     public void give(GamePiece piece)
     {
-        hand.add(piece);
+        hand.get(piece.getTitle()).add(piece);
     }
 
     public void remove(GamePiece piece)
