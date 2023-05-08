@@ -45,7 +45,7 @@ public class Player {
 
     public void remove(GamePiece piece)
     {
-        hand.remove(piece);
+        hand.get(piece.getTitle()).remove(piece);
     }
 
     // Loop through a list of players and return the index of the specified color,
