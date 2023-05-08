@@ -65,9 +65,11 @@ public class Board
     {
         for (Player player : players)
         {
-            for (GamePiece piece : player.getHand())
+            // Is there any possbile way to use a lambda function here?
+            for (String key : player.getHand().keySet())
             {
-                this.place(piece);
+                // Basically cheating but this TECHNICALLY is only 4 indents
+                for (GamePiece piece : player.getPieces(key)) { this.place(piece); }
             }
         }
     }
