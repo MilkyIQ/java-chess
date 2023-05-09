@@ -1,5 +1,6 @@
 package game;
 import pieces.*;
+import java.util.ArrayList;
 
 public class Board
 {
@@ -65,11 +66,9 @@ public class Board
     {
         for (Player player : players)
         {
-            // Is there any possbile way to use a lambda function here?
-            for (String key : player.getHand().keySet())
+            for (ArrayList<GamePiece> points : player.getHand().values())
             {
-                // Basically cheating but this TECHNICALLY is only 4 indents
-                for (GamePiece piece : player.getPieces(key)) { this.place(piece); }
+                for (GamePiece piece : points) { this.place(piece); } // this is technically only 4 indents so i count a win.
             }
         }
     }
