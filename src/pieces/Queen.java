@@ -5,7 +5,7 @@ public class Queen extends GamePiece
 {
     public Queen(String color, int col, int row)
     {
-        super("\u265B", color, col, row);
+        super("Queen", "\u265B", color, col, row);
     }
 
     @Override

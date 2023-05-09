@@ -6,14 +6,14 @@ import tools.ArrayUtils;
 public class Rook extends GamePiece
 {
     public Rook(String COLOR, int col, int row)
-    {
-        super("\u265C", COLOR, col, row);
+    { 
+        super("Rook", "\u265C", COLOR, col,row);
     }
 
     @Override
     public boolean checkMove(int x, int y, Board board)
     {
-        String COLOR =super.getColor();
+        final String COLOR = super.getColor();
         int[] piecePt = {super.getCol(), super.getRow()};
         int[] movePt = {x, y};
         int[] delta = {movePt[0] - piecePt[0], movePt[1] - piecePt[1]};

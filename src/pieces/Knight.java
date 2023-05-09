@@ -5,7 +5,7 @@ public class Knight extends GamePiece
 {
     public Knight(String color, int col, int row)
     {
-        super("\u265E", color, col, row);
+        super("Knight", "\u265E", color, col, row);
     }
 
     @Override

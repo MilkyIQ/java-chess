@@ -1,5 +1,6 @@
 package game;
 import pieces.*;
+import java.util.ArrayList;
 
 public class Board
 {
@@ -65,9 +66,9 @@ public class Board
     {
         for (Player player : players)
         {
-            for (GamePiece piece : player.getHand())
+            for (ArrayList<GamePiece> points : player.getHand().values())
             {
-                this.place(piece);
+                for (GamePiece piece : points) { this.place(piece); } // this is technically only 4 indents so i count a win.
             }
         }
     }

@@ -7,34 +7,34 @@ public class Bishop extends GamePiece
 {
     public Bishop(String color, int col, int row)
     {
-        super("\u265D", color, col, row);
+        super("Bishop", "\u265D", color, col, row);
     }
 
     @Override
     public boolean checkMove(int x, int y, Board board)
     {
-        String color = super.getColor();
-        int COL = super.getCol();
+        final String COLOR = super.getColor();
+        int pieceX = super.getCol();
         int pieceY = super.getRow();
-        int deltaX = x - COL;
+        int deltaX = x - pieceX;
         int deltaY = y - pieceY;
 
         boolean invalidMove = Math.abs(deltaX) != Math.abs(deltaY);
-        boolean spaceFriendly = board.checkSpace(x, y, color) == 1;
+        boolean spaceFriendly = board.checkSpace(x, y, COLOR) == 1;
         if (invalidMove || spaceFriendly) { return false; }
 
         int xDir = Math.abs(deltaX) / deltaX;
         int yDir = Math.abs(deltaY) / deltaY;
 
-        COL += xDir;
+        pieceX += xDir;
         pieceY += yDir;
-        while (COL != x && pieceY != y)
+        while (pieceX != x && pieceY != y)
         {
-            if (board.checkSpace(COL, pieceY, super.getColor()) > 0)
+            if (board.checkSpace(pieceX, pieceY, COLOR) > 0)
             {
                 return false;
             }
-            COL += xDir;
+            pieceX += xDir;
             pieceY += yDir;
         }
 
