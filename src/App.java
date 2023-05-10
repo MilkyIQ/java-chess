@@ -51,6 +51,7 @@ public class App
         board = new Board(length, height);
         board.populateBoard(players);
         board.setColors(evensColor, oddsColor, notationColor);
+        board.printBoard();
 
         // Primary game loop
         int i = 0;
@@ -58,16 +59,26 @@ public class App
         while (k < 10)
         {
             Player player = players[i];
-            board.printBoard();
 
             GamePiece piece = selectPiece(player);
-            int[] move = selectMove(piece);
+            int[] move      = selectMove(piece);
+            int[] from      = {piece.getCol(), piece.getRow()};
             if (move == null) { System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); continue; } // undo case
-
-            GamePiece space = board.getSpace(move[0], move[1]);
-            if (space != null) { players[Player.indexOf(space.getColor(), players)].remove(space); } // remove piece from enemy hand if attacking
-            board.move(piece, move[0], move[1]);
             
+            GamePiece space = board.getSpace(move[0], move[1]);
+            board.move(piece, move[0], move[1]);
+            Player.updatePlayerStates(players, board);
+
+            if (player.getState().equals("check"))
+            {
+                System.out.println(Color.RED+ "Illegal Move: Cannot leave King in check!" + Color.RESET);
+                board.undoMove(piece, from[0], from[1], space);
+                continue;
+            }
+            
+            if (space != null) { players[Player.indexOf(space.getColor(), players)].remove(space); } // remove piece from enemy hand if attacking
+            
+            board.printBoard();
             i = i < players.length-1 ? i+1 : 0;
             k++;
         }

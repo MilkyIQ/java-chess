@@ -73,4 +73,13 @@ public class Player {
         }
         return -1;
     }
+
+    public static void updatePlayerStates(Player[] players, Board board)
+    {
+        for (Player player : players)
+        {
+            // Make sure to console print that a player has been put into check here
+            player.setState("open");
+        }
+    }
 }
