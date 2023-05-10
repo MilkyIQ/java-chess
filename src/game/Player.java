@@ -7,12 +7,14 @@ public class Player {
     private HashMap<String,ArrayList<GamePiece>> hand;
     private final String NAME;
     private final String COLOR;
+    private String state;
 
     public Player(String name, String color)
     {
         this.NAME = name;
         this.COLOR = color;
         this.hand = new HashMap<String,ArrayList<GamePiece>>();
+        this.state = "open";
 
         String[] titles = {"King", "Queen", "Rook", "Bishop", "Knight", "Pawn"};
         for (String t : titles) { hand.put(t, new ArrayList<GamePiece>()); };
@@ -28,6 +30,11 @@ public class Player {
         return NAME;
     }
 
+    public String getState()
+    {
+        return state;
+    }
+
     public HashMap<String,ArrayList<GamePiece>> getHand()
     {
         return hand;
@@ -36,6 +43,11 @@ public class Player {
     public ArrayList<GamePiece> getPieces(String title)
     {
         return hand.get(title);
+    }
+
+    public void setState(String newState)
+    {
+        state = newState;
     }
 
     public void give(GamePiece piece)
