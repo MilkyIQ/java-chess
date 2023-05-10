@@ -76,11 +76,23 @@ public class Board
     // Move given piece from one space to another, update spaces and piece data
     public void move(GamePiece piece, int x, int y)
     {
-        // This feels really janky because I have to update the position in two different objects... TOO BAD!
         board[y][x] = piece;
         board[piece.getRow()][piece.getCol()] = null;
         piece.setPos(x, y);
         piece.updateMoveCount();
+    }
+
+    // Undo the last move (for use with player state checks)
+    public void undoMove(GamePiece movedPiece, int oldX, int oldY, GamePiece attackedSpace)
+    {
+        int attackedX = movedPiece.getCol();
+        int attackedY = movedPiece.getRow();
+        
+        board[oldX][oldY] = movedPiece;
+        board[attackedX][attackedY] = attackedSpace;
+        movedPiece.setPos(oldX, oldY);
+        // no need to update attackedSpace position because it's position doesnt change after attack
+
     }
 
     // Place given piece at its already specified position, replacing any object previously there
