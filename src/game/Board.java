@@ -79,7 +79,7 @@ public class Board
         board[y][x] = piece;
         board[piece.getRow()][piece.getCol()] = null;
         piece.setPos(x, y);
-        piece.updateMoveCount();
+        piece.incMoveCount();
     }
 
     // Undo the last move (for use with player state checks)
@@ -91,6 +91,7 @@ public class Board
         board[oldX][oldY] = movedPiece;
         board[attackedX][attackedY] = attackedSpace;
         movedPiece.setPos(oldX, oldY);
+        movedPiece.decMoveCount();
         // no need to update attackedSpace position because it's position doesnt change after attack
 
     }

@@ -67,9 +67,14 @@ public class GamePiece
         row = y;
     }
 
-    public void updateMoveCount()
+    public void incMoveCount()
     {
         moveCount++;
+    }
+
+    public void decMoveCount()
+    {
+        moveCount--;
     }
 
     public boolean checkMove(int x, int y, Board board)
