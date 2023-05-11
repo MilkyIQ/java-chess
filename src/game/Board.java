@@ -62,7 +62,7 @@ public class Board
         colors[2] = notation;
     }
 
-    public void populateBoard(Player[] players)
+    public void populateBoard(ArrayList<Player> players)
     {
         for (Player player : players)
         {

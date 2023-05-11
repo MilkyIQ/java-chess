@@ -60,13 +60,12 @@ public class Player {
         hand.get(piece.getTitle()).remove(piece);
     }
 
-    // Loop through a list of players and return the index of the specified color,
-    // not too sure about where to put this, but a static method here seemed fitting
-    public static int indexOf(String color, Player[] players)
+    // Loop through a list of players and return the index of the specified color
+    public static int indexOf(String color, ArrayList<Player> players)
     {
-        for (int i = 0; i < players.length; i++)
+        for (int i = 0; i < players.size(); i++)
         {
-            if (players[i].getColor().equals(color))
+            if (players.get(i).getColor().equals(color))
             {
                 return i;
             }
@@ -74,9 +73,24 @@ public class Player {
         return -1;
     }
 
-    public static void updatePlayerStates(Player[] players, Board board)
+    // Analyzes board and updates the current state (open, check, checkmate, stalemate) of every player in the game
+    public static void updatePlayerStates(ArrayList<Player> players, Board board)
     {
         // Dummy code
         for (Player player : players) { player.setState("open"); }
+    }
+
+    // Loop through all players' game states and removes those who are in checkmate or stalemate
+    public static void removeLosers(ArrayList<Player> players)
+    {
+        for (int i = 0; i < players.size(); i++)
+        {
+            String state = players.get(i).getState();
+            if (state.equals("checkmate") || state.equals("stalemate"))
+            {
+                players.remove(i);
+                i--;
+            }
+        }
     }
 }
