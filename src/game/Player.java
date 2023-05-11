@@ -1,7 +1,6 @@
 package game;
 import java.util.ArrayList;
 import java.util.HashMap;
-import tools.ArrayUtils;
 import pieces.*;
 
 public class Player {
@@ -77,48 +76,7 @@ public class Player {
 
     public static void updatePlayerStates(Player[] players, Board board)
     {
-        ArrayList<ArrayList<Integer>> moves = new ArrayList<ArrayList<Integer>>();
-        Board ghostBoard = new Board(board.getLength(), board.getHeight());
-        GamePiece king = players[0].getPieces("King").get(0);
-
-        ArrayList<GamePiece> rooks   = players[0].getPieces("Rook");
-        ArrayList<GamePiece> bishops = players[0].getPieces("Bishop");
-        ArrayList<GamePiece> queens  = players[0].getPieces("Queen");
-
-        // TODO: knight positions
-        
-        // TODO: pawn positions
-
-        for (int i = 0; i < rooks.size(); i++)
-        {
-            Rook rook = (Rook) rooks.get(i);
-            for (int[] point : rook.getAllValidMoves(board))
-            {
-                moves.add(ArrayUtils.createPoint(point[0], point[1]));
-            }
-        }
-
-        for (int i = 0; i < bishops.size(); i++)
-        {
-            Bishop bishop = (Bishop) bishops.get(i);
-            for (int[] point : bishop.getAllValidMoves(board))
-            {
-                moves.add(ArrayUtils.createPoint(point[0], point[1]));
-            }
-        }
-
-        for (int i = 0; i < queens.size(); i++)
-        {
-            Queen queen = (Queen) queens.get(i);
-            for (int[] point : queen.getAllValidMoves(board))
-            {
-                moves.add(ArrayUtils.createPoint(point[0], point[1]));
-            }
-        }
-
-        for (ArrayList<Integer> point : moves)
-        {
-            ghostBoard.place(new GamePiece("dummyPoint", point.get(0), point.get(1)));
-        }
+        // Dummy code
+        for (Player player : players) { player.setState("open"); }
     }
 }
