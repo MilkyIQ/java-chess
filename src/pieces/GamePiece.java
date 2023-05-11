@@ -82,6 +82,11 @@ public class GamePiece
         return false;
     }
 
+    public int[][] getAllValidMoves(Board board)
+    {
+        return null;
+    }
+
     public String toFormattedPositon()
     {
         return SYMBOL + "(" + (col) + "," + (row) + ")";
