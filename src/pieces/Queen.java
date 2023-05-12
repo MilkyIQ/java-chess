@@ -19,4 +19,19 @@ public class Queen extends GamePiece
 
         return ghostRook.checkMove(x, y, board) || ghostBishop.checkMove(x, y, board);
     }
+
+    @Override
+    public int[][] getAllValidMoves(Board board)
+    {
+        int i = 0;
+        int queenX = super.getCol();
+        int queenY = super.getRow();
+        String queenColor = super.getColor();
+        int[][] rookMoves   = new Rook(queenColor, queenX, queenY).getAllValidMoves(board);
+        int[][] bishopMoves = new Bishop(queenColor, queenX, queenY).getAllValidMoves(board);
+        int[][] allMoves    = new int[rookMoves.length + bishopMoves.length][2];
+        for (int[] move : rookMoves)   { allMoves[i] = move; i++; }
+        for (int[] move : bishopMoves) { allMoves[i] = move; i++; }
+        return allMoves;
+    }
 }

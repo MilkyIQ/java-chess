@@ -67,14 +67,24 @@ public class GamePiece
         row = y;
     }
 
-    public void updateMoveCount()
+    public void incMoveCount()
     {
         moveCount++;
+    }
+
+    public void decMoveCount()
+    {
+        moveCount--;
     }
 
     public boolean checkMove(int x, int y, Board board)
     {
         return false;
+    }
+
+    public int[][] getAllValidMoves(Board board)
+    {
+        return null;
     }
 
     public String toFormattedPositon()

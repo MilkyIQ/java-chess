@@ -7,12 +7,14 @@ public class Player {
     private HashMap<String,ArrayList<GamePiece>> hand;
     private final String NAME;
     private final String COLOR;
+    private String state;
 
     public Player(String name, String color)
     {
         this.NAME = name;
         this.COLOR = color;
         this.hand = new HashMap<String,ArrayList<GamePiece>>();
+        this.state = "open";
 
         String[] titles = {"King", "Queen", "Rook", "Bishop", "Knight", "Pawn"};
         for (String t : titles) { hand.put(t, new ArrayList<GamePiece>()); };
@@ -28,6 +30,11 @@ public class Player {
         return NAME;
     }
 
+    public String getState()
+    {
+        return state;
+    }
+
     public HashMap<String,ArrayList<GamePiece>> getHand()
     {
         return hand;
@@ -36,6 +43,11 @@ public class Player {
     public ArrayList<GamePiece> getPieces(String title)
     {
         return hand.get(title);
+    }
+
+    public void setState(String newState)
+    {
+        state = newState;
     }
 
     public void give(GamePiece piece)
@@ -48,17 +60,37 @@ public class Player {
         hand.get(piece.getTitle()).remove(piece);
     }
 
-    // Loop through a list of players and return the index of the specified color,
-    // not too sure about where to put this, but a static method here seemed fitting
-    public static int indexOf(String color, Player[] players)
+    // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
+    public void updateState(Board board)
     {
-        for (int i = 0; i < players.length; i++)
+        // Dummy code
+        this.setState("safe");
+    }
+
+    // Loop through a list of players and return the index of the specified color
+    public static int indexOf(String color, ArrayList<Player> players)
+    {
+        for (int i = 0; i < players.size(); i++)
         {
-            if (players[i].getColor().equals(color))
+            if (players.get(i).getColor().equals(color))
             {
                 return i;
             }
         }
         return -1;
+    }
+
+    // Loop through all players' game states and removes those who are in checkmate or stalemate
+    public static void removeLosers(ArrayList<Player> players)
+    {
+        for (int i = 0; i < players.size(); i++)
+        {
+            String state = players.get(i).getState();
+            if (state.equals("checkmate") || state.equals("stalemate"))
+            {
+                players.remove(i);
+                i--;
+            }
+        }
     }
 }

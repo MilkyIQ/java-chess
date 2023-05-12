@@ -45,6 +45,7 @@ public class Rook extends GamePiece
      * I REALLY didnt want this one to work, but it's ~12x faster than anything else I've attempted to come up with.
      * So for now, this is the best unoptimizied method.
      */
+    @Override
     public int[][] getAllValidMoves(Board board)
     {
         ArrayList<ArrayList<Integer>> moves = new ArrayList<ArrayList<Integer>>();

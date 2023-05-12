@@ -41,6 +41,7 @@ public class Bishop extends GamePiece
         return true;
     }
 
+    @Override
     public int[][] getAllValidMoves(Board board)
     {
         ArrayList<ArrayList<Integer>> moves = new ArrayList<ArrayList<Integer>>();
