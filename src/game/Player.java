@@ -60,6 +60,13 @@ public class Player {
         hand.get(piece.getTitle()).remove(piece);
     }
 
+    // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
+    public void updateState(Board board)
+    {
+        // Dummy code
+        this.setState("safe");
+    }
+
     // Loop through a list of players and return the index of the specified color
     public static int indexOf(String color, ArrayList<Player> players)
     {
@@ -71,13 +78,6 @@ public class Player {
             }
         }
         return -1;
-    }
-
-    // Analyzes board and updates the current state (open, check, checkmate, stalemate) of every player in the game
-    public static void updatePlayerStates(ArrayList<Player> players, Board board)
-    {
-        // Dummy code
-        for (Player player : players) { player.setState("open"); }
     }
 
     // Loop through all players' game states and removes those who are in checkmate or stalemate

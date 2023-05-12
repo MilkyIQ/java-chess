@@ -70,7 +70,7 @@ public class App
             // Update board and player states
             GamePiece space = board.getSpace(move[0], move[1]);
             board.move(piece, move[0], move[1]);
-            Player.updatePlayerStates(players, board);
+            for (Player p : players) { p.updateState(board); }
 
             // Check conditions
             if (player.getState().equals("check"))
