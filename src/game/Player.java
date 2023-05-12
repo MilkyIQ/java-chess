@@ -63,8 +63,28 @@ public class Player {
     // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
     public void updateState(Board board)
     {
+        /*
+         * STEPS:
+         * 1. [ ] Iterate through the gameboard and create a list of all moves that every enemy piece can make
+         * 2. [ ] Create a ghost board from the validMoves
+         * 3. [ ] Check king's position on ghost board
+         * 4. [ ] If king not touching any points, return safe, else, continue.
+         * 5. [ ] Iterate through friendly pieces
+         * * -> [ ] Create a list of all moves that the current piece can make
+         * * -> [ ] Iterate through those moves and check if each move keeps the king in check.
+         * * -> [ ] If a move leaves the king safe, break and return check, else continue until moves exhausted
+         * 6. If reach end of function (no moves leave king safe), return checkmate.
+         */
+        
+        
+
         // Dummy code
         this.setState("safe");
+    }
+
+    public boolean isInCheck()
+    {
+        return false;
     }
 
     // Loop through a list of players and return the index of the specified color
