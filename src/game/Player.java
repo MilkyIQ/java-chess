@@ -86,8 +86,9 @@ public class Player {
             // // // does move make king safe?
             // // // -> if YES: state = "check";
             // // set state "checkmate" if loop exhausted
+            state = "check";
         }
-        
+
         this.setState(state);
     }
 
@@ -104,7 +105,7 @@ public class Player {
             for (int row = 0; row < HEIGHT; row++)
             {
                 GamePiece space = board.getSpace(col, row);
-                if (space == null) { continue; }
+                if (space == null || space.getColor().equals(COLOR)) { continue; }
                 space.updateValidMoves(board, moves);
             }
         }
@@ -115,7 +116,7 @@ public class Player {
         ghostBoard.printBoard();
         
         // Place king on board and return status
-        GamePiece king = this.getPieces("King").get(0);
+        GamePiece king = hand.get("King").get(0);
         return ghostBoard.getSpace(king.getCol(), king.getRow()) != null;
     }
 
