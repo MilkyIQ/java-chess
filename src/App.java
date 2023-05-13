@@ -27,7 +27,7 @@ public class App
         String notationColor = Color.getColorCodeOf(reader.getStringValueOf("notationColor", 0));
 
         // Create all players and their pieces
-        for (int i = 1; i < reader.getNumPlayers(); i++)
+        for (int i = 1; i <= reader.getNumPlayers(); i++)
         {
             String color     = Color.getColorCodeOf(reader.getStringValueOf("color", i));
             String name      = reader.getStringValueOf("name", i);
