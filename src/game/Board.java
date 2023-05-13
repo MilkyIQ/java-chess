@@ -88,8 +88,8 @@ public class Board
         int attackedX = movedPiece.getCol();
         int attackedY = movedPiece.getRow();
         
-        board[oldX][oldY] = movedPiece;
-        board[attackedX][attackedY] = attackedSpace;
+        board[oldY][oldX] = movedPiece;
+        board[attackedY][attackedX] = attackedSpace;
         movedPiece.setPos(oldX, oldY);
         movedPiece.decMoveCount();
         // no need to update attackedSpace position because it's position doesnt change after attack
