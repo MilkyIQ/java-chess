@@ -92,12 +92,30 @@ public class Player {
         this.setState(state);
     }
 
+    // Calcualtes all possible movements from all pieces on board (excluding pawns), and continue 
     public boolean isInCheck(Board board)
     {
+        // Initialize main variables
+        ArrayList<GamePiece> moves = new ArrayList<GamePiece>();
         final int LENGTH = board.getLength();
         final int HEIGHT = board.getLength();
-        ArrayList<GamePiece> moves = new ArrayList<GamePiece>();
         Board ghostBoard = new Board(LENGTH, HEIGHT);
+        GamePiece king   = hand.get("King").get(0);
+        final int KINGX  = king.getCol();
+        final int KINGY  = king.getRow();
+        
+        // Check corners for pawns
+        int[] xInc = {1, -1}, yInc = {1, -1};
+        for (int x : xInc)
+        {
+            for (int y : yInc)
+            {
+                if (board.coordinateOutOfBounds(KINGX+x, KINGY+y)) { continue; };
+                GamePiece potentialPawn = board.getSpace(KINGX+x, KINGY+y);
+                Boolean pawnIsAttacking = potentialPawn != null && potentialPawn.getTitle().equals("Pawn") && potentialPawn.checkMove(KINGX, KINGY, board);
+                if (pawnIsAttacking) { return true; }
+            }
+        }
         
         // Iterate through board and populate ghostBoard with validMoves
         for (int col = 0; col < LENGTH; col++)
@@ -109,23 +127,24 @@ public class Player {
                 space.updateValidMoves(board, moves);
             }
         }
+
+        // Place points on ghostBoard
         for (GamePiece piece : moves)
         {
-            int x = piece.getCol();
-            int y = piece.getRow();
-            boolean pointOutOfBounds = x < 0 || x >= LENGTH || y < 0 || y >= HEIGHT;
-            if (!pointOutOfBounds) { ghostBoard.place(piece); }
+            if (!board.coordinateOutOfBounds(piece.getCol(), piece.getRow()))
+            {
+                ghostBoard.place(piece);
+            }
             
         }
         
-        // Print ghostBoard (for testing)
+        // Print ghostBoard for testing (REMOVE BEFORE MERGE)
         ghostBoard.setColors(Color.BLACK, Color.BLACK, Color.BLACK);
         System.out.println(NAME + "'s Board:");
         ghostBoard.printBoard();
         
         // Place king on board and return status
-        GamePiece king = hand.get("King").get(0);
-        return ghostBoard.getSpace(king.getCol(), king.getRow()) != null;
+        return ghostBoard.getSpace(KINGX, KINGY) != null;
     }
 
     // Loop through a list of players and return the index of the specified color
