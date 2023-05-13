@@ -109,10 +109,18 @@ public class Player {
                 space.updateValidMoves(board, moves);
             }
         }
-        for (GamePiece piece : moves) { ghostBoard.place(piece); }
+        for (GamePiece piece : moves)
+        {
+            int x = piece.getCol();
+            int y = piece.getRow();
+            boolean pointOutOfBounds = x < 0 || x >= LENGTH || y < 0 || y >= HEIGHT;
+            if (!pointOutOfBounds) { ghostBoard.place(piece); }
+            
+        }
         
         // Print ghostBoard (for testing)
         ghostBoard.setColors(Color.BLACK, Color.BLACK, Color.BLACK);
+        System.out.println(NAME + "'s Board:");
         ghostBoard.printBoard();
         
         // Place king on board and return status
