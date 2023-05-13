@@ -107,4 +107,68 @@ public class Bishop extends GamePiece
 
         return ArrayUtils.convert2DArrayList(moves);
     }
+
+    @Override
+    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    {
+        final String COLOR = super.getColor();
+        final int COL = super.getCol();
+        final int ROW = super.getRow();
+        final int LENGTH = board.getLength();
+        final int HEIGHT = board.getHeight();
+        int x;
+        int y;
+        
+        // LEFT-DOWN
+        x = COL - 1;
+        y = ROW - 1;
+        while (x > 0 || y > 0)
+        {
+            int spaceStatus = board.checkSpace(x, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(new GamePiece("x", x, y));
+            if (spaceStatus == 2) { break; }
+            x--;
+            y--;
+        }
+
+        // RIGHT-UP
+        x = COL + 1;
+        y = ROW + 1;
+        while (x < LENGTH || y < HEIGHT)
+        {
+            int spaceStatus = board.checkSpace(x, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(new GamePiece("x", x, y));
+            if (spaceStatus == 2) { break; }
+            x++;
+            y++;
+        }
+
+        // LEFT-UP
+        x = COL - 1;
+        y = ROW + 1;
+        while (x > 0 || y < HEIGHT)
+        {
+            int spaceStatus = board.checkSpace(x, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(new GamePiece("x", x, y));
+            if (spaceStatus == 2) { break; }
+            x--;
+            y++;
+        }
+
+        // RIGHT-DOWN
+        x = COL + 1;
+        y = ROW - 1;
+        while (x < LENGTH || y > 0)
+        {
+            int spaceStatus = board.checkSpace(x, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(new GamePiece("x", x, y));
+            if (spaceStatus == 2) { break; }
+            x++;
+            y--;
+        }
+    }
 }

@@ -65,26 +65,58 @@ public class Player {
     {
         /*
          * STEPS:
-         * 1. [ ] Iterate through the gameboard and create a list of all moves that every enemy piece can make
-         * 2. [ ] Create a ghost board from the validMoves
-         * 3. [ ] Check king's position on ghost board
-         * 4. [ ] If king not touching any points, return safe, else, continue.
+         * 1. [x] Iterate through the gameboard and create a list of all moves that every enemy piece can make
+         * 2. [x] Create a ghost board from the validMoves
+         * 3. [x] Check king's position on ghost board
+         * 4. [x] If king not touching any points, return safe, else, continue.
          * 5. [ ] Iterate through friendly pieces
          * * -> [ ] Create a list of all moves that the current piece can make
          * * -> [ ] Iterate through those moves and check if each move keeps the king in check.
          * * -> [ ] If a move leaves the king safe, break and return check, else continue until moves exhausted
          * 6. If reach end of function (no moves leave king safe), return checkmate.
          */
-        
-        
+        String state = "safe";
+        boolean kingInCheck = this.isInCheck(board);
 
-        // Dummy code
-        this.setState("safe");
+        if (kingInCheck)
+        {
+            // for loop
+            // // create list
+            // // iterate through list
+            // // // does move make king safe?
+            // // // -> if YES: state = "check";
+            // // set state "checkmate" if loop exhausted
+        }
+        
+        this.setState(state);
     }
 
-    public boolean isInCheck()
+    public boolean isInCheck(Board board)
     {
-        return false;
+        final int LENGTH = board.getLength();
+        final int HEIGHT = board.getLength();
+        ArrayList<GamePiece> moves = new ArrayList<GamePiece>();
+        Board ghostBoard = new Board(LENGTH, HEIGHT);
+        
+        // Iterate through board and populate ghostBoard with validMoves
+        for (int col = 0; col < LENGTH; col++)
+        {
+            for (int row = 0; row < HEIGHT; row++)
+            {
+                GamePiece space = board.getSpace(col, row);
+                if (space == null) { continue; }
+                space.updateValidMoves(board, moves);
+            }
+        }
+        for (GamePiece piece : moves) { ghostBoard.place(piece); }
+        
+        // Print ghostBoard (for testing)
+        ghostBoard.setColors(Color.BLACK, Color.BLACK, Color.BLACK);
+        ghostBoard.printBoard();
+        
+        // Place king on board and return status
+        GamePiece king = this.getPieces("King").get(0);
+        return ghostBoard.getSpace(king.getCol(), king.getRow()) != null;
     }
 
     // Loop through a list of players and return the index of the specified color

@@ -91,4 +91,48 @@ public class Rook extends GamePiece
 
         return ArrayUtils.convert2DArrayList(moves);
     }
+
+    @Override
+    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    {
+        final int COL = super.getCol();
+        final int ROW = super.getRow();
+        final String COLOR = super.getColor();
+
+        // LEFT
+        for (int x = COL-1; x >= 0; x--)
+        {
+            int spaceStatus = board.checkSpace(x, ROW, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(new GamePiece("x", x, ROW));
+            if (spaceStatus == 2) { break; }
+        }
+
+        // RIGHT
+        for (int x = COL+1; x < board.getLength(); x++)
+        {
+            int spaceStatus = board.checkSpace(x, ROW, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(new GamePiece("x", x, ROW));
+            if (spaceStatus == 2) { break; }
+        }
+
+        // DOWN
+        for (int y = ROW-1; y >= 0; y--)
+        {
+            int spaceStatus = board.checkSpace(COL, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(new GamePiece("x", COL, y));
+            if (spaceStatus == 2) { break; }
+        }
+
+        // UP
+        for (int y = ROW+1; y < board.getHeight(); y++)
+        {
+            int spaceStatus = board.checkSpace(COL, y, COLOR);
+            if (spaceStatus == 1) { break; }
+            moves.add(new GamePiece("x", COL, y));
+            if (spaceStatus == 2) { break; }
+        }
+    }
 }

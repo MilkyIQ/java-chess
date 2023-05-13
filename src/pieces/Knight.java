@@ -1,5 +1,6 @@
 package pieces;
 import game.Board;
+import java.util.ArrayList;
 
 public class Knight extends GamePiece
 {
@@ -16,5 +17,23 @@ public class Knight extends GamePiece
         boolean longEdgeX = deltaX == 1 && deltaY == 2;
         boolean longEdgeY = deltaX == 2 && deltaY == 1;
         return (longEdgeX || longEdgeY) ? true : false;
+    }
+
+    @Override
+    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    {
+        int pieceX = super.getCol();
+        int pieceY = super.getRow();
+        int[] shortEdge = {1, -1};
+        int[] longEdge = {2, -2};
+
+        for (int shortInc : shortEdge)
+        {
+            for (int longInc : longEdge)
+            {
+                moves.add(new GamePiece("x", pieceX+shortInc, pieceY+longInc));
+                moves.add(new GamePiece("x", pieceX+longInc, pieceY+shortInc));
+            }
+        }
     }
 }

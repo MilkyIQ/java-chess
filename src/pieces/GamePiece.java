@@ -1,6 +1,7 @@
 package pieces;
 import game.Board;
 import game.Color;
+import java.util.ArrayList;
 
 public class GamePiece
 {
@@ -85,6 +86,11 @@ public class GamePiece
     public int[][] getAllValidMoves(Board board)
     {
         return null;
+    }
+
+    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    {
+        return;
     }
 
     public String toFormattedPositon()

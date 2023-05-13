@@ -1,5 +1,6 @@
 package pieces;
 import game.Board;
+import java.util.ArrayList;
 
 public class Queen extends GamePiece
 {
@@ -33,5 +34,15 @@ public class Queen extends GamePiece
         for (int[] move : rookMoves)   { allMoves[i] = move; i++; }
         for (int[] move : bishopMoves) { allMoves[i] = move; i++; }
         return allMoves;
+    }
+
+    @Override
+    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    {
+        int queenX = super.getCol();
+        int queenY = super.getRow();
+        String queenColor = super.getColor();
+        new Rook(queenColor, queenX, queenY).updateValidMoves(board, moves);
+        new Bishop(queenColor, queenX, queenY).updateValidMoves(board, moves);
     }
 }
