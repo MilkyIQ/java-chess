@@ -22,17 +22,17 @@ public class Knight extends GamePiece
     @Override
     public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
     {
-        int pieceX = super.getCol();
-        int pieceY = super.getRow();
+        final int COL = super.getCol();
+        final int ROW = super.getRow();
         int[] shortEdge = {1, -1};
         int[] longEdge = {2, -2};
 
-        for (int shortInc : shortEdge)
+        for (int shortEdgeInc : shortEdge)
         {
-            for (int longInc : longEdge)
+            for (int longEdgeInc : longEdge)
             {
-                moves.add(new GamePiece("x", pieceX+shortInc, pieceY+longInc));
-                moves.add(new GamePiece("x", pieceX+longInc, pieceY+shortInc));
+                moves.add(new GamePiece("x", COL+longEdgeInc, ROW+shortEdgeInc));
+                moves.add(new GamePiece("x", COL+shortEdgeInc, ROW+longEdgeInc));
             }
         }
     }
