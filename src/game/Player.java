@@ -152,14 +152,7 @@ public class Player {
         }
 
         // Place points on ghostBoard
-        for (GamePiece piece : moves)
-        {
-            if (!board.coordinateOutOfBounds(piece.getCol(), piece.getRow()))
-            {
-                ghostBoard.place(piece);
-            }
-            
-        }
+        for (GamePiece piece : moves) { ghostBoard.place(piece); }
         
         // Print ghostBoard for testing (REMOVE BEFORE MERGE)
         ghostBoard.setColors(Color.BLACK, Color.BLACK, Color.BLACK);
