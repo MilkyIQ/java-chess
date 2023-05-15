@@ -31,8 +31,12 @@ public class Knight extends GamePiece
         {
             for (int longEdgeInc : longEdge)
             {
-                moves.add(new GamePiece("x", COL+longEdgeInc, ROW+shortEdgeInc));
-                moves.add(new GamePiece("x", COL+shortEdgeInc, ROW+longEdgeInc));
+                int[] lShapeXPos = {COL+longEdgeInc, ROW+shortEdgeInc};
+                int[] lShapeYPos = {COL+shortEdgeInc, ROW+longEdgeInc};
+                boolean lShapeXInBounds = board.coordinateOutOfBounds(lShapeXPos[0], lShapeXPos[1]);
+                boolean lShapeYInBounds = board.coordinateOutOfBounds(lShapeYPos[0], lShapeYPos[1]);
+                if (lShapeXInBounds) { moves.add(new GamePiece("x", lShapeXPos[0], lShapeXPos[1])); }
+                if (lShapeYInBounds) { moves.add(new GamePiece("x", lShapeYPos[0], lShapeYPos[1])); }
             }
         }
     }
