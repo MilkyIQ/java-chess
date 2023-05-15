@@ -83,11 +83,6 @@ public class GamePiece
         return false;
     }
 
-    public int[][] getAllValidMoves(Board board)
-    {
-        return null;
-    }
-
     public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
     {
         return;

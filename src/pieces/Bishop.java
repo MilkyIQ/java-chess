@@ -1,7 +1,6 @@
 package pieces;
 import game.Board;
 import java.util.ArrayList;
-import tools.ArrayUtils;
 
 public class Bishop extends GamePiece
 {
@@ -42,73 +41,6 @@ public class Bishop extends GamePiece
     }
 
     @Override
-    public int[][] getAllValidMoves(Board board)
-    {
-        ArrayList<ArrayList<Integer>> moves = new ArrayList<ArrayList<Integer>>();
-        final String COLOR = super.getColor();
-        final int COL = super.getCol();
-        final int ROW = super.getRow();
-        final int LENGTH = board.getLength();
-        final int HEIGHT = board.getHeight();
-        int x;
-        int y;
-        
-        // LEFT-DOWN
-        x = COL - 1;
-        y = ROW - 1;
-        while (x > 0 || y > 0)
-        {
-            int spaceStatus = board.checkSpace(x, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, y));
-            if (spaceStatus == 2) { break; }
-            x--;
-            y--;
-        }
-
-        // RIGHT-UP
-        x = COL + 1;
-        y = ROW + 1;
-        while (x < LENGTH || y < HEIGHT)
-        {
-            int spaceStatus = board.checkSpace(x, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, y));
-            if (spaceStatus == 2) { break; }
-            x++;
-            y++;
-        }
-
-        // LEFT-UP
-        x = COL - 1;
-        y = ROW + 1;
-        while (x > 0 || y < HEIGHT)
-        {
-            int spaceStatus = board.checkSpace(x, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, y));
-            if (spaceStatus == 2) { break; }
-            x--;
-            y++;
-        }
-
-        // RIGHT-DOWN
-        x = COL + 1;
-        y = ROW - 1;
-        while (x < LENGTH || y > 0)
-        {
-            int spaceStatus = board.checkSpace(x, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, y));
-            if (spaceStatus == 2) { break; }
-            x++;
-            y--;
-        }
-
-        return ArrayUtils.convert2DArrayList(moves);
-    }
-
-    @Override
     public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
     {
         final String COLOR = super.getColor();
@@ -120,34 +52,29 @@ public class Bishop extends GamePiece
         int y;
         
         // LEFT-DOWN
-        x = COL - 1;
-        y = ROW - 1;
+        x = COL - 1; y = ROW - 1;
         while (x > 0 && y > 0)
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }
             moves.add(new GamePiece("x", x, y));
             if (spaceStatus == 2) { break; }
-            x--;
-            y--;
+            x--; y--;
         }
 
         // RIGHT-UP
-        x = COL + 1;
-        y = ROW + 1;
+        x = COL + 1; y = ROW + 1;
         while (x < LENGTH && y < HEIGHT)
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }
             moves.add(new GamePiece("x", x, y));
             if (spaceStatus == 2) { break; }
-            x++;
-            y++;
+            x++; y++;
         }
 
         // LEFT-UP
-        x = COL - 1;
-        y = ROW + 1;
+        x = COL - 1; y = ROW + 1;
         while (x > 0 && y < HEIGHT)
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
@@ -159,16 +86,14 @@ public class Bishop extends GamePiece
         }
 
         // RIGHT-DOWN
-        x = COL + 1;
-        y = ROW - 1;
+        x = COL + 1; y = ROW - 1;
         while (x < LENGTH && y > 0)
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }
             moves.add(new GamePiece("x", x, y));
             if (spaceStatus == 2) { break; }
-            x++;
-            y--;
+            x++; y--;
         }
     }
 }

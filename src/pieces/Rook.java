@@ -1,7 +1,6 @@
 package pieces;
 import game.Board;
 import java.util.ArrayList;
-import tools.ArrayUtils;
 
 public class Rook extends GamePiece
 {
@@ -37,59 +36,6 @@ public class Rook extends GamePiece
         }
         
         return true;
-    }
-
-    // Returns a 2D array of all points on board that the rook can make
-    /*
-     * Uses 4 for loops to achieve with almost identical code in each to achieve this by looping through each axis in each direction.
-     * I REALLY didnt want this one to work, but it's ~12x faster than anything else I've attempted to come up with.
-     * So for now, this is the best unoptimizied method.
-     */
-    @Override
-    public int[][] getAllValidMoves(Board board)
-    {
-        ArrayList<ArrayList<Integer>> moves = new ArrayList<ArrayList<Integer>>();
-        final int COL = super.getCol();
-        final int ROW = super.getRow();
-        final String COLOR = super.getColor();
-
-        // LEFT
-        for (int x = COL-1; x >= 0; x--)
-        {
-            int spaceStatus = board.checkSpace(x, ROW, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, ROW));
-            if (spaceStatus == 2) { break; }
-        }
-
-        // RIGHT
-        for (int x = COL+1; x < board.getLength(); x++)
-        {
-            int spaceStatus = board.checkSpace(x, ROW, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, ROW));
-            if (spaceStatus == 2) { break; }
-        }
-
-        // DOWN
-        for (int y = ROW-1; y >= 0; y--)
-        {
-            int spaceStatus = board.checkSpace(COL, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(COL, y));
-            if (spaceStatus == 2) { break; }
-        }
-
-        // UP
-        for (int y = ROW+1; y < board.getHeight(); y++)
-        {
-            int spaceStatus = board.checkSpace(COL, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(COL, y));
-            if (spaceStatus == 2) { break; }
-        }
-
-        return ArrayUtils.convert2DArrayList(moves);
     }
 
     @Override
