@@ -24,13 +24,11 @@ public class ArrayUtils
         int[] output = new int[2];
         try
         {
-            int xStart = input.indexOf("(")+1;
             int xEnd   = input.indexOf(",");
             int yStart = input.indexOf(",")+1;
-            int yEnd   = input.indexOf(")");
     
-            String xString = input.substring(xStart, xEnd);
-            String yString = input.substring(yStart, yEnd);
+            String xString = input.substring(0, xEnd);
+            String yString = input.substring(yStart);
     
             int x = Integer.parseInt(xString);
             int y = Integer.parseInt(yString);

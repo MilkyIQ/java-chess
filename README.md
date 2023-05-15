@@ -14,8 +14,9 @@ Don't.
 
 - [ ] Check, Checkmate, Stalemate, Forfeit
   - [x] getAllValidMoves()
-  - [ ] Ghost board
-  - [ ] gameState() 
-  - [ ] Implement into main game loop
+  - [x] Check & safe
+  - [ ] Checkmate
+  - [ ] Stalemate
+  - [ ] Forfeit
 - [ ] Switch to GUI
 - [ ] Switch to GSON

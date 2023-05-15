@@ -40,9 +40,23 @@ public class Player {
         return hand;
     }
 
-    public ArrayList<GamePiece> getPieces(String title)
+    public ArrayList<GamePiece> getAllPiecesOfType(String title)
     {
         return hand.get(title);
+    }
+
+    public ArrayList<GamePiece> getAllPieces()
+    {
+        ArrayList<GamePiece> pieces = new ArrayList<GamePiece>();
+        for (ArrayList<GamePiece> type : hand.values())
+        {
+            for (GamePiece piece : type)
+            {
+                pieces.add(piece);
+            }
+        }
+        
+        return pieces;
     }
 
     public void setState(String newState)
@@ -63,8 +77,85 @@ public class Player {
     // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
     public void updateState(Board board)
     {
-        // Dummy code
-        this.setState("safe");
+        // Breaks function if king is safe
+        if (!this.isInCheck(board))
+        {
+            this.setState("safe");
+            return;
+        }
+
+        // Loop through all pieces
+        for (GamePiece piece : this.getAllPieces())
+        {
+            int startX = piece.getCol();
+            int startY = piece.getRow();
+            ArrayList<GamePiece> currentPieceMoves = new ArrayList<GamePiece>();
+            piece.updateValidMoves(board, currentPieceMoves);
+
+            // Check every valid move of current piece until move saves king or list exhausted
+            for (GamePiece move : currentPieceMoves)
+            {
+                int moveX = move.getCol();
+                int moveY = move.getRow();
+                GamePiece space = board.getSpace(moveX, moveY);
+
+                // Simulate move & calculate player state
+                board.move(piece, move.getCol(), move.getRow());
+                boolean resultsInCheck = this.isInCheck(board);
+                board.undoMove(piece, startX, startY, space);
+
+                // if king is not safe, continue, else, set state and end function
+                if (resultsInCheck) { continue; }
+                this.setState("check");
+                return;
+            }
+        }
+
+        // If all move lists exhausted, players state is checkmate
+        this.setState("checkmate");
+    }
+
+    // Calcualtes all possible movements from all pieces on board (excluding pawns), and continue 
+    public boolean isInCheck(Board board)
+    {
+        // Initialize main variables
+        ArrayList<GamePiece> moves = new ArrayList<GamePiece>();
+        final int LENGTH = board.getLength();
+        final int HEIGHT = board.getLength();
+        Board ghostBoard = new Board(LENGTH, HEIGHT);
+        GamePiece king   = hand.get("King").get(0);
+        final int KINGX  = king.getCol();
+        final int KINGY  = king.getRow();
+        
+        // Check corners for pawns
+        int[] xInc = {1, -1}, yInc = {1, -1};
+        for (int x : xInc)
+        {
+            for (int y : yInc)
+            {
+                if (board.coordinateOutOfBounds(KINGX+x, KINGY+y)) { continue; };
+                GamePiece potentialPawn = board.getSpace(KINGX+x, KINGY+y);
+                Boolean pawnIsAttacking = potentialPawn != null && potentialPawn.getTitle().equals("Pawn") && potentialPawn.checkMove(KINGX, KINGY, board);
+                if (pawnIsAttacking) { return true; }
+            }
+        }
+        
+        // Iterate through board and populate ghostBoard with validMoves
+        for (int col = 0; col < LENGTH; col++)
+        {
+            for (int row = 0; row < HEIGHT; row++)
+            {
+                GamePiece space = board.getSpace(col, row);
+                if (space == null || space.getColor().equals(COLOR)) { continue; }
+                space.updateValidMoves(board, moves);
+            }
+        }
+
+        // Place points on ghostBoard
+        for (GamePiece piece : moves) { ghostBoard.place(piece); }
+        
+        // Place king on board and return status
+        return ghostBoard.getSpace(KINGX, KINGY) != null;
     }
 
     // Loop through a list of players and return the index of the specified color

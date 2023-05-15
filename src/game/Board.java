@@ -41,11 +41,15 @@ public class Board
         return board[y][x];
     }
 
+    public boolean coordinateOutOfBounds(int x, int y)
+    {
+        return x >= LENGTH || y >= HEIGHT || x < 0 || y < 0;
+    }
+
     // Returns representative int value -1 to 2 to show whether or not a space is occupied by the given color
     public int checkSpace(int x, int y, String color)
     {
-        if      (x >= LENGTH || x < 0 ||
-                 y >= HEIGHT || y < 0 )                 { return -1; } // space is out of bounds
+        if      (coordinateOutOfBounds(x, y))           { return -1; } // space is out of bounds
         else if (board[y][x] == null)                   { return 0;  } // space is empty
         else if (board[y][x].getColor().equals(color))  { return 1;  } // space is occupied by color
         else if (!board[y][x].getColor().equals(color)) { return 2;  } // space is occupied NOT by color
@@ -88,8 +92,8 @@ public class Board
         int attackedX = movedPiece.getCol();
         int attackedY = movedPiece.getRow();
         
-        board[oldX][oldY] = movedPiece;
-        board[attackedX][attackedY] = attackedSpace;
+        board[oldY][oldX] = movedPiece;
+        board[attackedY][attackedX] = attackedSpace;
         movedPiece.setPos(oldX, oldY);
         movedPiece.decMoveCount();
         // no need to update attackedSpace position because it's position doesnt change after attack

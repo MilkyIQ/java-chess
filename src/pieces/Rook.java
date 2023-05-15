@@ -1,7 +1,6 @@
 package pieces;
 import game.Board;
 import java.util.ArrayList;
-import tools.ArrayUtils;
 
 public class Rook extends GamePiece
 {
@@ -39,16 +38,9 @@ public class Rook extends GamePiece
         return true;
     }
 
-    // Returns a 2D array of all points on board that the rook can make
-    /*
-     * Uses 4 for loops to achieve with almost identical code in each to achieve this by looping through each axis in each direction.
-     * I REALLY didnt want this one to work, but it's ~12x faster than anything else I've attempted to come up with.
-     * So for now, this is the best unoptimizied method.
-     */
     @Override
-    public int[][] getAllValidMoves(Board board)
+    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
     {
-        ArrayList<ArrayList<Integer>> moves = new ArrayList<ArrayList<Integer>>();
         final int COL = super.getCol();
         final int ROW = super.getRow();
         final String COLOR = super.getColor();
@@ -58,7 +50,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, ROW, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, ROW));
+            moves.add(new GamePiece("x", x, ROW));
             if (spaceStatus == 2) { break; }
         }
 
@@ -67,7 +59,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, ROW, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(x, ROW));
+            moves.add(new GamePiece("x", x, ROW));
             if (spaceStatus == 2) { break; }
         }
 
@@ -76,7 +68,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(COL, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(COL, y));
+            moves.add(new GamePiece("x", COL, y));
             if (spaceStatus == 2) { break; }
         }
 
@@ -85,10 +77,8 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(COL, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(ArrayUtils.createPoint(COL, y));
+            moves.add(new GamePiece("x", COL, y));
             if (spaceStatus == 2) { break; }
         }
-
-        return ArrayUtils.convert2DArrayList(moves);
     }
 }

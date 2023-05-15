@@ -27,7 +27,7 @@ public class App
         String notationColor = Color.getColorCodeOf(reader.getStringValueOf("notationColor", 0));
 
         // Create all players and their pieces
-        for (int i = 1; i < reader.getNumPlayers(); i++)
+        for (int i = 1; i <= reader.getNumPlayers(); i++)
         {
             String color     = Color.getColorCodeOf(reader.getStringValueOf("color", i));
             String name      = reader.getStringValueOf("name", i);
@@ -53,13 +53,15 @@ public class App
         board = new Board(length, height);
         board.populateBoard(players);
         board.setColors(evensColor, oddsColor, notationColor);
-        board.printBoard();
 
         // Primary game loop
         int i = 0;
+        int k = 0;
         while (players.size() > 1)
         {
             Player player = players.get(i);
+            System.out.println("--------------- Turn #" + (k+1) + "---------------\n");
+            board.printBoard();
 
             // Get move from player
             GamePiece piece = selectPiece(player);
@@ -72,18 +74,21 @@ public class App
             board.move(piece, move[0], move[1]);
             for (Player p : players) { p.updateState(board); }
 
-            // Check conditions
-            if (player.getState().equals("check"))
+            // Verify current move is not check
+            String playerState = player.getState();
+            if (playerState.equals("check") || playerState.equals("checkmate"))
             {
                 System.out.println(Color.RED+ "Illegal Move: Cannot leave King in check!" + Color.RESET);
                 board.undoMove(piece, from[0], from[1], space);
                 continue;
             }
-            if (space != null) { players.get(Player.indexOf(space.getColor(), players)).remove(space); } // remove piece from enemy hand if attacking
 
+            // Update player list & player hands
+            if (space != null) { players.get(Player.indexOf(space.getColor(), players)).remove(space); } // remove piece from enemy hand if attacking
             Player.removeLosers(players);
-            board.printBoard();
+
             i = i < players.size()-1 ? i+1 : 0;
+            k++;
         }
         user.close();
 
