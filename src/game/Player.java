@@ -77,19 +77,6 @@ public class Player {
     // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
     public void updateState(Board board)
     {
-        /*
-         * STEPS:
-         * 1. [x] Iterate through the gameboard and create a list of all moves that every enemy piece can make
-         * 2. [x] Create a ghost board from the validMoves
-         * 3. [x] Check king's position on ghost board
-         * 4. [x] If king not touching any points, return safe, else, continue.
-         * 5. [x] Iterate through friendly pieces
-         * * -> [x] Create a list of all moves that the current piece can make
-         * * -> [x] Iterate through those moves and check if each move keeps the king in check.
-         * * -> [ ] If a move leaves the king safe, break and return check, else continue until moves exhausted
-         * 6. If reach end of function (no moves leave king safe), return checkmate.
-         */
-
         // Breaks function if king is safe
         if (!this.isInCheck(board))
         {
@@ -97,7 +84,7 @@ public class Player {
             return;
         }
 
-        // Loop through all friendly pieces
+        // Loop through all pieces
         for (GamePiece piece : this.getAllPieces())
         {
             int startX = piece.getCol();
@@ -105,36 +92,23 @@ public class Player {
             ArrayList<GamePiece> currentPieceMoves = new ArrayList<GamePiece>();
             piece.updateValidMoves(board, currentPieceMoves);
 
-            // Check every move current piece until move saves king or list exhausted
+            // Check every valid move of current piece until move saves king or list exhausted
             for (GamePiece move : currentPieceMoves)
             {
                 int moveX = move.getCol();
                 int moveY = move.getRow();
                 GamePiece space = board.getSpace(moveX, moveY);
-                board.move(piece, move.getCol(), move.getRow());
-                if (this.isInCheck(board)) { continue; }
 
-                // if king-saving move found, set state to check and end function
-                this.setState("check");
+                // Simulate move & calculate player state
+                board.move(piece, move.getCol(), move.getRow());
+                boolean resultsInCheck = this.isInCheck(board);
                 board.undoMove(piece, startX, startY, space);
+
+                // if king is not safe, continue, else, set state and end function
+                if (resultsInCheck) { continue; }
+                this.setState("check");
                 return;
             }
-
-            /*
-             * TODO (bug fix):
-             * * For some reason, the board is not undoing the simulated moves of the knight correctly
-             * * and i do not know why. It may have something to do with the fact that the knight moves very irregularly
-             * * or the fact that we're not undoing the move after every single iteration of the moveset.
-             * * (That's done that way for indent reasons but that may have to be ignored)
-             * 
-             * USE THE FOLLOWING MOVEMENTS FOR TESTING:
-             * * board.move(board.getSpace(4,0), 4,3);
-             * * board.move(board.getSpace(3,6), 3,5);
-             */
-            
-            // Undo move so next piece can be tested
-            System.out.println(piece.getTitle());
-            board.undoMove(piece, startX, startY, board.getSpace(piece.getCol(), piece.getRow()));
         }
 
         // If all move lists exhausted, players state is checkmate
