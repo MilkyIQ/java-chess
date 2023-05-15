@@ -53,7 +53,7 @@ public class Bishop extends GamePiece
         
         // LEFT-DOWN
         x = COL - 1; y = ROW - 1;
-        while (x > 0 && y > 0)
+        while (x >= 0 && y >= 0)
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }
@@ -75,7 +75,7 @@ public class Bishop extends GamePiece
 
         // LEFT-UP
         x = COL - 1; y = ROW + 1;
-        while (x > 0 && y < HEIGHT)
+        while (x >= 0 && y < HEIGHT)
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }
@@ -87,7 +87,7 @@ public class Bishop extends GamePiece
 
         // RIGHT-DOWN
         x = COL + 1; y = ROW - 1;
-        while (x < LENGTH && y > 0)
+        while (x < LENGTH && y >= 0)
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }

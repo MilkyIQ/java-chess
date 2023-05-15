@@ -39,9 +39,9 @@ public class King extends GamePiece
     }
 
     /*
-     * PF3
-         PE6
-       PG4
-         QH4
+     * PF3    (5,1) -> 5,3
+         PE6  (4,6) -> 4,5
+       PG4    (6,1) -> 6,3
+         QH4  (3,7) -> 7,3
      */
 }
