@@ -154,11 +154,6 @@ public class Player {
         // Place points on ghostBoard
         for (GamePiece piece : moves) { ghostBoard.place(piece); }
         
-        // Print ghostBoard for testing (REMOVE BEFORE MERGE)
-        ghostBoard.setColors(Color.BLACK, Color.BLACK, Color.BLACK);
-        System.out.println(NAME + "'s Board:");
-        ghostBoard.printBoard();
-        
         // Place king on board and return status
         return ghostBoard.getSpace(KINGX, KINGY) != null;
     }
