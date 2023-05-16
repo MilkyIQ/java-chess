@@ -31,9 +31,10 @@ public class King extends GamePiece
             {
                 int x = super.getCol() + dx;
                 int y = super.getRow() + dy;
-                boolean spaceIsAdjacent = dx != 0 || dy != 0;
-                boolean spaceIsFriendly = board.checkSpace(x, y, super.getColor()) == 1;
-                if (spaceIsAdjacent && !spaceIsFriendly) { moves.add(new GamePiece("x", x, y)); }
+                boolean spaceIsAdjacent  = dx != 0 || dy != 0;
+                boolean spaceIsFriendly  = board.checkSpace(x, y, super.getColor()) == 1;
+                boolean spaceOutOfBounds = board.coordinateOutOfBounds(x, y);
+                if (spaceIsAdjacent && !spaceIsFriendly && !spaceOutOfBounds) { moves.add(new GamePiece("x", x, y)); }
             }
         }
     }
