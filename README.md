@@ -12,11 +12,17 @@ Don't.
 
 ## TODO
 
-- [ ] Check, Checkmate, Stalemate, Forfeit
+- [x] Check & Checkmate
   - [x] getAllValidMoves()
   - [x] Check & safe
-  - [ ] Checkmate
-  - [ ] Stalemate
-  - [ ] Forfeit
+  - [x] Checkmate
+- [ ] Code cleanup
+  - [ ] Move Color.java into tools
+  - [ ] Deprecate use of color codes in equivalence testing
+  - [ ] Rename variables
+  - [ ] Add/remove comments as needed
+  - [ ] Remove unused functions
+  - [ ] Organize imports
+  - [ ] Switch to LinkedList instead of ArrayList?
 - [ ] Switch to GUI
 - [ ] Switch to GSON
