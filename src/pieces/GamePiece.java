@@ -1,6 +1,7 @@
 package pieces;
 import game.Board;
-import game.Color;
+import tools.Color;
+
 import java.util.ArrayList;
 
 public class GamePiece
@@ -29,7 +30,7 @@ public class GamePiece
         this.col = col;
         this.row = row;
         this.TITLE = "GenericGamePiece";
-        this.COLOR = Color.PURPLE_UNDERLINED;
+        this.COLOR = "purple_underlined";
     }
 
     public String getTitle()
@@ -45,6 +46,11 @@ public class GamePiece
     public String getColor()
     {
         return COLOR;
+    }
+
+    public String getColorCode()
+    {
+        return Color.getColorCodeOf(COLOR);
     }
 
     public int getRow()

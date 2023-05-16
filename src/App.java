@@ -22,14 +22,14 @@ public class App
         // Initialize board variables
         int height           = reader.getIntValueOf("boardHeight", 0);
         int length           = reader.getIntValueOf("boardLength", 0);
-        String evensColor    = Color.getColorCodeOf(reader.getStringValueOf("evenSpacesColor", 0));
-        String oddsColor     = Color.getColorCodeOf(reader.getStringValueOf("oddSpacesColor", 0));
-        String notationColor = Color.getColorCodeOf(reader.getStringValueOf("notationColor", 0));
+        String evensColor    = reader.getStringValueOf("evenSpacesColor", 0);
+        String oddsColor     = reader.getStringValueOf("oddSpacesColor", 0);
+        String notationColor = reader.getStringValueOf("notationColor", 0);
 
         // Create all players and their pieces
         for (int i = 1; i <= reader.getNumPlayers(); i++)
         {
-            String color     = Color.getColorCodeOf(reader.getStringValueOf("color", i));
+            String color     = reader.getStringValueOf("color", i);
             String name      = reader.getStringValueOf("name", i);
             String direction = reader.getStringValueOf("pawnDirection", i);
             int[][] pawns    = reader.getPlayerPieces("pawn", i);
@@ -107,7 +107,7 @@ public class App
     // Ask user for the piece they'd like to move and return that piece
     public static GamePiece selectPiece(Player player)
     {
-        System.out.print(player.getColor() + "[" + player.getName() + "] " + Color.RESET);
+        System.out.print(player.getColorCode() + "[" + player.getName() + "] " + Color.RESET);
         System.out.print("Choose a piece to move (x,y): ");
 
         GamePiece piece = null;
