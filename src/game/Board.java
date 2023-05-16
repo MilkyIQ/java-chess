@@ -63,9 +63,9 @@ public class Board
 
     public void setColors(String evens, String odds, String notation)
     {
-        colors[0] = evens;
-        colors[1] = odds;
-        colors[2] = notation;
+        colors[0] = Color.getColorCodeOf(evens);
+        colors[1] = Color.getColorCodeOf(odds);
+        colors[2] = Color.getColorCodeOf(notation);
     }
 
     public void populateBoard(ArrayList<Player> players)
@@ -114,7 +114,7 @@ public class Board
         catch (ArrayIndexOutOfBoundsException e)
         {
             System.out.print(Color.YELLOW + "[WARNING]: Skipping placement of ");
-            System.out.print(piece.getColor() + piece.toFormattedPositon());
+            System.out.print(piece.getColorCode() + piece.toFormattedPositon());
             System.out.println(Color.YELLOW + ", piece out of bounds." + Color.RESET);
         }
     }
@@ -140,7 +140,7 @@ public class Board
             {
                 GamePiece piece = board[row][col];
                 String bgColor  = (row+col) % 2 == 0    ? colors[1]  : colors[0];
-                String fgColor  = piece         == null ? Color.CYAN : piece.getColor();
+                String fgColor  = piece         == null ? Color.CYAN : piece.getColorCode();
                 String output   = piece         == null ? " "        : piece.toString();
                 
                 System.out.print(fgColor + bgColor + " " + output + " " + Color.RESET);
