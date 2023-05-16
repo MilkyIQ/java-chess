@@ -1,6 +1,7 @@
 package pieces;
 import game.Board;
-import game.Color;
+import tools.Color;
+
 import java.util.ArrayList;
 
 public class GamePiece

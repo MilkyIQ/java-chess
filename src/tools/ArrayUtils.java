@@ -1,6 +1,5 @@
 package tools;
 import java.util.ArrayList;
-import game.Color;
 
 public class ArrayUtils
 {

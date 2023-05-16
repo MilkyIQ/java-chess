@@ -1,5 +1,7 @@
 package game;
 import pieces.*;
+import tools.Color;
+
 import java.util.ArrayList;
 
 public class Board
