@@ -13,4 +13,12 @@ public class Frame extends JFrame
         this.setDefaultCloseOperation(3);
         this.setLocationRelativeTo(null);
     }
+
+    public static void main(String[] args)
+    {
+        frame.add(panel);
+        panel.addMouseListener(mouse);
+        frame.setVisible(true);
+        panel.repaint();
+    }
 }

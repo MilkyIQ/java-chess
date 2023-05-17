@@ -6,13 +6,13 @@ public class Panel extends JPanel
 {
     public Panel()
     {
-        setBackground(Color.BLACK);
+        setBackground(Color.BLACK); // this is probably an issue because the name for tools.Color and JFrame color are the same
     }
 
     @Override
     public void paintComponent(Graphics g)
     {
-        g.setColor(Color.GREEN);
-        g.drawRect(10, 10, 30, 30);
+        g.setColor(Color.BLACK);
+        g.drawRect(0, 0, 50, 50);
     }
 }
