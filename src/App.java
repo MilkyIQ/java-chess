@@ -1,8 +1,13 @@
 import game.*;
+import graphics.Mouse;
 import pieces.*;
 import tools.*;
 import java.util.Scanner;
 import java.util.ArrayList;
+
+import java.awt.event.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class App
 {
@@ -11,6 +16,51 @@ public class App
 
     public static void main(String[] args) throws Exception
     {
+
+        JFrame frame = new JFrame("test");
+        
+        frame.setSize(200, 200);
+        frame.setDefaultCloseOperation(3);
+        frame.setLocationRelativeTo(null);
+        
+        GridLayout grid = new GridLayout(3,3);
+        JPanel panel1 = new JPanel(grid);
+        JPanel panel2 = new JPanel();
+        JPanel panel3 = new JPanel();
+        JPanel panel4 = new JPanel();
+        JPanel panel5 = new JPanel();
+        
+        panel1.setBackground(Color.blue);
+        panel2.setBackground(Color.red);
+        panel3.setBackground(Color.green);
+        panel4.setBackground(Color.white);
+        panel5.setBackground(Color.pink);
+
+        panel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent click) {
+                if (panel2.getBackground() == Color.black) {
+                    panel2.setBackground(Color.red);
+                }
+                else {
+                    panel2.setBackground(Color.black);
+                }
+            }
+        });
+
+        
+        grid.addLayoutComponent("foo", panel2);
+        panel1.add(panel2);
+        panel1.add(panel3);
+        panel1.add(panel4);
+        panel1.add(panel5);
+        
+        frame.add(panel1);
+
+        MouseAdapter mouse = new Mouse();
+
+        frame.setVisible(true);
+
         System.out.println("\n");
 
         /* ------------------------------------------------------------------------------------ */
@@ -57,7 +107,7 @@ public class App
         // Primary game loop
         int i = 0;
         int k = 0;
-        while (players.size() > 1)
+        while (players.size() < 1)
         {
             Player player = players.get(i);
             System.out.println("--------------- Turn #" + (k+1) + "---------------\n");
@@ -67,7 +117,7 @@ public class App
             GamePiece piece = selectPiece(player);
             int[] move      = selectMove(piece);
             int[] from      = {piece.getCol(), piece.getRow()};
-            if (move == null) { System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); continue; } // undo case
+            if (move == null) { System.out.println(ConsoleColors.PURPLE + "Undoing selection..." + ConsoleColors.RESET); continue; } // undo case
             
             // Update board and player states
             GamePiece space = board.getSpace(move[0], move[1]);
@@ -78,7 +128,7 @@ public class App
             String playerState = player.getState();
             if (playerState.equals("check") || playerState.equals("checkmate"))
             {
-                System.out.println(Color.RED+ "Illegal Move: Cannot leave King in check!" + Color.RESET);
+                System.out.println(ConsoleColors.RED+ "Illegal Move: Cannot leave King in check!" + ConsoleColors.RESET);
                 board.undoMove(piece, from[0], from[1], space);
                 continue;
             }
@@ -107,11 +157,11 @@ public class App
     // Ask user for the piece they'd like to move and return that piece
     public static GamePiece selectPiece(Player player)
     {
-        System.out.print(player.getColorCode() + "[" + player.getName() + "] " + Color.RESET);
+        System.out.print(player.getColorCode() + "[" + player.getName() + "] " + ConsoleColors.RESET);
         System.out.print("Choose a piece to move (x,y): ");
 
         GamePiece piece = null;
-        String systemResponse = Color.RED;
+        String systemResponse = ConsoleColors.RED;
         int[] point = ArrayUtils.extractPointFromString(user.nextLine());
         
         // Error checking
@@ -125,11 +175,11 @@ public class App
             case 2:  systemResponse += "Cannot move enemy piece. Please try again."; break;
             case 1:
                 piece = board.getSpace(point[0], point[1]);
-                systemResponse = Color.PURPLE + "You have chosen " + piece.toFormattedPositon();
+                systemResponse = ConsoleColors.PURPLE + "You have chosen " + piece.toFormattedPositon();
                 break;
         }
 
-        System.out.println(systemResponse + Color.RESET);
+        System.out.println(systemResponse + ConsoleColors.RESET);
         return piece == null ? selectPiece(player) : piece;
     }
 
@@ -148,7 +198,7 @@ public class App
         System.out.print("Choose a space to move to (x,y): ");
 
         int[] move = null;
-        String systemResponse = Color.RED;
+        String systemResponse = ConsoleColors.RED;
         String userInput = user.nextLine().toLowerCase();
         int[] point = ArrayUtils.extractPointFromString(userInput);
 
@@ -162,7 +212,7 @@ public class App
         else if (piece.checkMove(point[0], point[1], board))
         {
             move = point;
-            systemResponse = Color.PURPLE;
+            systemResponse = ConsoleColors.PURPLE;
             systemResponse += "Moving " + piece.toFormattedPositon() + " to " + "(" + point[0] + "," + point[1] + ")\n";
         }
         else
@@ -176,7 +226,7 @@ public class App
             }
         }
         
-        System.out.println(systemResponse + Color.RESET);
+        System.out.println(systemResponse + ConsoleColors.RESET);
         return move == null ? selectMove(piece) : move;
     }
 }

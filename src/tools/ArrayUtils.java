@@ -36,7 +36,7 @@ public class ArrayUtils
         }
         catch (NumberFormatException|StringIndexOutOfBoundsException e)
         {
-            System.out.println(Color.RED + "`" + input  + "`" + " is not a coordinate (x,y)" + Color.RESET);
+            System.out.println(ConsoleColors.RED + "`" + input  + "`" + " is not a coordinate (x,y)" + ConsoleColors.RESET);
             output = null;
         }
         return output;

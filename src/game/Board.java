@@ -1,6 +1,6 @@
 package game;
 import pieces.*;
-import tools.Color;
+import tools.ConsoleColors;
 
 import java.util.ArrayList;
 
@@ -57,15 +57,15 @@ public class Board
         else if (!board[y][x].getColor().equals(color)) { return 2;  } // space is occupied NOT by color
         else
         {
-            throw new IllegalArgumentException(Color.RED + "Board.checkSpace() was given bad data." + Color.RESET); // just in case
+            throw new IllegalArgumentException(ConsoleColors.RED + "Board.checkSpace() was given bad data." + ConsoleColors.RESET); // just in case
         }
     }
 
     public void setColors(String evens, String odds, String notation)
     {
-        colors[0] = Color.getColorCodeOf(evens);
-        colors[1] = Color.getColorCodeOf(odds);
-        colors[2] = Color.getColorCodeOf(notation);
+        colors[0] = ConsoleColors.getColorCodeOf(evens);
+        colors[1] = ConsoleColors.getColorCodeOf(odds);
+        colors[2] = ConsoleColors.getColorCodeOf(notation);
     }
 
     public void populateBoard(ArrayList<Player> players)
@@ -113,9 +113,9 @@ public class Board
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
-            System.out.print(Color.YELLOW + "[WARNING]: Skipping placement of ");
+            System.out.print(ConsoleColors.YELLOW + "[WARNING]: Skipping placement of ");
             System.out.print(piece.getColorCode() + piece.toFormattedPositon());
-            System.out.println(Color.YELLOW + ", piece out of bounds." + Color.RESET);
+            System.out.println(ConsoleColors.YELLOW + ", piece out of bounds." + ConsoleColors.RESET);
         }
     }
 
@@ -126,34 +126,34 @@ public class Board
         System.out.print("  ");
         for (int col = 0; col < LENGTH; col++)
         {
-            System.out.print(colors[2] + " " + (col+"").substring(0,1) + " " + Color.RESET);
+            System.out.print(colors[2] + " " + (col+"").substring(0,1) + " " + ConsoleColors.RESET);
         }
         
         // row in board
         for (int row = HEIGHT-1; row >= 0; row--)
         {
             System.out.println();
-            System.out.print(colors[2] + (row+"").substring(0,1) + " " + Color.RESET); // row number (left)
+            System.out.print(colors[2] + (row+"").substring(0,1) + " " + ConsoleColors.RESET); // row number (left)
             
             // column in row
             for (int col = 0; col < LENGTH; col++)
             {
                 GamePiece piece = board[row][col];
                 String bgColor  = (row+col) % 2 == 0    ? colors[1]  : colors[0];
-                String fgColor  = piece         == null ? Color.CYAN : piece.getColorCode();
+                String fgColor  = piece         == null ? ConsoleColors.CYAN : piece.getColorCode();
                 String output   = piece         == null ? " "        : piece.toString();
                 
-                System.out.print(fgColor + bgColor + " " + output + " " + Color.RESET);
+                System.out.print(fgColor + bgColor + " " + output + " " + ConsoleColors.RESET);
             }
 
-            System.out.print(" " + colors[2] + (row+"").substring(0,1) + " " + Color.RESET); // row number (right)
+            System.out.print(" " + colors[2] + (row+"").substring(0,1) + " " + ConsoleColors.RESET); // row number (right)
         }
 
         // column numbers (bottom)
         System.out.print("\n  ");
         for (int col = 0; col < LENGTH; col++)
         {
-            System.out.print(colors[2] + " " + (col+"").substring(0,1) + " " + Color.RESET);
+            System.out.print(colors[2] + " " + (col+"").substring(0,1) + " " + ConsoleColors.RESET);
         }
         System.out.println();
     }

@@ -2,7 +2,7 @@ package game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import pieces.*;
-import tools.Color;
+import tools.ConsoleColors;
 
 public class Player {
     private HashMap<String,ArrayList<GamePiece>> hand;
@@ -30,7 +30,7 @@ public class Player {
     {
         int underscoreIndex = COLOR.indexOf("_");
         String baseColor = underscoreIndex > -1 ? COLOR.substring(0,underscoreIndex) : COLOR;
-        return Color.getColorCodeOf(baseColor + "_bold");
+        return ConsoleColors.getColorCodeOf(baseColor + "_bold");
     }
 
     public String getName()

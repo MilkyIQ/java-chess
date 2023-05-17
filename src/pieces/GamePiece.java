@@ -1,6 +1,6 @@
 package pieces;
 import game.Board;
-import tools.Color;
+import tools.ConsoleColors;
 
 import java.util.ArrayList;
 
@@ -50,7 +50,7 @@ public class GamePiece
 
     public String getColorCode()
     {
-        return Color.getColorCodeOf(COLOR);
+        return ConsoleColors.getColorCodeOf(COLOR);
     }
 
     public int getRow()
