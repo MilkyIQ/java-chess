@@ -175,24 +175,32 @@ public class Board
             this.toY = toY;
         }
 
-        public int[] getFriendlyPoint()
+        public int getOriginX()
         {
-            int[] point = {fromX, fromY};
-            return point;
+            return fromX;
         }
 
-        public int[] getAttackedPoint()
+        public int getOriginY()
         {
-            int[] point = {toX, toY};
-            return point;
+            return fromY;
         }
 
-        public GamePiece getFriendlyPiece()
+        public int getDestX()
+        {
+            return toX;
+        }
+
+        public int getDestY()
+        {
+            return toY;
+        }
+
+        public GamePiece getOriginPiece()
         {
             return piece;
         }
 
-        public GamePiece getAttackedSpace()
+        public GamePiece getDestPiece()
         {
             return space;
         }

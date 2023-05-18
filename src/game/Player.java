@@ -95,21 +95,16 @@ public class Player {
         // Loop through all pieces
         for (GamePiece piece : this.getAllPieces())
         {
-            int startX = piece.getCol();
-            int startY = piece.getRow();
             ArrayList<Board.Move> currentPieceMoves = new ArrayList<Board.Move>();
             piece.updateValidMoves(board, currentPieceMoves);
 
             // Check every valid move of current piece until move saves king or list exhausted
             for (Board.Move move : currentPieceMoves)
             {
-                int[] dest = move.getAttackedPoint();
-                GamePiece space = move.getAttackedSpace();
-
                 // Simulate move & calculate player state
-                board.move(piece, dest[0], dest[1]);
+                board.move(piece, move.getDestX(), move.getDestY());
                 boolean resultsInCheck = this.isInCheck(board);
-                board.undoMove(piece, startX, startY, space);
+                board.undoMove(piece, move.getOriginX(), move.getOriginY(), move.getDestPiece());
 
                 // if king is not safe, continue, else, set state and end function
                 if (resultsInCheck) { continue; }
@@ -161,8 +156,7 @@ public class Player {
         // Place points on ghostBoard
         for (Board.Move move : moves)
         {
-            int[] point = move.getAttackedPoint();
-            ghostBoard.place(new GamePiece("x", point[0], point[1]));
+            ghostBoard.place(new GamePiece("x", move.getDestX(), move.getDestY()));
         }
         
         // Place king on board and return status
