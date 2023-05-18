@@ -40,7 +40,6 @@ public class Bishop extends GamePiece
         return true;
     }
 
-    // TODO: bishop keeps skipping 0 or going out of bounds
     @Override
     public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
     {
