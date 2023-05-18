@@ -17,12 +17,15 @@ Don't.
   - [x] Check & safe
   - [x] Checkmate
 - [ ] Code cleanup
-  - [ ] Move Color.java into tools
-  - [ ] Deprecate use of color codes in equivalence testing
-  - [ ] Rename variables
-  - [ ] Add/remove comments as needed
+  - [x] Move Color.java into tools
+  - [x] Deprecate use of color codes in equivalence testing
+  - [x] Organize imports
   - [ ] Remove unused functions
-  - [ ] Organize imports
-  - [ ] Switch to LinkedList instead of ArrayList?
+- [ ] Enemy AI
+  - [x] Random moves
+  - [ ] Look one-two moves ahead
+  - [ ] Ranking system
+  - [ ] Adjustable slider
+  - [ ] Multithreading madness
 - [ ] Switch to GUI
 - [ ] Switch to GSON
