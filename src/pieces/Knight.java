@@ -20,7 +20,7 @@ public class Knight extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    public void updateValidMoves(Board board, ArrayList<Board.Move> moves)
     {
         final int COL = super.getCol();
         final int ROW = super.getRow();
@@ -35,8 +35,8 @@ public class Knight extends GamePiece
                 int[] lShapeYPos = {COL+shortEdgeInc, ROW+longEdgeInc};
                 boolean lShapeXInBounds = !board.coordinateOutOfBounds(lShapeXPos[0], lShapeXPos[1]);
                 boolean lShapeYInBounds = !board.coordinateOutOfBounds(lShapeYPos[0], lShapeYPos[1]);
-                if (lShapeXInBounds) { moves.add(new GamePiece("x", lShapeXPos[0], lShapeXPos[1])); }
-                if (lShapeYInBounds) { moves.add(new GamePiece("x", lShapeYPos[0], lShapeYPos[1])); }
+                if (lShapeXInBounds) { moves.add(board.new Move(this, lShapeXPos[0], lShapeXPos[1])); }
+                if (lShapeYInBounds) { moves.add(board.new Move(this, lShapeYPos[0], lShapeYPos[1])); }
             }
         }
     }

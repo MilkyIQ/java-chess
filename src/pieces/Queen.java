@@ -22,7 +22,7 @@ public class Queen extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    public void updateValidMoves(Board board, ArrayList<Board.Move> moves)
     {
         int queenX = super.getCol();
         int queenY = super.getRow();

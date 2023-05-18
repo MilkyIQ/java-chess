@@ -39,7 +39,7 @@ public class Rook extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    public void updateValidMoves(Board board, ArrayList<Board.Move> moves)
     {
         final int COL = super.getCol();
         final int ROW = super.getRow();
@@ -50,7 +50,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, ROW, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", x, ROW));
+            moves.add(board.new Move(this, x, ROW));
             if (spaceStatus == 2) { break; }
         }
 
@@ -59,7 +59,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, ROW, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", x, ROW));
+            moves.add(board.new Move(this, x, ROW));
             if (spaceStatus == 2) { break; }
         }
 
@@ -68,7 +68,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(COL, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", COL, y));
+            moves.add(board.new Move(this, COL, y));
             if (spaceStatus == 2) { break; }
         }
 
@@ -77,7 +77,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(COL, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", COL, y));
+            moves.add(board.new Move(this, COL, y));
             if (spaceStatus == 2) { break; }
         }
     }

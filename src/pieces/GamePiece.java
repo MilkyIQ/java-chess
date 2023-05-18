@@ -89,7 +89,7 @@ public class GamePiece
         return false;
     }
 
-    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    public void updateValidMoves(Board board, ArrayList<Board.Move> moves)
     {
         return;
     }

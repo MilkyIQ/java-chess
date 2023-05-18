@@ -97,18 +97,17 @@ public class Player {
         {
             int startX = piece.getCol();
             int startY = piece.getRow();
-            ArrayList<GamePiece> currentPieceMoves = new ArrayList<GamePiece>();
+            ArrayList<Board.Move> currentPieceMoves = new ArrayList<Board.Move>();
             piece.updateValidMoves(board, currentPieceMoves);
 
             // Check every valid move of current piece until move saves king or list exhausted
-            for (GamePiece move : currentPieceMoves)
+            for (Board.Move move : currentPieceMoves)
             {
-                int moveX = move.getCol();
-                int moveY = move.getRow();
-                GamePiece space = board.getSpace(moveX, moveY);
+                int[] dest = move.getAttackedPoint();
+                GamePiece space = move.getAttackedSpace();
 
                 // Simulate move & calculate player state
-                board.move(piece, move.getCol(), move.getRow());
+                board.move(piece, dest[0], dest[1]);
                 boolean resultsInCheck = this.isInCheck(board);
                 board.undoMove(piece, startX, startY, space);
 
@@ -127,7 +126,7 @@ public class Player {
     public boolean isInCheck(Board board)
     {
         // Initialize main variables
-        ArrayList<GamePiece> moves = new ArrayList<GamePiece>();
+        ArrayList<Board.Move> moves = new ArrayList<Board.Move>();
         final int LENGTH = board.getLength();
         final int HEIGHT = board.getLength();
         Board ghostBoard = new Board(LENGTH, HEIGHT);
@@ -160,7 +159,11 @@ public class Player {
         }
 
         // Place points on ghostBoard
-        for (GamePiece piece : moves) { ghostBoard.place(piece); }
+        for (Board.Move move : moves)
+        {
+            int[] point = move.getAttackedPoint();
+            ghostBoard.place(new GamePiece("x", point[0], point[1]));
+        }
         
         // Place king on board and return status
         return ghostBoard.getSpace(KINGX, KINGY) != null;
