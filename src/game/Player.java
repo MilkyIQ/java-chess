@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
+    public static Scanner scanner = new Scanner(System.in);
+
     private HashMap<String,ArrayList<GamePiece>> hand;
     private final String NAME;
     private final String COLOR;
@@ -22,6 +24,10 @@ public class Player {
         String[] titles = {"King", "Queen", "Rook", "Bishop", "Knight", "Pawn"};
         for (String t : titles) { hand.put(t, new ArrayList<GamePiece>()); };
     }
+
+    /* ------------------------------------------------------------------------------------ */
+    // GETTER METHODS
+    /* ------------------------------------------------------------------------------------ */
 
     public String getColor()
     {
@@ -69,6 +75,10 @@ public class Player {
         return pieces;
     }
 
+    /* ------------------------------------------------------------------------------------ */
+    // SETTER METHODS
+    /* ------------------------------------------------------------------------------------ */
+
     public void setState(String newState)
     {
         state = newState;
@@ -85,7 +95,7 @@ public class Player {
     }
 
     // Ask user for the piece they'd like to move and return that piece
-    public GamePiece selectPiece(Scanner user, Board board)
+    public GamePiece selectPiece(Board board)
     {
         System.out.print(this.getColorCode() + "[" + this.getName() + "] " + Color.RESET);
         System.out.print("Choose a piece to move (x,y): ");
@@ -93,7 +103,7 @@ public class Player {
         // Get piece from user input
         GamePiece piece = null;
         String systemResponse = Color.RED;
-        int[] point = ArrayUtils.extractPointFromString(user.nextLine()); // TODO: figure out a way to not pass scanner through
+        int[] point = ArrayUtils.extractPointFromString(scanner.nextLine()); // TODO: figure out a way to not pass scanner through
         
         // Error checking
         int returnCode = point != null ? board.checkSpace(point[0], point[1], this.getColor()) : -2;
@@ -111,18 +121,18 @@ public class Player {
         }
         
         System.out.println(systemResponse + Color.RESET);
-        return piece == null ? this.selectPiece(user, board) : piece;
+        return piece == null ? this.selectPiece(board) : piece;
     }
 
     // Ask user for the move they want to make and return
-    public int[] selectMove(Scanner user, Board board, GamePiece piece)
+    public int[] selectMove(Board board, GamePiece piece)
     {
         System.out.print("Choose a space to move to (x,y): ");
         String systemResponse = Color.RED;
         int[] move = null;
         
         // Get move from user input
-        String userInput = user.nextLine().toLowerCase();
+        String userInput = scanner.nextLine().toLowerCase();
         int[] point = ArrayUtils.extractPointFromString(userInput);
 
         // Undo case
@@ -151,7 +161,7 @@ public class Player {
         }
         
         System.out.println(systemResponse + Color.RESET);
-        return move == null ? this.selectMove(user, board, piece) : move;
+        return move == null ? this.selectMove(board, piece) : move;
     }
 
     // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
@@ -237,6 +247,10 @@ public class Player {
         // Place king on board and return status
         return ghostBoard.getSpace(KINGX, KINGY) != null;
     }
+
+    /* ------------------------------------------------------------------------------------ */
+    // STATIC FUNCTIONS
+    /* ------------------------------------------------------------------------------------ */
 
     // Loop through a list of players and return the index of the specified color
     public static int indexOf(String color, ArrayList<Player> players)

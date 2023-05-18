@@ -1,7 +1,6 @@
 import game.*;
 import pieces.*;
 import tools.*;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 public class App
@@ -14,7 +13,6 @@ public class App
 
         // Initialize game variables
         Board board;
-        Scanner user              = new Scanner(System.in);
         SettingsReader reader     = new SettingsReader("src/game/settings/settings.json");
         ArrayList<Player> players = new ArrayList<Player>();
 
@@ -63,8 +61,8 @@ public class App
             board.printBoard();
 
             // Get move from player
-            GamePiece piece = player.selectPiece(user, board);
-            int[] move      = player.selectMove(user, board, piece);
+            GamePiece piece = player.selectPiece(board);
+            int[] move      = player.selectMove(board, piece);
             int[] from      = {piece.getCol(), piece.getRow()};
             if (move == null) { System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); continue; } // undo case
             
@@ -89,7 +87,7 @@ public class App
             i = i < players.size()-1 ? i+1 : 0;
             k++;
         }
-        user.close();
+        Player.scanner.close();
 
         String result = (players.size() == 1) ? (players.get(0).getName() + " Wins!") : ("Draw.");
         System.out.println(result);
