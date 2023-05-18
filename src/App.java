@@ -6,9 +6,6 @@ import java.util.ArrayList;
 
 public class App
 {
-    public static Scanner user = new Scanner(System.in);
-    public static Board board;
-
     public static void main(String[] args) throws Exception
     {
         System.out.println("\n");
@@ -16,6 +13,8 @@ public class App
         /* ------------------------------------------------------------------------------------ */
 
         // Initialize game variables
+        Board board;
+        Scanner user              = new Scanner(System.in);
         SettingsReader reader     = new SettingsReader("src/game/settings/settings.json");
         ArrayList<Player> players = new ArrayList<Player>();
 
@@ -64,8 +63,8 @@ public class App
             board.printBoard();
 
             // Get move from player
-            GamePiece piece = selectPiece(player);
-            int[] move      = selectMove(piece);
+            GamePiece piece = player.selectPiece(user, board);
+            int[] move      = player.selectMove(user, board, piece);
             int[] from      = {piece.getCol(), piece.getRow()};
             if (move == null) { System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); continue; } // undo case
             
@@ -94,89 +93,5 @@ public class App
 
         String result = (players.size() == 1) ? (players.get(0).getName() + " Wins!") : ("Draw.");
         System.out.println(result);
-    }
-
-
-
-
-    /* ------------------------------------------------------------------------------------ */
-
-
-
-
-    // Ask user for the piece they'd like to move and return that piece
-    public static GamePiece selectPiece(Player player)
-    {
-        System.out.print(player.getColorCode() + "[" + player.getName() + "] " + Color.RESET);
-        System.out.print("Choose a piece to move (x,y): ");
-
-        GamePiece piece = null;
-        String systemResponse = Color.RED;
-        int[] point = ArrayUtils.extractPointFromString(user.nextLine());
-        
-        // Error checking
-        int returnCode = point != null ? board.checkSpace(point[0], point[1], player.getColor()) : -2;
-        switch (returnCode)
-        {
-            default: systemResponse += "Something went wrong."; break;
-            case -2: systemResponse += "Invalid input. Please try again."; break;
-            case -1: systemResponse += "Out of bounds! Please try again."; break;
-            case 0:  systemResponse += "Space is empty. Please try again."; break;
-            case 2:  systemResponse += "Cannot move enemy piece. Please try again."; break;
-            case 1:
-                piece = board.getSpace(point[0], point[1]);
-                systemResponse = Color.PURPLE + "You have chosen " + piece.toFormattedPositon();
-                break;
-        }
-
-        System.out.println(systemResponse + Color.RESET);
-        return piece == null ? selectPiece(player) : piece;
-    }
-
-    
-
-
-
-    /* ------------------------------------------------------------------------------------ */
-
-
-
-
-    // Ask user for the move they want to make and return
-    public static int[] selectMove(GamePiece piece)
-    {
-        System.out.print("Choose a space to move to (x,y): ");
-
-        int[] move = null;
-        String systemResponse = Color.RED;
-        String userInput = user.nextLine().toLowerCase();
-        int[] point = ArrayUtils.extractPointFromString(userInput);
-
-        if (userInput.equals("back") || userInput.equals("undo")) { return null; }
-
-        // Error checking
-        if (point == null)
-        {
-            systemResponse += "Invalid input. Please try again.";
-        }
-        else if (piece.checkMove(point[0], point[1], board))
-        {
-            move = point;
-            systemResponse = Color.PURPLE;
-            systemResponse += "Moving " + piece.toFormattedPositon() + " to " + "(" + point[0] + "," + point[1] + ")\n";
-        }
-        else
-        {
-            switch (board.checkSpace(point[0], point[1], piece.getColor()))
-            {
-                case -1: systemResponse += "Out of bounds! Please try again."; break;
-                case 0:  systemResponse += "Invalid move. Please try again."; break;
-                case 1:  systemResponse += "Cannot attack your own piece. Please try again."; break;
-                case 2:  systemResponse += "Invalid attack. Please try again."; break;
-            }
-        }
-        
-        System.out.println(systemResponse + Color.RESET);
-        return move == null ? selectMove(piece) : move;
     }
 }

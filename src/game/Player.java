@@ -1,8 +1,10 @@
 package game;
-import java.util.ArrayList;
-import java.util.HashMap;
 import pieces.*;
 import tools.Color;
+import tools.ArrayUtils;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player {
     private HashMap<String,ArrayList<GamePiece>> hand;
@@ -80,6 +82,76 @@ public class Player {
     public void remove(GamePiece piece)
     {
         hand.get(piece.getTitle()).remove(piece);
+    }
+
+    // Ask user for the piece they'd like to move and return that piece
+    public GamePiece selectPiece(Scanner user, Board board)
+    {
+        System.out.print(this.getColorCode() + "[" + this.getName() + "] " + Color.RESET);
+        System.out.print("Choose a piece to move (x,y): ");
+        
+        // Get piece from user input
+        GamePiece piece = null;
+        String systemResponse = Color.RED;
+        int[] point = ArrayUtils.extractPointFromString(user.nextLine()); // TODO: figure out a way to not pass scanner through
+        
+        // Error checking
+        int returnCode = point != null ? board.checkSpace(point[0], point[1], this.getColor()) : -2;
+        switch (returnCode)
+        {
+            default: systemResponse += "Something went wrong."; break;
+            case -2: systemResponse += "Invalid input. Please try again."; break;
+            case -1: systemResponse += "Out of bounds! Please try again."; break;
+            case 0:  systemResponse += "Space is empty. Please try again."; break;
+            case 2:  systemResponse += "Cannot move enemy piece. Please try again."; break;
+            case 1:
+                piece = board.getSpace(point[0], point[1]);
+                systemResponse = Color.PURPLE + "You have chosen " + piece.toFormattedPositon();
+                break;
+        }
+        
+        System.out.println(systemResponse + Color.RESET);
+        return piece == null ? this.selectPiece(user, board) : piece;
+    }
+
+    // Ask user for the move they want to make and return
+    public int[] selectMove(Scanner user, Board board, GamePiece piece)
+    {
+        System.out.print("Choose a space to move to (x,y): ");
+        String systemResponse = Color.RED;
+        int[] move = null;
+        
+        // Get move from user input
+        String userInput = user.nextLine().toLowerCase();
+        int[] point = ArrayUtils.extractPointFromString(userInput);
+
+        // Undo case
+        if (userInput.equals("back") || userInput.equals("undo")) { return null; }
+        
+        // Error checking
+        if (point == null)
+        {
+            systemResponse += "Invalid input. Please try again.";
+        }
+        else if (piece.checkMove(point[0], point[1], board))
+        {
+            move = point;
+            systemResponse = Color.PURPLE;
+            systemResponse += "Moving " + piece.toFormattedPositon() + " to " + "(" + point[0] + "," + point[1] + ")\n";
+        }
+        else
+        {
+            switch (board.checkSpace(point[0], point[1], piece.getColor()))
+            {
+                case -1: systemResponse += "Out of bounds! Please try again."; break;
+                case 0:  systemResponse += "Invalid move. Please try again."; break;
+                case 1:  systemResponse += "Cannot attack your own piece. Please try again."; break;
+                case 2:  systemResponse += "Invalid attack. Please try again."; break;
+            }
+        }
+        
+        System.out.println(systemResponse + Color.RESET);
+        return move == null ? this.selectMove(user, board, piece) : move;
     }
 
     // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
