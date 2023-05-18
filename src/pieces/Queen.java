@@ -1,5 +1,6 @@
 package pieces;
 import game.Board;
+import game.Move;
 import java.util.ArrayList;
 
 public class Queen extends GamePiece
@@ -22,7 +23,7 @@ public class Queen extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<Board.Move> moves)
+    public void updateValidMoves(Board board, ArrayList<Move> moves)
     {
         int queenX = super.getCol();
         int queenY = super.getRow();

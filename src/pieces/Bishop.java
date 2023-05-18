@@ -1,5 +1,6 @@
 package pieces;
 import game.Board;
+import game.Move;
 import java.util.ArrayList;
 
 public class Bishop extends GamePiece
@@ -41,7 +42,7 @@ public class Bishop extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<Board.Move> moves)
+    public void updateValidMoves(Board board, ArrayList<Move> moves)
     {
         final String COLOR = super.getColor();
         final int COL = super.getCol();
@@ -57,7 +58,7 @@ public class Bishop extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(board.new Move(this, x, y));
+            moves.add(new Move(board, this, x, y));
             if (spaceStatus == 2) { break; }
             x--; y--;
         }
@@ -68,7 +69,7 @@ public class Bishop extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(board.new Move(this, x, y));
+            moves.add(new Move(board, this, x, y));
             if (spaceStatus == 2) { break; }
             x++; y++;
         }
@@ -79,7 +80,7 @@ public class Bishop extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(board.new Move(this, x, y));
+            moves.add(new Move(board, this, x, y));
             if (spaceStatus == 2) { break; }
             x--;
             y++;
@@ -91,7 +92,7 @@ public class Bishop extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(board.new Move(this, x, y));
+            moves.add(new Move(board, this, x, y));
             if (spaceStatus == 2) { break; }
             x++; y--;
         }

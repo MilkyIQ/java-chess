@@ -95,11 +95,11 @@ public class Player {
         // Loop through all pieces
         for (GamePiece piece : this.getAllPieces())
         {
-            ArrayList<Board.Move> currentPieceMoves = new ArrayList<Board.Move>();
+            ArrayList<Move> currentPieceMoves = new ArrayList<Move>();
             piece.updateValidMoves(board, currentPieceMoves);
 
             // Check every valid move of current piece until move saves king or list exhausted
-            for (Board.Move move : currentPieceMoves)
+            for (Move move : currentPieceMoves)
             {
                 // Simulate move & calculate player state
                 board.move(piece, move.getDestX(), move.getDestY());
@@ -121,7 +121,7 @@ public class Player {
     public boolean isInCheck(Board board)
     {
         // Initialize main variables
-        ArrayList<Board.Move> moves = new ArrayList<Board.Move>();
+        ArrayList<Move> moves = new ArrayList<Move>();
         final int LENGTH = board.getLength();
         final int HEIGHT = board.getLength();
         Board ghostBoard = new Board(LENGTH, HEIGHT);
@@ -154,7 +154,7 @@ public class Player {
         }
 
         // Place points on ghostBoard
-        for (Board.Move move : moves)
+        for (Move move : moves)
         {
             ghostBoard.place(new GamePiece("x", move.getDestX(), move.getDestY()));
         }

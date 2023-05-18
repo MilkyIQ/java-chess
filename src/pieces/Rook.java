@@ -1,5 +1,6 @@
 package pieces;
 import game.Board;
+import game.Move;
 import java.util.ArrayList;
 
 public class Rook extends GamePiece
@@ -39,7 +40,7 @@ public class Rook extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<Board.Move> moves)
+    public void updateValidMoves(Board board, ArrayList<Move> moves)
     {
         final int COL = super.getCol();
         final int ROW = super.getRow();
@@ -50,7 +51,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, ROW, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(board.new Move(this, x, ROW));
+            moves.add(new Move(board, this, x, ROW));
             if (spaceStatus == 2) { break; }
         }
 
@@ -59,7 +60,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(x, ROW, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(board.new Move(this, x, ROW));
+            moves.add(new Move(board, this, x, ROW));
             if (spaceStatus == 2) { break; }
         }
 
@@ -68,7 +69,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(COL, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(board.new Move(this, COL, y));
+            moves.add(new Move(board, this, COL, y));
             if (spaceStatus == 2) { break; }
         }
 
@@ -77,7 +78,7 @@ public class Rook extends GamePiece
         {
             int spaceStatus = board.checkSpace(COL, y, COLOR);
             if (spaceStatus == 1) { break; }
-            moves.add(board.new Move(this, COL, y));
+            moves.add(new Move(board, this, COL, y));
             if (spaceStatus == 2) { break; }
         }
     }

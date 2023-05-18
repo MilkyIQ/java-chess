@@ -1,5 +1,6 @@
 package pieces;
 import game.Board;
+import game.Move;
 import tools.Color;
 
 import java.util.ArrayList;
@@ -89,7 +90,7 @@ public class GamePiece
         return false;
     }
 
-    public void updateValidMoves(Board board, ArrayList<Board.Move> moves)
+    public void updateValidMoves(Board board, ArrayList<Move> moves)
     {
         return;
     }
