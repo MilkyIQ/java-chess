@@ -26,6 +26,7 @@ public class App
         // Create all players and their pieces
         for (int i = 1; i <= reader.getNumPlayers(); i++)
         {
+            String type      = reader.getStringValueOf("type", i);
             String color     = reader.getStringValueOf("color", i);
             String name      = reader.getStringValueOf("name", i);
             String direction = reader.getStringValueOf("pawnDirection", i);
@@ -36,8 +37,8 @@ public class App
             int[][] queens   = reader.getPlayerPieces("queen", i);
             int[][] kings    = reader.getPlayerPieces("king", i);
 
-            players.add(new Player(name, color));
-            Player curPlayer = players.get(i-1);
+            Player curPlayer = type == null ? new Player(name, color) : new ComputerPlayer(color);
+            players.add(curPlayer);
             for (int[] p : pawns   ) { curPlayer.give(new   Pawn(color, p[0], p[1], direction)); }
             for (int[] p : rooks   ) { curPlayer.give(new   Rook(color, p[0], p[1])); }
             for (int[] p : knights ) { curPlayer.give(new Knight(color, p[0], p[1])); }
@@ -57,8 +58,11 @@ public class App
         while (players.size() > 1)
         {
             Player player = players.get(i);
-            System.out.println("--------------- Turn #" + (k+1) + "---------------\n");
-            board.printBoard();
+            if (!player.getName().equals("AIPlayer")) // bodgy way to detect this but it will work for now, just a proof of concept
+            {
+                System.out.println("--------------- Turn #" + (k+1) + "---------------\n");
+                board.printBoard();
+            }
 
             // Get move from player
             GamePiece piece = player.selectPiece(board);
