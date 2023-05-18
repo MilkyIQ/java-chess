@@ -66,12 +66,13 @@ public class App
             // Get move from player
             GamePiece piece = selectPiece(player);
             int[] move      = selectMove(piece);
-            int[] from      = {piece.getCol(), piece.getRow()};
             if (move == null) { System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); continue; } // undo case
+
+            Move selectedMove = new Move(board, piece, move[0], move[1]);
             
             // Update board and player states
             GamePiece space = board.getSpace(move[0], move[1]);
-            board.move(piece, move[0], move[1]);
+            board.move(selectedMove);
             for (Player p : players) { p.updateState(board); }
 
             // Verify current move is not check
@@ -79,7 +80,7 @@ public class App
             if (playerState.equals("check") || playerState.equals("checkmate"))
             {
                 System.out.println(Color.RED+ "Illegal Move: Cannot leave King in check!" + Color.RESET);
-                board.undoMove(piece, from[0], from[1], space);
+                board.undoMove(selectedMove);
                 continue;
             }
 

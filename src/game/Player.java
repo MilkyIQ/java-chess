@@ -102,9 +102,9 @@ public class Player {
             for (Move move : currentPieceMoves)
             {
                 // Simulate move & calculate player state
-                board.move(piece, move.getDestX(), move.getDestY());
+                board.move(move);
                 boolean resultsInCheck = this.isInCheck(board);
-                board.undoMove(piece, move.getOriginX(), move.getOriginY(), move.getDestPiece());
+                board.undoMove(move);
 
                 // if king is not safe, continue, else, set state and end function
                 if (resultsInCheck) { continue; }

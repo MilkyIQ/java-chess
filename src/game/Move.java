@@ -38,12 +38,12 @@ public class Move
         return toY;
     }
 
-    public GamePiece getPiece()
+    public GamePiece getOwner()
     {
         return piece;
     }
 
-    public GamePiece getDestPiece()
+    public GamePiece getDest()
     {
         return space;
     }

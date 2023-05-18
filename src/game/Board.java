@@ -80,19 +80,27 @@ public class Board
     }
 
     // Move given piece from one space to another, update spaces and piece data
-    public void move(GamePiece piece, int x, int y)
+    public void move(Move move)
     {
+        int x = move.getDestX();
+        int y = move.getDestY();
+        GamePiece piece = move.getOwner();
+
         board[y][x] = piece;
-        board[piece.getRow()][piece.getCol()] = null;
+        board[move.getOriginX()][move.getOriginY()] = null;
         piece.setPos(x, y);
         piece.incMoveCount();
     }
 
     // Undo the last move (for use with player state checks)
-    public void undoMove(GamePiece movedPiece, int oldX, int oldY, GamePiece attackedSpace)
+    public void undoMove(Move move)
     {
-        int attackedX = movedPiece.getCol();
-        int attackedY = movedPiece.getRow();
+        GamePiece attackedSpace = move.getDest();
+        GamePiece movedPiece    = move.getOwner();
+        int oldX                = move.getOriginX();
+        int oldY                = move.getOriginY();
+        int attackedX           = move.getOriginX();
+        int attackedY           = move.getOriginY();
         
         board[oldY][oldX] = movedPiece;
         board[attackedY][attackedX] = attackedSpace;
