@@ -236,7 +236,8 @@ public class Player {
             for (int row = 0; row < HEIGHT; row++)
             {
                 GamePiece space = board.getSpace(col, row);
-                if (space == null || space.getColor().equals(COLOR)) { continue; }
+                Pawn dummyPawn = new Pawn("",0,0,"up");
+                if (space == null || space.getColor().equals(COLOR) || space.getClass() == dummyPawn.getClass()) { continue; }
                 space.updateValidMoves(board, moves);
             }
         }
