@@ -21,6 +21,8 @@ public class Player {
         for (String t : titles) { hand.put(t, new ArrayList<GamePiece>()); };
     }
 
+    // GETTER METHODS 
+
     public String getColor()
     {
         return COLOR;
@@ -43,11 +45,6 @@ public class Player {
         return state;
     }
 
-    public HashMap<String,ArrayList<GamePiece>> getHand()
-    {
-        return hand;
-    }
-
     public ArrayList<GamePiece> getAllPiecesOfType(String title)
     {
         return hand.get(title);
@@ -67,10 +64,7 @@ public class Player {
         return pieces;
     }
 
-    public void setState(String newState)
-    {
-        state = newState;
-    }
+    // SETTER METHODS
 
     public void give(GamePiece piece)
     {
@@ -88,7 +82,7 @@ public class Player {
         // Breaks function if king is safe
         if (!this.isInCheck(board))
         {
-            this.setState("safe");
+            state = "safe";
             return;
         }
 
@@ -108,16 +102,16 @@ public class Player {
 
                 // if king is not safe, continue, else, set state and end function
                 if (resultsInCheck) { continue; }
-                this.setState("check");
+                state = "check";
                 return;
             }
         }
 
         // If all move lists exhausted, players state is checkmate
-        this.setState("checkmate");
+        state = "checkmate";
     }
 
-    // Calcualtes all possible movements from all pieces on board (excluding pawns), and continue 
+    // Calculates all possible movements from all pieces on board (excluding pawns), and continue 
     public boolean isInCheck(Board board)
     {
         // Initialize main variables
@@ -162,6 +156,8 @@ public class Player {
         // Place king on board and return status
         return ghostBoard.getSpace(KINGX, KINGY) != null;
     }
+
+    // STATIC METHODS
 
     // Loop through a list of players and return the index of the specified color
     public static int indexOf(String color, ArrayList<Player> players)

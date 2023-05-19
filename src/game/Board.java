@@ -72,9 +72,9 @@ public class Board
     {
         for (Player player : players)
         {
-            for (ArrayList<GamePiece> points : player.getHand().values())
+            for (GamePiece piece : player.getAllPieces())
             {
-                for (GamePiece piece : points) { this.place(piece); } // this is technically only 4 indents so i count a win.
+                this.place(piece);
             }
         }
     }
