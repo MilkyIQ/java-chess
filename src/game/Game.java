@@ -49,8 +49,8 @@ public class Game
             // Should we necessarily be relying on a try-catch statement for default values? This seems inefficient
             try
             {
-                int diffLevel = reader.getIntValueOf("diffLevel", i);
-                alivePlayers.add(new HumanPlayer(name, color, scanner)); // TODO: temp code
+                int difficulty = reader.getIntValueOf("difficultyLevel", i);
+                alivePlayers.add(new ComputerPlayer(name, color, difficulty));
             }
             catch (NullPointerException e)
             {
