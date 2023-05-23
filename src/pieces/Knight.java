@@ -32,12 +32,14 @@ public class Knight extends GamePiece
         {
             for (int longEdgeInc : longEdge)
             {
-                int[] lShapeXPos = {COL+longEdgeInc, ROW+shortEdgeInc};
-                int[] lShapeYPos = {COL+shortEdgeInc, ROW+longEdgeInc};
-                boolean lShapeXInBounds = !board.coordinateOutOfBounds(lShapeXPos[0], lShapeXPos[1]);
-                boolean lShapeYInBounds = !board.coordinateOutOfBounds(lShapeYPos[0], lShapeYPos[1]);
-                if (lShapeXInBounds) { moves.add(new Move(board, this, lShapeXPos[0], lShapeXPos[1])); }
-                if (lShapeYInBounds) { moves.add(new Move(board, this, lShapeYPos[0], lShapeYPos[1])); }
+                int[] lShapeX = {COL+longEdgeInc, ROW+shortEdgeInc};
+                int[] lShapeY = {COL+shortEdgeInc, ROW+longEdgeInc};
+                boolean moveXinBounds = !board.coordinateOutOfBounds(lShapeX[0], lShapeX[1]);
+                boolean moveYinBounds = !board.coordinateOutOfBounds(lShapeY[0], lShapeY[1]);
+                boolean moveXisFriendly = board.checkSpace(lShapeX[0], lShapeX[1], super.getColor()) != 1;
+                boolean moveYisFriendly = board.checkSpace(lShapeY[0], lShapeY[1], super.getColor()) != 1;
+                if (moveXinBounds && moveXisFriendly) { moves.add(new Move(board, this, lShapeX[0], lShapeX[1])); }
+                if (moveYinBounds && moveYisFriendly) { moves.add(new Move(board, this, lShapeY[0], lShapeY[1])); }
             }
         }
     }
