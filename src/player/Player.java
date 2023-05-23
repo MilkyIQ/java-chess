@@ -1,6 +1,9 @@
-package game;
+package player;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import game.Board;
+import game.Move;
 import pieces.*;
 import tools.Color;
 
@@ -74,6 +77,11 @@ public class Player {
     public void remove(GamePiece piece)
     {
         hand.get(piece.getTitle()).remove(piece);
+    }
+
+    public Move selectMove(Board board)
+    {
+        throw new IllegalStateException("Illegal creation of generic class object");
     }
 
     // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
@@ -170,19 +178,5 @@ public class Player {
             }
         }
         return -1;
-    }
-
-    // Loop through all players' game states and removes those who are in checkmate or stalemate
-    public static void removeLosers(ArrayList<Player> players)
-    {
-        for (int i = 0; i < players.size(); i++)
-        {
-            String state = players.get(i).getState();
-            if (state.equals("checkmate") || state.equals("stalemate"))
-            {
-                players.remove(i);
-                i--;
-            }
-        }
     }
 }

@@ -1,7 +1,7 @@
 package game;
 import pieces.*;
+import player.Player;
 import tools.Color;
-
 import java.util.ArrayList;
 
 public class Board
@@ -9,7 +9,7 @@ public class Board
     private GamePiece[][] board;
     private final int LENGTH;
     private final int HEIGHT;
-    public String[] colors = new String[3]; 
+    public String[] colors = new String[3];
     
     public Board(int columns, int rows)
     {
