@@ -103,13 +103,13 @@ public class Board
     // Move given piece from one space to another, update spaces and piece data
     public void move(Move move)
     {
-        int x = move.getDestX();
-        int y = move.getDestY();
+        int newPosX = move.getDestX();
+        int newPosY = move.getDestY();
         GamePiece piece = move.getOwner();
 
-        board[y][x] = piece;
-        board[move.getOriginX()][move.getOriginY()] = null;
-        piece.setPos(x, y);
+        board[newPosY][newPosX] = piece;
+        board[move.getOriginY()][move.getOriginX()] = null;
+        piece.setPos(newPosX, newPosY);
         piece.incMoveCount();
     }
 
