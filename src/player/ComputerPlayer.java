@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import game.Move;
 import game.Board;
+import tools.Color;
 
 public class ComputerPlayer extends Player
 {
@@ -39,7 +40,9 @@ public class ComputerPlayer extends Player
                 selectedMove = simpleRankedSelect(board);
         }
 
-        System.out.println("Move chosen!");
+        System.out.println(super.getColorCode() + "Move chosen!" + 
+        selectedMove.getOwner().toFormattedPositon() + " " + selectedMove.getDestX() + "," + selectedMove.getDestY() 
+        + Color.RESET);
         return selectedMove;
     }
 

@@ -28,7 +28,14 @@ public class Queen extends GamePiece
         int queenX = super.getCol();
         int queenY = super.getRow();
         String queenColor = super.getColor();
-        new Rook(queenColor, queenX, queenY).updateValidMoves(board, moves);
-        new Bishop(queenColor, queenX, queenY).updateValidMoves(board, moves);
+        ArrayList<Move> validQueenMoves = new ArrayList<Move>();
+        new Rook(queenColor, queenX, queenY).updateValidMoves(board, validQueenMoves);
+        new Bishop(queenColor, queenX, queenY).updateValidMoves(board, validQueenMoves);
+
+        // Have to recreate new move objects otherwise queen will typecast to a Rook or Bishop
+        for (Move move : validQueenMoves)
+        {
+            moves.add(new Move(board, this, move.getDestX(), move.getDestY()));
+        }
     }
 }
