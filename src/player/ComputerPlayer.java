@@ -70,6 +70,11 @@ public class ComputerPlayer extends Player
 
         for (Move curMove : getAllPossibleMoves(board))
         {
+            board.move(curMove);
+            boolean resultsInCheck = this.isInCheck(board);
+            board.undoMove(curMove);
+            if (resultsInCheck) { continue; }
+            
             GamePiece dest = curMove.getDest();
 
             int curMovePoints = dest != null ? pieceRankings.get(dest.getTitle()) : defaultMovePoints;

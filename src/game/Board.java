@@ -120,15 +120,14 @@ public class Board
         GamePiece movedPiece    = move.getOwner();
         int oldX                = move.getOriginX();
         int oldY                = move.getOriginY();
-        int attackedX           = move.getOriginX();
-        int attackedY           = move.getOriginY();
+        int attackedX           = move.getDestX();
+        int attackedY           = move.getDestY();
         
         board[oldY][oldX] = movedPiece;
         board[attackedY][attackedX] = attackedSpace;
         movedPiece.setPos(oldX, oldY);
         movedPiece.decMoveCount();
         // no need to update attackedSpace position because it's position doesnt change after attack
-
     }
 
     // Print out board to console with fancy graphics

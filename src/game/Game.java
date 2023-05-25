@@ -75,9 +75,32 @@ public class Game
         int i = 0;
         while (alivePlayers.size() > 1)
         {
+            
             Player player = alivePlayers.get(i);
             System.out.println("--------------- Turn #" + (turn+1) + "---------------\n");
             board.printBoard();
+            
+            // TODO: (bug fix)
+            /*
+             * MAJOR issue here. For some reason, sometimes, at seemingly random, attacking a piece on the board
+             * will not overwrite that space on the board with your piece's object. Both objects will say their 
+             * positions are on the board simulataneously, even though they should not be.
+             * Possible conflicts may be that simulating moves in player.isInCheck() may make the attacked piece reappear
+             * as the player attempts to go through their entire hand and the piece is still there. I'm not sure why this would
+             * do that, as the piece is SUPPOSED to be removed from their hand, but then again we are having errors.
+             */
+            // TEST CODE START
+            for (GamePiece piece : player.getAllPieces())
+            {
+                GamePiece space = board.getSpace(piece.getCol(), piece.getRow());
+                if (piece != space)
+                {
+                    System.out.println(piece.toFormattedPositon());
+                    System.out.println(space.toFormattedPositon());
+                    throw new IllegalStateException("What the actual fuck");
+                }
+            }
+            // TEST CODE END
 
             // Get move from player & update
             Move move = player.selectMove(board);
