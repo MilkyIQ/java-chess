@@ -158,7 +158,7 @@ public class Player {
         // Place points on ghostBoard
         for (Move move : moves)
         {
-            ghostBoard.place(new GamePiece("x", move.getDestX(), move.getDestY()));
+            ghostBoard.place(new GamePiece(move.getDestX(), move.getDestY()));
         }
         
         // Place king on board and return status

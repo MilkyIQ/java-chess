@@ -1,15 +1,16 @@
 package pieces;
 import game.Board;
 import game.Move;
+import player.Player;
 import java.util.ArrayList;
 
 public class Pawn extends GamePiece
 {
     private final String DIR;
 
-    public Pawn(String color, int col, int row, String direction)
+    public Pawn(Player owner, int col, int row, String direction)
     {
-        super("Pawn", "\u265F", color, col, row);
+        super("Pawn", "\u265F", owner, col, row);
         this.DIR = direction;
 
         if (!(DIR.equals("up") || DIR.equals("down") || DIR.equals("left") || DIR.equals("right")))

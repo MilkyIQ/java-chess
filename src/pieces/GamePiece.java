@@ -1,6 +1,7 @@
 package pieces;
 import game.Board;
 import game.Move;
+import player.Player;
 import tools.Color;
 
 import java.util.ArrayList;
@@ -9,29 +10,29 @@ public class GamePiece
 {
     private final String TITLE;
     private final String SYMBOL;
-    private final String COLOR;
+    private Player owner;
     private int col;
     private int row;
     private int moveCount;
     
-    public GamePiece(String title, String symbol, String color, int col, int row)
+    public GamePiece(String title, String symbol, Player owner, int col, int row)
     {
         this.TITLE = title;
         this.SYMBOL = symbol;
-        this.COLOR = color;
+        this.owner = owner;
         this.col = col;
         this.row = row;
         this.moveCount = 0;
     }
 
     // For use with ghost board point placement only
-    public GamePiece(String symbol, int col, int row)
+    public GamePiece(int col, int row)
     {
-        this.SYMBOL = symbol;
         this.col = col;
         this.row = row;
-        this.TITLE = "GenericGamePiece";
-        this.COLOR = "purple_underlined";
+        this.SYMBOL = "x";
+        this.TITLE = null;
+        this.owner = null;
     }
 
     public String getTitle()
@@ -46,12 +47,17 @@ public class GamePiece
 
     public String getColor()
     {
-        return COLOR;
+        return owner.getColor();
+    }
+
+    public Player getOwner()
+    {
+        return owner;
     }
 
     public String getColorCode()
     {
-        return Color.getColorCodeOf(COLOR);
+        return Color.getColorCodeOf(owner.getColor());
     }
 
     public int getRow()

@@ -1,13 +1,14 @@
 package pieces;
 import game.Board;
 import game.Move;
+import player.Player;
 import java.util.ArrayList;
 
 public class Knight extends GamePiece
 {
-    public Knight(String color, int col, int row)
+    public Knight(Player owner, int col, int row)
     {
-        super("Knight", "\u265E", color, col, row);
+        super("Knight", "\u265E", owner, col, row);
     }
 
     @Override

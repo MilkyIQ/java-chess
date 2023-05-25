@@ -106,11 +106,14 @@ public class Board
         int newPosX = move.getDestX();
         int newPosY = move.getDestY();
         GamePiece piece = move.getOwner();
+        GamePiece space = move.getDest();
+        if (space != null) { space.getOwner().remove(space); }
 
         board[newPosY][newPosX] = piece;
         board[move.getOriginY()][move.getOriginX()] = null;
         piece.setPos(newPosX, newPosY);
         piece.incMoveCount();
+
     }
 
     // Undo the last move (for use with player state checks)
@@ -122,7 +125,8 @@ public class Board
         int oldY                = move.getOriginY();
         int attackedX           = move.getDestX();
         int attackedY           = move.getDestY();
-        
+        if (attackedSpace != null) { attackedSpace.getOwner().give(attackedSpace); }
+
         board[oldY][oldX] = movedPiece;
         board[attackedY][attackedX] = attackedSpace;
         movedPiece.setPos(oldX, oldY);

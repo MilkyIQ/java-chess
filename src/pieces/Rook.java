@@ -1,13 +1,14 @@
 package pieces;
 import game.Board;
 import game.Move;
+import player.Player;
 import java.util.ArrayList;
 
 public class Rook extends GamePiece
 {
-    public Rook(String COLOR, int col, int row)
+    public Rook(Player owner, int col, int row)
     { 
-        super("Rook", "\u265C", COLOR, col,row);
+        super("Rook", "\u265C", owner, col,row);
     }
 
     @Override

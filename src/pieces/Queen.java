@@ -1,13 +1,14 @@
 package pieces;
 import game.Board;
 import game.Move;
+import player.Player;
 import java.util.ArrayList;
 
 public class Queen extends GamePiece
 {
-    public Queen(String color, int col, int row)
+    public Queen(Player owner, int col, int row)
     {
-        super("Queen", "\u265B", color, col, row);
+        super("Queen", "\u265B", owner, col, row);
     }
 
     @Override
@@ -15,9 +16,9 @@ public class Queen extends GamePiece
     {
         int queenX = super.getCol();
         int queenY = super.getRow();
-        String queenColor = super.getColor();
-        GamePiece ghostRook = new Rook(queenColor, queenX, queenY);
-        GamePiece ghostBishop = new Bishop(queenColor, queenX, queenY);
+        Player queenOwner = super.getOwner();
+        GamePiece ghostRook = new Rook(queenOwner, queenX, queenY);
+        GamePiece ghostBishop = new Bishop(queenOwner, queenX, queenY);
 
         return ghostRook.checkMove(x, y, board) || ghostBishop.checkMove(x, y, board);
     }
@@ -27,10 +28,10 @@ public class Queen extends GamePiece
     {
         int queenX = super.getCol();
         int queenY = super.getRow();
-        String queenColor = super.getColor();
+        Player queenOwner = super.getOwner();
         ArrayList<Move> validQueenMoves = new ArrayList<Move>();
-        new Rook(queenColor, queenX, queenY).updateValidMoves(board, validQueenMoves);
-        new Bishop(queenColor, queenX, queenY).updateValidMoves(board, validQueenMoves);
+        new Rook(queenOwner, queenX, queenY).updateValidMoves(board, validQueenMoves);
+        new Bishop(queenOwner, queenX, queenY).updateValidMoves(board, validQueenMoves);
 
         // Have to recreate new move objects otherwise queen will typecast to a Rook or Bishop
         for (Move move : validQueenMoves)

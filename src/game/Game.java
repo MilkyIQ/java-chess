@@ -58,12 +58,12 @@ public class Game
             }
 
             Player cur = alivePlayers.get(i-1);
-            for (int[] p : pawns   ) { cur.give(new   Pawn(color, p[0], p[1], direction)); }
-            for (int[] p : rooks   ) { cur.give(new   Rook(color, p[0], p[1])); }
-            for (int[] p : knights ) { cur.give(new Knight(color, p[0], p[1])); }
-            for (int[] p : bishops ) { cur.give(new Bishop(color, p[0], p[1])); }
-            for (int[] p : queens  ) { cur.give(new  Queen(color, p[0], p[1])); }
-            for (int[] p : kings   ) { cur.give(new   King(color, p[0], p[1])); }
+            for (int[] p : pawns   ) { cur.give(new   Pawn(cur, p[0], p[1], direction)); }
+            for (int[] p : rooks   ) { cur.give(new   Rook(cur, p[0], p[1])); }
+            for (int[] p : knights ) { cur.give(new Knight(cur, p[0], p[1])); }
+            for (int[] p : bishops ) { cur.give(new Bishop(cur, p[0], p[1])); }
+            for (int[] p : queens  ) { cur.give(new  Queen(cur, p[0], p[1])); }
+            for (int[] p : kings   ) { cur.give(new   King(cur, p[0], p[1])); }
         }
         
         board.populate(alivePlayers);
@@ -80,29 +80,7 @@ public class Game
             System.out.println("--------------- Turn #" + (turn+1) + "---------------\n");
             board.printBoard();
             
-            // TODO: (bug fix)
-            /*
-             * MAJOR issue here. For some reason, sometimes, at seemingly random, attacking a piece on the board
-             * will not overwrite that space on the board with your piece's object. Both objects will say their 
-             * positions are on the board simulataneously, even though they should not be.
-             * Possible conflicts may be that simulating moves in player.isInCheck() may make the attacked piece reappear
-             * as the player attempts to go through their entire hand and the piece is still there. I'm not sure why this would
-             * do that, as the piece is SUPPOSED to be removed from their hand, but then again we are having errors.
-             */
-            // TEST CODE START
-            for (GamePiece piece : player.getAllPieces())
-            {
-                GamePiece space = board.getSpace(piece.getCol(), piece.getRow());
-                if (piece != space)
-                {
-                    System.out.println(piece.toFormattedPositon());
-                    System.out.println(space.toFormattedPositon());
-                    throw new IllegalStateException("What the actual fuck");
-                }
-            }
-            // TEST CODE END
-
-            // Get move from player & update
+            // Get move from player & up6date
             Move move = player.selectMove(board);
             board.move(move);
             for (Player p : alivePlayers) { p.updateState(board); }
@@ -116,14 +94,11 @@ public class Game
                 continue;
             }
 
-            // Update player list & player hands
-            GamePiece space = move.getDest();
-            if (space != null) { alivePlayers.get(Player.indexOf(space.getColor(), alivePlayers)).remove(space); } // remove piece from enemy hand if attacking
             removeLosers();
-
             i = i < alivePlayers.size()-1 ? i+1 : 0;
             turn++;
         }
+
     }
 
     public void close()

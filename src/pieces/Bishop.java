@@ -1,13 +1,14 @@
 package pieces;
 import game.Board;
 import game.Move;
+import player.Player;
 import java.util.ArrayList;
 
 public class Bishop extends GamePiece
 {
-    public Bishop(String color, int col, int row)
+    public Bishop(Player owner, int col, int row)
     {
-        super("Bishop", "\u265D", color, col, row);
+        super("Bishop", "\u265D", owner, col, row);
     }
 
     @Override
