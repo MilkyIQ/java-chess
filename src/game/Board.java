@@ -16,15 +16,6 @@ public class Board
         this.LENGTH = Math.min(50, Math.abs(columns));
         this.HEIGHT = Math.min(50, Math.abs(rows));
         this.board = new GamePiece[HEIGHT][LENGTH];
-
-        // Create empty board
-        for (int row = 0; row < HEIGHT; row++)
-        {
-            for (int col = 0; col < LENGTH; col++)
-            {
-                board[row][col] = null;
-            }
-        }
     }
 
     // GETTERS
@@ -105,8 +96,8 @@ public class Board
     {
         int newPosX = move.getDestX();
         int newPosY = move.getDestY();
-        GamePiece piece = move.getOwner();
-        GamePiece space = move.getDest();
+        GamePiece piece = move.getOriginPiece();
+        GamePiece space = move.getDestPiece();
         if (space != null) { space.getOwner().remove(space); }
 
         board[newPosY][newPosX] = piece;
@@ -119,8 +110,8 @@ public class Board
     // Undo the last move (for use with player state checks)
     public void undoMove(Move move)
     {
-        GamePiece attackedSpace = move.getDest();
-        GamePiece movedPiece    = move.getOwner();
+        GamePiece attackedSpace = move.getDestPiece();
+        GamePiece movedPiece    = move.getOriginPiece();
         int oldX                = move.getOriginX();
         int oldY                = move.getOriginY();
         int attackedX           = move.getDestX();

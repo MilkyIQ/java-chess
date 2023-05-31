@@ -7,8 +7,8 @@ public class App
     {
         Scanner scanner = new Scanner(System.in);
         Game game = new Game("src/game/settings/settings.json", scanner);
-
-        game.begin();
+        
+        game.begin(); 
         game.printResults();
         game.close();
     }

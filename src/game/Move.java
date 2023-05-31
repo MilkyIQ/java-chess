@@ -12,7 +12,6 @@ public class Move
         this.piece = piece;
         this.fromX = piece.getCol();
         this.fromY = piece.getRow();
-
         this.space = board.getSpace(toX, toY);
         this.toX = toX;
         this.toY = toY;
@@ -38,12 +37,12 @@ public class Move
         return toY;
     }
 
-    public GamePiece getOwner()
+    public GamePiece getOriginPiece()
     {
         return piece;
     }
 
-    public GamePiece getDest()
+    public GamePiece getDestPiece()
     {
         return space;
     }

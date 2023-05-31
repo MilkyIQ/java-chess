@@ -75,7 +75,6 @@ public class Game
         int i = 0;
         while (alivePlayers.size() > 1)
         {
-            
             Player player = alivePlayers.get(i);
             System.out.println("--------------- Turn #" + (turn+1) + "---------------\n");
             board.printBoard();
@@ -83,7 +82,7 @@ public class Game
             // Get move from player & up6date
             Move move = player.selectMove(board);
             board.move(move);
-            for (Player p : alivePlayers) { p.updateState(board); }
+            for (Player p : alivePlayers) { p.updateState(p.calculateState(board)); }
 
             // Verify current move is not check
             String playerState = player.getState();
@@ -98,7 +97,6 @@ public class Game
             i = i < alivePlayers.size()-1 ? i+1 : 0;
             turn++;
         }
-
     }
 
     public void close()
@@ -111,7 +109,6 @@ public class Game
         String result = (alivePlayers.size() == 1) ? (alivePlayers.get(0).getName() + " Wins!") : ("Draw.");
         System.out.println(result);
     }
-
     // Loop through all players' game states and removes those who are in checkmate or stalemate
     private void removeLosers()
     {

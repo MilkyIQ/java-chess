@@ -9,12 +9,15 @@ import tools.Color;
 public class ComputerPlayer extends Player
 {
     private int difficultyLevel;
+    private double defenseWeight, offenseWeight;
     private HashMap<String,Integer> pieceRankings;
 
     public ComputerPlayer(String name, String color, int difficultyLevel)
     {
         super(name, color);
         this.difficultyLevel = difficultyLevel;
+        this.defenseWeight = 0.50;
+        this.offenseWeight = 0.75;
         this.pieceRankings = new HashMap<String,Integer>();
         pieceRankings.put("King",   100);
         pieceRankings.put("Queen",  95);
@@ -23,7 +26,7 @@ public class ComputerPlayer extends Player
         pieceRankings.put("Bishop", 65);
         pieceRankings.put("Pawn",   33);
     }
-
+    
     @Override
     public Move selectMove(Board board)
     {
@@ -41,7 +44,7 @@ public class ComputerPlayer extends Player
         }
 
         System.out.println(super.getColorCode() + "Move chosen!" + 
-        selectedMove.getOwner().toFormattedPositon() + " " + selectedMove.getDestX() + "," + selectedMove.getDestY() 
+        selectedMove.getOriginPiece().toFormattedPositon() + " " + selectedMove.getDestX() + "," + selectedMove.getDestY() 
         + Color.RESET);
         return selectedMove;
     }
@@ -70,16 +73,8 @@ public class ComputerPlayer extends Player
 
         for (Move curMove : getAllPossibleMoves(board))
         {
-            board.move(curMove);
-            boolean resultsInCheck = this.isInCheck(board);
-            board.undoMove(curMove);
-            if (resultsInCheck) { continue; }
-            
-            GamePiece dest = curMove.getDest();
-
-            int curMovePoints = dest != null ? pieceRankings.get(dest.getTitle()) : defaultMovePoints;
-            int rank = defaultMovePoints + curMovePoints;
-
+        
+            int rank = calculateMovePoints(curMove, board, defaultMovePoints);
             if (rank < bestRanking) { continue; }
             if (rank > bestRanking) { bestMoves.clear(); }
             bestMoves.add(curMove);
@@ -88,6 +83,61 @@ public class ComputerPlayer extends Player
 
         int randomIndex = (int) (Math.random() * bestMoves.size());
         return bestMoves.get(randomIndex);
+    }
+
+    /*
+     * Calculates the number of points a given move is worth based on whether or not the move
+     * will attack a piece in that move or the next, as well as the state of vulnerability that
+     * all of the player's pieces will be in after the move is made
+     */
+    private int calculateMovePoints(Move move, Board board, int basePoints)
+    {
+        board.move(move);
+        int points = basePoints;
+        
+        if (this.getAllPiecesOfType("King").get(0).isBeingThreatened(board))
+        {
+            board.undoMove(move);
+            return -1;
+        }
+        if (move.getDestPiece() != null)
+        {
+            points += pieceRankings.get(move.getDestPiece().getTitle());
+        }
+        
+        for (GamePiece piece : getAllPiecesOnBoard(board))
+        {
+            int pieceWorth = pieceRankings.get(piece.getTitle());
+            boolean isThreatened = piece.isBeingThreatened(board);
+            boolean isFriendly = piece.getOwner() == this;
+            
+            if (!isThreatened) { continue; }
+            if (isFriendly)
+            {
+                points -= pieceWorth / defenseWeight;
+            }
+            else if (!isFriendly)
+            {
+                points += pieceWorth / offenseWeight;
+            }
+        }
+
+        board.undoMove(move);
+        return basePoints + points;
+    }
+
+    private ArrayList<GamePiece> getAllPiecesOnBoard(Board board)
+    {
+        ArrayList<GamePiece> allPieces = new ArrayList<GamePiece>();
+        for (int row = 0; row < board.getHeight(); row++)
+        {
+            for (int col = 0; col < board.getLength(); col++)
+            {
+                GamePiece space = board.getSpace(col, row);
+                if (space != null) { allPieces.add(space); }
+            }
+        }
+        return allPieces;
     }
 
     private ArrayList<Move> getAllPossibleMoves(Board board)

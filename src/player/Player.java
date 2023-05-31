@@ -79,19 +79,25 @@ public class Player {
         hand.get(piece.getTitle()).remove(piece);
     }
 
+    public void updateState(String value)
+    {
+        state = value;
+    }
+
     public Move selectMove(Board board)
     {
         throw new IllegalStateException("Illegal creation of generic class object");
     }
 
     // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
-    public void updateState(Board board)
+    public String calculateState(Board board)
     {
+        GamePiece king = hand.get("King").get(0);
+        
         // Breaks function if king is safe
-        if (!this.isInCheck(board))
+        if (!king.isBeingThreatened(board))
         {
-            state = "safe";
-            return;
+            return "safe";
         }
 
         // Loop through all pieces
@@ -105,78 +111,16 @@ public class Player {
             {
                 // Simulate move & calculate player state
                 board.move(move);
-                boolean resultsInCheck = this.isInCheck(board);
+                boolean resultsInCheck = king.isBeingThreatened(board);
                 board.undoMove(move);
 
                 // if king is not safe, continue, else, set state and end function
                 if (resultsInCheck) { continue; }
-                state = "check";
-                return;
+                return "check";
             }
         }
 
         // If all move lists exhausted, players state is checkmate
-        state = "checkmate";
-    }
-
-    // Calculates all possible movements from all pieces on board (excluding pawns), and continue 
-    public boolean isInCheck(Board board)
-    {
-        // Initialize main variables
-        ArrayList<Move> moves = new ArrayList<Move>();
-        final int LENGTH = board.getLength();
-        final int HEIGHT = board.getLength();
-        Board ghostBoard = new Board(LENGTH, HEIGHT);
-        GamePiece king   = hand.get("King").get(0);
-        final int KINGX  = king.getCol();
-        final int KINGY  = king.getRow();
-        
-        // Check corners for pawns
-        int[] xInc = {1, -1}, yInc = {1, -1};
-        for (int x : xInc)
-        {
-            for (int y : yInc)
-            {
-                if (board.coordinateOutOfBounds(KINGX+x, KINGY+y)) { continue; };
-                GamePiece potentialPawn = board.getSpace(KINGX+x, KINGY+y);
-                Boolean pawnIsAttacking = potentialPawn != null && potentialPawn.getTitle().equals("Pawn") && potentialPawn.checkMove(KINGX, KINGY, board);
-                if (pawnIsAttacking) { return true; }
-            }
-        }
-        
-        // Iterate through board and populate ghostBoard with validMoves
-        for (int col = 0; col < LENGTH; col++)
-        {
-            for (int row = 0; row < HEIGHT; row++)
-            {
-                GamePiece space = board.getSpace(col, row);
-                if (space == null || space.getColor().equals(COLOR)) { continue; }
-                space.updateValidMoves(board, moves);
-            }
-        }
-
-        // Place points on ghostBoard
-        for (Move move : moves)
-        {
-            ghostBoard.place(new GamePiece(move.getDestX(), move.getDestY()));
-        }
-        
-        // Place king on board and return status
-        return ghostBoard.getSpace(KINGX, KINGY) != null;
-    }
-
-    // STATIC METHODS
-
-    // Loop through a list of players and return the index of the specified color
-    public static int indexOf(String color, ArrayList<Player> players)
-    {
-        for (int i = 0; i < players.size(); i++)
-        {
-            if (players.get(i).getColor().equals(color))
-            {
-                return i;
-            }
-        }
-        return -1;
+        return "checkmate";
     }
 }

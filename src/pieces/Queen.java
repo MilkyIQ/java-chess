@@ -17,8 +17,8 @@ public class Queen extends GamePiece
         int queenX = super.getCol();
         int queenY = super.getRow();
         Player queenOwner = super.getOwner();
-        GamePiece ghostRook = new Rook(queenOwner, queenX, queenY);
-        GamePiece ghostBishop = new Bishop(queenOwner, queenX, queenY);
+        Rook ghostRook = new Rook(queenOwner, queenX, queenY);
+        Bishop ghostBishop = new Bishop(queenOwner, queenX, queenY);
 
         return ghostRook.checkMove(x, y, board) || ghostBishop.checkMove(x, y, board);
     }
