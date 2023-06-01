@@ -39,7 +39,7 @@ public class Board
     public int checkSpace(int x, int y, String color)
     {
         if      (coordinateOutOfBounds(x, y))           { return -1; } // space is out of bounds
-        else if (board[y][x] == null)                   { return 0;  } // space is empty\
+        else if (board[y][x] == null)                   { return 0;  } // space is empty
         else if (board[y][x].getColor().equals(color))  { return 1;  } // space is occupied by color
         else if (!board[y][x].getColor().equals(color)) { return 2;  } // space is occupied NOT by color
         else

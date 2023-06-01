@@ -2,7 +2,7 @@ package player;
 import pieces.GamePiece;
 import tools.Color;
 import java.util.Scanner;
-
+import java.util.ArrayList;
 import game.Board;
 import game.Move;
 
@@ -20,13 +20,8 @@ public class HumanPlayer extends Player
     public Move selectMove(Board board)
     {
         GamePiece selectedPiece = requestPieceFromUser(board);
-        int[]     selectedDest  = requestDestFromUser(board, selectedPiece);
-        if (selectedDest == null)
-        {
-            System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET); 
-            return selectMove(board);
-        }
-
+        int[] selectedDest = requestDestFromUser(board, selectedPiece);
+        System.out.println(Color.PURPLE + "Moving" + Color.RESET);
         return new Move(board, selectedPiece, selectedDest[0], selectedDest[1]);
     }
 
@@ -44,7 +39,6 @@ public class HumanPlayer extends Player
         int returnCode = point != null ? board.checkSpace(point[0], point[1], this.getColor()) : -2;
         switch (returnCode)
         {
-            default: systemResponse += "Something went wrong."; break;
             case -2: systemResponse += "Invalid input. Please try again."; break;
             case -1: systemResponse += "Out of bounds! Please try again."; break;
             case 0:  systemResponse += "Space is empty. Please try again."; break;
@@ -62,39 +56,45 @@ public class HumanPlayer extends Player
     // Ask user for the move they want to make and return
     private int[] requestDestFromUser(Board board, GamePiece piece)
     {
+        System.out.print(this.getColorCode() + "[" + this.getName() + "] " + Color.RESET);
         System.out.print("Choose a space to move to (x,y): ");
 
-        int[] move = null;
+        ArrayList<Move> validMoves = new ArrayList<Move>();
+        piece.updateValidMoves(board, validMoves);
+
         String systemResponse = Color.RED;
         String userInput = scanner.nextLine().toLowerCase();
-        int[] point = extractPointFromString(userInput);
-
-        if (userInput.equals("back") || userInput.equals("undo")) { return null; }
-
+        if (userInput.equals("back") || userInput.equals("undo"))
+        {
+            System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET);
+            selectMove(board);
+        }
+        
         // Error checking
+        int[] point = extractPointFromString(userInput);
         if (point == null)
         {
             systemResponse += "Invalid input. Please try again.";
         }
-        else if (piece.checkMove(point[0], point[1], board))
+        else if (board.checkSpace(point[0], point[1], piece.getColor()) == -1)
         {
-            move = point;
-            systemResponse = Color.PURPLE;
-            systemResponse += "Moving " + piece.toFormattedPositon() + " to " + "(" + point[0] + "," + point[1] + ")\n";
+            systemResponse  += "Out of bounds! Please try again.";
+        }
+        else if (!piece.checkMove(point[0], point[1], board))
+        {
+            systemResponse  += "Invalid move. Please try again.";
+        }
+        else if (new Move(board, piece, point[0], point[1]).resultsInCheck(board)) // this is fucking disgusting
+        {
+            systemResponse += "Move results in check. Please try again.";
         }
         else
         {
-            switch (board.checkSpace(point[0], point[1], piece.getColor()))
-            {
-                case -1: systemResponse += "Out of bounds! Please try again."; break;
-                case 0:  systemResponse += "Invalid move. Please try again."; break;
-                case 1:  systemResponse += "Cannot attack your own piece. Please try again."; break;
-                case 2:  systemResponse += "Invalid attack. Please try again."; break;
-            }
+            return point;
         }
         
         System.out.println(systemResponse + Color.RESET);
-        return move == null ? requestDestFromUser(board, piece) : move;
+        return requestDestFromUser(board, piece);
     }
 
     // Convert string coordinate to int[], includes error handling

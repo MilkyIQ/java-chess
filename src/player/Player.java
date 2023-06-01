@@ -48,9 +48,9 @@ public class Player {
         return state;
     }
 
-    public ArrayList<GamePiece> getAllPiecesOfType(String title)
+    public GamePiece getKing()
     {
-        return hand.get(title);
+        return hand.get("King").get(0);
     }
 
     public ArrayList<GamePiece> getAllPieces()
@@ -63,8 +63,17 @@ public class Player {
                 pieces.add(piece);
             }
         }
-        
         return pieces;
+    }
+
+    public ArrayList<Move> getAllPossibleMoves(Board board)
+    {
+        ArrayList<Move> allMoves = new ArrayList<Move>();
+        for (GamePiece piece : getAllPieces())
+        {
+            piece.updateValidMoves(board, allMoves);
+        }
+        return allMoves;
     }
 
     // SETTER METHODS

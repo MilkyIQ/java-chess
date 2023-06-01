@@ -2,7 +2,6 @@ package game;
 import java.util.ArrayList;
 import java.util.Scanner;
 import tools.SettingsReader;
-import tools.Color;
 import pieces.*;
 import player.*;
 
@@ -79,19 +78,10 @@ public class Game
             System.out.println("--------------- Turn #" + (turn+1) + "---------------\n");
             board.printBoard();
             
-            // Get move from player & up6date
+            // Get move from player & update
             Move move = player.selectMove(board);
             board.move(move);
             for (Player p : alivePlayers) { p.updateState(p.calculateState(board)); }
-
-            // Verify current move is not check
-            String playerState = player.getState();
-            if (playerState.equals("check") || playerState.equals("checkmate"))
-            {
-                System.out.println(Color.RED+ "Illegal Move: Cannot leave King in check!" + Color.RESET);
-                board.undoMove(move);
-                continue;
-            }
 
             removeLosers();
             i = i < alivePlayers.size()-1 ? i+1 : 0;

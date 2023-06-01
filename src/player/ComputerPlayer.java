@@ -92,14 +92,11 @@ public class ComputerPlayer extends Player
      */
     private int calculateMovePoints(Move move, Board board, int basePoints)
     {
-        board.move(move);
+        if (move.resultsInCheck(board)) { return -1; }
+
         int points = basePoints;
-        
-        if (this.getAllPiecesOfType("King").get(0).isBeingThreatened(board))
-        {
-            board.undoMove(move);
-            return -1;
-        }
+        board.move(move);
+
         if (move.getDestPiece() != null)
         {
             points += pieceRankings.get(move.getDestPiece().getTitle());
@@ -138,15 +135,5 @@ public class ComputerPlayer extends Player
             }
         }
         return allPieces;
-    }
-
-    private ArrayList<Move> getAllPossibleMoves(Board board)
-    {
-        ArrayList<Move> allMoves = new ArrayList<Move>();
-        for (GamePiece piece : super.getAllPieces())
-        {
-            piece.updateValidMoves(board, allMoves);
-        }
-        return allMoves;
     }
 }

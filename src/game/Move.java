@@ -46,4 +46,12 @@ public class Move
     {
         return space;
     }
+
+    public boolean resultsInCheck(Board board)
+    {
+        board.move(this);
+        boolean state = piece.getOwner().getKing().isBeingThreatened(board);
+        board.undoMove(this);
+        return state;
+    }
 }
