@@ -1,12 +1,14 @@
 package pieces;
 import game.Board;
+import game.Move;
+import player.Player;
 import java.util.ArrayList;
 
 public class Knight extends GamePiece
 {
-    public Knight(String color, int col, int row)
+    public Knight(Player owner, int col, int row)
     {
-        super("Knight", "\u265E", color, col, row);
+        super("Knight", "\u265E", owner, col, row);
     }
 
     @Override
@@ -20,8 +22,9 @@ public class Knight extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
+        ArrayList<Move> moves = new ArrayList<Move>();
         final int COL = super.getCol();
         final int ROW = super.getRow();
         int[] shortEdge = {1, -1};
@@ -31,13 +34,17 @@ public class Knight extends GamePiece
         {
             for (int longEdgeInc : longEdge)
             {
-                int[] lShapeXPos = {COL+longEdgeInc, ROW+shortEdgeInc};
-                int[] lShapeYPos = {COL+shortEdgeInc, ROW+longEdgeInc};
-                boolean lShapeXInBounds = !board.coordinateOutOfBounds(lShapeXPos[0], lShapeXPos[1]);
-                boolean lShapeYInBounds = !board.coordinateOutOfBounds(lShapeYPos[0], lShapeYPos[1]);
-                if (lShapeXInBounds) { moves.add(new GamePiece("x", lShapeXPos[0], lShapeXPos[1])); }
-                if (lShapeYInBounds) { moves.add(new GamePiece("x", lShapeYPos[0], lShapeYPos[1])); }
+                int[] lShapeX = {COL+longEdgeInc, ROW+shortEdgeInc};
+                int[] lShapeY = {COL+shortEdgeInc, ROW+longEdgeInc};
+                boolean moveXinBounds = !board.coordinateOutOfBounds(lShapeX[0], lShapeX[1]);
+                boolean moveYinBounds = !board.coordinateOutOfBounds(lShapeY[0], lShapeY[1]);
+                boolean moveXisFriendly = board.checkSpace(lShapeX[0], lShapeX[1], super.getColor()) != 1;
+                boolean moveYisFriendly = board.checkSpace(lShapeY[0], lShapeY[1], super.getColor()) != 1;
+                if (moveXinBounds && moveXisFriendly) { moves.add(new Move(board, this, lShapeX[0], lShapeX[1])); }
+                if (moveYinBounds && moveYisFriendly) { moves.add(new Move(board, this, lShapeY[0], lShapeY[1])); }
             }
         }
+
+        return moves;
     }
 }

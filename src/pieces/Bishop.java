@@ -1,12 +1,14 @@
 package pieces;
 import game.Board;
+import game.Move;
+import player.Player;
 import java.util.ArrayList;
 
 public class Bishop extends GamePiece
 {
-    public Bishop(String color, int col, int row)
+    public Bishop(Player owner, int col, int row)
     {
-        super("Bishop", "\u265D", color, col, row);
+        super("Bishop", "\u265D", owner, col, row);
     }
 
     @Override
@@ -41,59 +43,33 @@ public class Bishop extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
-        final String COLOR = super.getColor();
+        ArrayList<Move> moves = new ArrayList<Move>();
         final int COL = super.getCol();
         final int ROW = super.getRow();
-        final int LENGTH = board.getLength();
-        final int HEIGHT = board.getHeight();
-        int x;
-        int y;
-        
-        // LEFT-DOWN
-        x = COL - 1; y = ROW - 1;
-        while (x >= 0 && y >= 0)
+        final String COLOR = super.getColor();
+        int[][] directions = {{-1, -1}, {1, 1}, {-1, 1}, {1, -1}}; // Left-Down, Right-Up, Left-Up, Right-Down
+    
+        for (int[] direction : directions)
         {
-            int spaceStatus = board.checkSpace(x, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", x, y));
-            if (spaceStatus == 2) { break; }
-            x--; y--;
+            int dx = direction[0];
+            int dy = direction[1];
+            int x = COL + dx;
+            int y = ROW + dy;
+    
+            while (x >= 0 && x < board.getLength() && y >= 0 && y < board.getHeight())
+            {
+                int spaceStatus = board.checkSpace(x, y, COLOR);
+                if (spaceStatus == 1) { break; } // Blocked by a piece of the same color
+                moves.add(new Move(board, this, x, y));
+                if (spaceStatus == 2) { break; } // Captures an opponent's piece
+    
+                x += dx;
+                y += dy;
+            }
         }
 
-        // RIGHT-UP
-        x = COL + 1; y = ROW + 1;
-        while (x < LENGTH && y < HEIGHT)
-        {
-            int spaceStatus = board.checkSpace(x, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", x, y));
-            if (spaceStatus == 2) { break; }
-            x++; y++;
-        }
-
-        // LEFT-UP
-        x = COL - 1; y = ROW + 1;
-        while (x >= 0 && y < HEIGHT)
-        {
-            int spaceStatus = board.checkSpace(x, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", x, y));
-            if (spaceStatus == 2) { break; }
-            x--;
-            y++;
-        }
-
-        // RIGHT-DOWN
-        x = COL + 1; y = ROW - 1;
-        while (x < LENGTH && y >= 0)
-        {
-            int spaceStatus = board.checkSpace(x, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", x, y));
-            if (spaceStatus == 2) { break; }
-            x++; y--;
-        }
+        return moves;
     }
 }

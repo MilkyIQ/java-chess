@@ -1,36 +1,37 @@
 package pieces;
 import game.Board;
+import game.Move;
+import player.Player;
 import tools.Color;
-
 import java.util.ArrayList;
 
 public class GamePiece
 {
     private final String TITLE;
     private final String SYMBOL;
-    private final String COLOR;
+    private Player owner;
     private int col;
     private int row;
     private int moveCount;
     
-    public GamePiece(String title, String symbol, String color, int col, int row)
+    public GamePiece(String title, String symbol, Player owner, int col, int row)
     {
         this.TITLE = title;
         this.SYMBOL = symbol;
-        this.COLOR = color;
+        this.owner = owner;
         this.col = col;
         this.row = row;
         this.moveCount = 0;
     }
 
     // For use with ghost board point placement only
-    public GamePiece(String symbol, int col, int row)
+    public GamePiece(int col, int row)
     {
-        this.SYMBOL = symbol;
         this.col = col;
         this.row = row;
-        this.TITLE = "GenericGamePiece";
-        this.COLOR = "purple_underlined";
+        this.SYMBOL = "x";
+        this.TITLE = null;
+        this.owner = null;
     }
 
     public String getTitle()
@@ -45,12 +46,17 @@ public class GamePiece
 
     public String getColor()
     {
-        return COLOR;
+        return owner.getColor();
+    }
+
+    public Player getOwner()
+    {
+        return owner;
     }
 
     public String getColorCode()
     {
-        return Color.getColorCodeOf(COLOR);
+        return Color.getColorCodeOf(owner.getColor());
     }
 
     public int getRow()
@@ -89,9 +95,64 @@ public class GamePiece
         return false;
     }
 
-    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
-        return;
+        return null;
+    }
+    
+    public boolean hasLegalMoves(Board board)
+    {
+        for (Move move : owner.getAllLegalMoves(board))
+        {
+            if (move.getOriginPiece() == this)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Calculates all possible movements from all pieces on board (excluding pawns), and continue 
+    public boolean isBeingThreatened(Board board)
+    {
+        // Initialize main variables
+        final int LENGTH = board.getLength();
+        final int HEIGHT = board.getLength();
+        final int PIECE_X = this.getCol();
+        final int PIECE_Y = this.getRow();
+        
+        // Check corners for pawns
+        int[] xInc = {1, -1}, yInc = {1, -1};
+        for (int x : xInc)
+        {
+            for (int y : yInc)
+            {
+                if (board.coordinateOutOfBounds(PIECE_X+x, PIECE_Y+y)) { continue; };
+                GamePiece potentialPawn = board.getSpace(PIECE_X+x, PIECE_Y+y);
+                Boolean pawnIsAttacking = potentialPawn != null && potentialPawn.getTitle().equals("Pawn") && potentialPawn.checkMove(PIECE_X, PIECE_Y, board);
+                if (pawnIsAttacking) { return true; }
+            }
+        }
+
+        // Iterate through board and populate ghostBoard with validMoves
+        Board ghostBoard = new Board(LENGTH, HEIGHT);
+        for (int col = 0; col < LENGTH; col++)
+        {
+            for (int row = 0; row < HEIGHT; row++)
+            {
+                GamePiece space = board.getSpace(col, row);
+                if (space == null || space.getColor().equals(owner.getColor()) || space.getTitle().equals("Pawn")) { continue; }
+                
+                // abstracting this to get under 4 indents is a waste of time, but feel free to improve
+                for (Move move : space.getValidMoves(board))
+                {
+                    ghostBoard.place(new GamePiece(move.getDestX(), move.getDestY()));
+                }
+            }
+        }
+        
+        // Place king on board and return status
+        return ghostBoard.getSpace(PIECE_X, PIECE_Y) != null;
     }
 
     public String toFormattedPositon()

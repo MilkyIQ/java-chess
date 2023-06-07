@@ -1,7 +1,7 @@
 package game;
 import pieces.*;
+import player.Player;
 import tools.Color;
-
 import java.util.ArrayList;
 
 public class Board
@@ -9,24 +9,16 @@ public class Board
     private GamePiece[][] board;
     private final int LENGTH;
     private final int HEIGHT;
-    public String[] colors = new String[3]; 
+    public String[] colors = new String[3];
     
-    // Game Board Constructor
     public Board(int columns, int rows)
     {
         this.LENGTH = Math.min(50, Math.abs(columns));
         this.HEIGHT = Math.min(50, Math.abs(rows));
         this.board = new GamePiece[HEIGHT][LENGTH];
-
-        // Create empty board
-        for (int row = 0; row < HEIGHT; row++)
-        {
-            for (int col = 0; col < LENGTH; col++)
-            {
-                board[row][col] = null;
-            }
-        }
     }
+
+    // GETTERS
 
     public int getLength()
     {
@@ -40,12 +32,7 @@ public class Board
 
     public GamePiece getSpace(int x, int y)
     {
-        return board[y][x];
-    }
-
-    public boolean coordinateOutOfBounds(int x, int y)
-    {
-        return x >= LENGTH || y >= HEIGHT || x < 0 || y < 0;
+        return coordinateOutOfBounds(x,y) ? null : board[y][x];
     }
 
     // Returns representative int value -1 to 2 to show whether or not a space is occupied by the given color
@@ -60,6 +47,13 @@ public class Board
             throw new IllegalArgumentException(Color.RED + "Board.checkSpace() was given bad data." + Color.RESET); // just in case
         }
     }
+    
+    public boolean coordinateOutOfBounds(int x, int y)
+    {
+        return x >= LENGTH || y >= HEIGHT || x < 0 || y < 0;
+    }
+
+    // SETTERS
 
     public void setColors(String evens, String odds, String notation)
     {
@@ -68,41 +62,17 @@ public class Board
         colors[2] = Color.getColorCodeOf(notation);
     }
 
-    public void populateBoard(ArrayList<Player> players)
+    public void populate(ArrayList<Player> players)
     {
         for (Player player : players)
         {
-            for (ArrayList<GamePiece> points : player.getHand().values())
+            for (GamePiece piece : player.getAllPieces())
             {
-                for (GamePiece piece : points) { this.place(piece); } // this is technically only 4 indents so i count a win.
+                this.place(piece);
             }
         }
     }
 
-    // Move given piece from one space to another, update spaces and piece data
-    public void move(GamePiece piece, int x, int y)
-    {
-        board[y][x] = piece;
-        board[piece.getRow()][piece.getCol()] = null;
-        piece.setPos(x, y);
-        piece.incMoveCount();
-    }
-
-    // Undo the last move (for use with player state checks)
-    public void undoMove(GamePiece movedPiece, int oldX, int oldY, GamePiece attackedSpace)
-    {
-        int attackedX = movedPiece.getCol();
-        int attackedY = movedPiece.getRow();
-        
-        board[oldY][oldX] = movedPiece;
-        board[attackedY][attackedX] = attackedSpace;
-        movedPiece.setPos(oldX, oldY);
-        movedPiece.decMoveCount();
-        // no need to update attackedSpace position because it's position doesnt change after attack
-
-    }
-
-    // Place given piece at its already specified position, replacing any object previously there
     public void place(GamePiece piece)
     {
         try
@@ -117,6 +87,42 @@ public class Board
             System.out.print(piece.getColorCode() + piece.toFormattedPositon());
             System.out.println(Color.YELLOW + ", piece out of bounds." + Color.RESET);
         }
+    }
+
+    // EVENTS 
+
+    // Move given piece from one space to another, update spaces and piece data
+    public void move(Move move)
+    {
+        int newPosX = move.getDestX();
+        int newPosY = move.getDestY();
+        GamePiece piece = move.getOriginPiece();
+        GamePiece space = move.getDestPiece();
+        if (space != null) { space.getOwner().remove(space); }
+
+        board[newPosY][newPosX] = piece;
+        board[move.getOriginY()][move.getOriginX()] = null;
+        piece.setPos(newPosX, newPosY);
+        piece.incMoveCount();
+
+    }
+
+    // Undo the last move (for use with player state checks)
+    public void undoMove(Move move)
+    {
+        GamePiece attackedSpace = move.getDestPiece();
+        GamePiece movedPiece    = move.getOriginPiece();
+        int oldX                = move.getOriginX();
+        int oldY                = move.getOriginY();
+        int attackedX           = move.getDestX();
+        int attackedY           = move.getDestY();
+        if (attackedSpace != null) { attackedSpace.getOwner().give(attackedSpace); }
+
+        board[oldY][oldX] = movedPiece;
+        board[attackedY][attackedX] = attackedSpace;
+        movedPiece.setPos(oldX, oldY);
+        movedPiece.decMoveCount();
+        // no need to update attackedSpace position because it's position doesnt change after attack
     }
 
     // Print out board to console with fancy graphics
@@ -157,5 +163,4 @@ public class Board
         }
         System.out.println();
     }
-
 }

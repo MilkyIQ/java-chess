@@ -1,12 +1,14 @@
 package pieces;
 import game.Board;
+import game.Move;
+import player.Player;
 import java.util.ArrayList;
 
 public class King extends GamePiece
 {
-    public King(String color, int col, int row)
+    public King(Player owner, int col, int row)
     {
-        super("King", "\u265A", color, col, row);
+        super("King", "\u265A", owner, col, row);
     }
 
     @Override
@@ -23,8 +25,9 @@ public class King extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
+        ArrayList<Move> moves = new ArrayList<Move>();
         for (int dx = -1; dx <= 1; dx++)
         {
             for (int dy = -1; dy <= 1; dy++)
@@ -34,8 +37,10 @@ public class King extends GamePiece
                 boolean spaceIsAdjacent  = dx != 0 || dy != 0;
                 boolean spaceIsFriendly  = board.checkSpace(x, y, super.getColor()) == 1;
                 boolean spaceOutOfBounds = board.coordinateOutOfBounds(x, y);
-                if (spaceIsAdjacent && !spaceIsFriendly && !spaceOutOfBounds) { moves.add(new GamePiece("x", x, y)); }
+                if (spaceIsAdjacent && !spaceIsFriendly && !spaceOutOfBounds) { moves.add(new Move(board, this, x, y)); }
             }
         }
+
+        return moves;
     }
 }

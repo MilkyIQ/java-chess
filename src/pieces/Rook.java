@@ -1,12 +1,14 @@
 package pieces;
 import game.Board;
+import game.Move;
+import player.Player;
 import java.util.ArrayList;
 
 public class Rook extends GamePiece
 {
-    public Rook(String COLOR, int col, int row)
+    public Rook(Player owner, int col, int row)
     { 
-        super("Rook", "\u265C", COLOR, col,row);
+        super("Rook", "\u265C", owner, col,row);
     }
 
     @Override
@@ -39,46 +41,34 @@ public class Rook extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<GamePiece> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
+        ArrayList<Move> moves = new ArrayList<Move>();
         final int COL = super.getCol();
         final int ROW = super.getRow();
         final String COLOR = super.getColor();
-
-        // LEFT
-        for (int x = COL-1; x >= 0; x--)
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Left, Right, Down, Up
+    
+        for (int[] direction : directions)
         {
-            int spaceStatus = board.checkSpace(x, ROW, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", x, ROW));
-            if (spaceStatus == 2) { break; }
+            int dx = direction[0];
+            int dy = direction[1];
+            int x = COL + dx;
+            int y = ROW + dy;
+    
+            while (x >= 0 && x < board.getLength() && y >= 0 && y < board.getHeight())
+            {
+                int spaceStatus = board.checkSpace(x, y, COLOR);
+                if (spaceStatus == 1) { break; } // Blocked by a piece of the same color
+                moves.add(new Move(board, this, x, y));
+                if (spaceStatus == 2) { break; } // Captures an opponent's piece
+    
+                x += dx;
+                y += dy;
+            }
         }
 
-        // RIGHT
-        for (int x = COL+1; x < board.getLength(); x++)
-        {
-            int spaceStatus = board.checkSpace(x, ROW, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", x, ROW));
-            if (spaceStatus == 2) { break; }
-        }
-
-        // DOWN
-        for (int y = ROW-1; y >= 0; y--)
-        {
-            int spaceStatus = board.checkSpace(COL, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", COL, y));
-            if (spaceStatus == 2) { break; }
-        }
-
-        // UP
-        for (int y = ROW+1; y < board.getHeight(); y++)
-        {
-            int spaceStatus = board.checkSpace(COL, y, COLOR);
-            if (spaceStatus == 1) { break; }
-            moves.add(new GamePiece("x", COL, y));
-            if (spaceStatus == 2) { break; }
-        }
+        return moves;
     }
+    
 }
