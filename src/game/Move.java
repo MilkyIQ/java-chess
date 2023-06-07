@@ -80,6 +80,6 @@ public class Move
            move.getOriginX() == this.fromX
         && move.getOriginY() == this.fromY
         && move.getDestX()   == this.toX
-        && move.getDestX()   == this.toY;
+        && move.getDestY()   == this.toY;
     }
 }

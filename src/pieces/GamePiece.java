@@ -122,13 +122,13 @@ public class GamePiece
         {
             int x = PIECE_X + increase[0];
             int y = PIECE_Y + increase[1];
-
-            // out of bounds
-            if (board.coordinateOutOfBounds(PIECE_X+x, PIECE_Y+y)) { continue; };
-            GamePiece potentialPawn = board.getSpace(PIECE_X+x, PIECE_Y+y);
-
+            
             // empty or not a pawn
-            if (potentialPawn == null || !potentialPawn.getTitle().equals("Pawn")) { continue; }
+            GamePiece potentialPawn = board.getSpace(x, y);
+            if (potentialPawn == null || !potentialPawn.getTitle().equals("Pawn"))
+            {
+                continue;
+            }
 
             // verify direction
             Move potentialMove = new Move(board, potentialPawn, PIECE_X, PIECE_Y);

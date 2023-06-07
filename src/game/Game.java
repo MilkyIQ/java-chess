@@ -82,7 +82,12 @@ public class Game
             // Get move from player & update
             Move move = player.selectMove(board);
             board.move(move);
-            for (Player p : alivePlayers) { p.updateState(p.calculateState(board)); }
+            for (Player p : alivePlayers)
+            {
+                String state = p.calculateState(board);
+                if (state.equals("check")) { System.out.println(p.getName() + " is in check!"); }
+                p.updateState(state);
+            }
 
             if (player.getState().equals("check"))
             {
