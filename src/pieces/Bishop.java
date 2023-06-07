@@ -12,37 +12,6 @@ public class Bishop extends GamePiece
     }
 
     @Override
-    public boolean checkMove(int x, int y, Board board)
-    {
-        final String COLOR = super.getColor();
-        int pieceX = super.getCol();
-        int pieceY = super.getRow();
-        int deltaX = x - pieceX;
-        int deltaY = y - pieceY;
-
-        boolean invalidMove = Math.abs(deltaX) != Math.abs(deltaY);
-        boolean spaceFriendly = board.checkSpace(x, y, COLOR) == 1;
-        if (invalidMove || spaceFriendly) { return false; }
-
-        int xDir = Math.abs(deltaX) / deltaX;
-        int yDir = Math.abs(deltaY) / deltaY;
-
-        pieceX += xDir;
-        pieceY += yDir;
-        while (pieceX != x && pieceY != y)
-        {
-            if (board.checkSpace(pieceX, pieceY, COLOR) > 0)
-            {
-                return false;
-            }
-            pieceX += xDir;
-            pieceY += yDir;
-        }
-
-        return true;
-    }
-
-    @Override
     public ArrayList<Move> getValidMoves(Board board)
     {
         ArrayList<Move> moves = new ArrayList<Move>();

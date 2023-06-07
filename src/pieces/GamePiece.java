@@ -90,11 +90,6 @@ public class GamePiece
         moveCount--;
     }
 
-    public boolean checkMove(int x, int y, Board board)
-    {
-        return false;
-    }
-
     public ArrayList<Move> getValidMoves(Board board)
     {
         return null;
@@ -120,17 +115,26 @@ public class GamePiece
         final int HEIGHT = board.getLength();
         final int PIECE_X = this.getCol();
         final int PIECE_Y = this.getRow();
-        
+
         // Check corners for pawns
-        int[] xInc = {1, -1}, yInc = {1, -1};
-        for (int x : xInc)
+        int[][] deltas = { {1,1}, {1,-1}, {-1,1}, {-1,-1} };
+        for (int[] increase : deltas)
         {
-            for (int y : yInc)
+            int x = PIECE_X + increase[0];
+            int y = PIECE_Y + increase[1];
+
+            // out of bounds
+            if (board.coordinateOutOfBounds(PIECE_X+x, PIECE_Y+y)) { continue; };
+            GamePiece potentialPawn = board.getSpace(PIECE_X+x, PIECE_Y+y);
+
+            // empty or not a pawn
+            if (potentialPawn == null || !potentialPawn.getTitle().equals("Pawn")) { continue; }
+
+            // verify direction
+            Move potentialMove = new Move(board, potentialPawn, PIECE_X, PIECE_Y);
+            for (Move move : potentialPawn.getValidMoves(board))
             {
-                if (board.coordinateOutOfBounds(PIECE_X+x, PIECE_Y+y)) { continue; };
-                GamePiece potentialPawn = board.getSpace(PIECE_X+x, PIECE_Y+y);
-                Boolean pawnIsAttacking = potentialPawn != null && potentialPawn.getTitle().equals("Pawn") && potentialPawn.checkMove(PIECE_X, PIECE_Y, board);
-                if (pawnIsAttacking) { return true; }
+                if (move.equals(potentialMove)) { return true; }
             }
         }
 
