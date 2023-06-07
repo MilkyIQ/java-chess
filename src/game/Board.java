@@ -32,7 +32,7 @@ public class Board
 
     public GamePiece getSpace(int x, int y)
     {
-        return board[y][x];
+        return coordinateOutOfBounds(x,y) ? null : board[y][x];
     }
 
     // Returns representative int value -1 to 2 to show whether or not a space is occupied by the given color

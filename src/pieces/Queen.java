@@ -24,19 +24,22 @@ public class Queen extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<Move> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
+        ArrayList<Move> moves = new ArrayList<Move>();
         int queenX = super.getCol();
         int queenY = super.getRow();
         Player queenOwner = super.getOwner();
         ArrayList<Move> validQueenMoves = new ArrayList<Move>();
-        new Rook(queenOwner, queenX, queenY).updateValidMoves(board, validQueenMoves);
-        new Bishop(queenOwner, queenX, queenY).updateValidMoves(board, validQueenMoves);
+        new Rook(queenOwner, queenX, queenY).getValidMoves(board);
+        new Bishop(queenOwner, queenX, queenY).getValidMoves(board);
 
         // Have to recreate new move objects otherwise queen will typecast to a Rook or Bishop
         for (Move move : validQueenMoves)
         {
             moves.add(new Move(board, this, move.getDestX(), move.getDestY()));
         }
+        
+        return moves;
     }
 }

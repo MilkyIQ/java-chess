@@ -1,5 +1,7 @@
 package game;
 import pieces.GamePiece;
+import java.util.ArrayList;
+import tools.Color;
 
 public class Move
 {
@@ -53,5 +55,31 @@ public class Move
         boolean state = piece.getOwner().getKing().isBeingThreatened(board);
         board.undoMove(this);
         return state;
+    }
+
+    public boolean isValid(Board board)
+    {
+        ArrayList<Move> moves = piece.getOwner().getAllLegalMoves(board);
+        for (Move legalMove : moves)
+        {
+            if (this.equals(legalMove)) { return true; }
+        }
+        return false;
+    }
+
+    public String toString()
+    {
+        String fromString = piece.toFormattedPositon();
+        String toString = space != null ? space.toFormattedPositon() : toX + "," + toY;
+        return piece.getOwner().getColorCode() + "Move chosen!" + fromString + " to " + toString + Color.RESET;
+    }
+
+    public boolean equals(Move move)
+    {
+        return
+           move.getOriginX() == this.fromX
+        && move.getOriginY() == this.fromY
+        && move.getDestX()   == this.toX
+        && move.getDestX()   == this.toY;
     }
 }

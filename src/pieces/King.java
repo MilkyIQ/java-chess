@@ -25,8 +25,9 @@ public class King extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<Move> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
+        ArrayList<Move> moves = new ArrayList<Move>();
         for (int dx = -1; dx <= 1; dx++)
         {
             for (int dy = -1; dy <= 1; dy++)
@@ -39,5 +40,7 @@ public class King extends GamePiece
                 if (spaceIsAdjacent && !spaceIsFriendly && !spaceOutOfBounds) { moves.add(new Move(board, this, x, y)); }
             }
         }
+
+        return moves;
     }
 }

@@ -9,7 +9,7 @@ public class App
         Game game = new Game("src/game/settings/settings.json", scanner);
         
         game.begin(); 
-        game.printResults();
         game.close();
+        game.printResults();
     }
 }

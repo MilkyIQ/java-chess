@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import game.Move;
 import game.Board;
-import tools.Color;
 
 public class ComputerPlayer extends Player
 {
@@ -43,16 +42,14 @@ public class ComputerPlayer extends Player
                 selectedMove = simpleRankedSelect(board);
         }
 
-        System.out.println(super.getColorCode() + "Move chosen!" + 
-        selectedMove.getOriginPiece().toFormattedPositon() + " " + selectedMove.getDestX() + "," + selectedMove.getDestY() 
-        + Color.RESET);
+        System.out.println(selectedMove);
         return selectedMove;
     }
 
     // Picks a random move to make from list of all available moves 1 turn out. Has no real intelligence.
     private Move randomSelect(Board board)
     {
-        ArrayList<Move> allMoves = getAllPossibleMoves(board);
+        ArrayList<Move> allMoves = super.getAllLegalMoves(board);
         int randomIndex = (int) (Math.random() * allMoves.size());
         Move selectedMove = allMoves.get(randomIndex);
         return selectedMove;
@@ -67,13 +64,12 @@ public class ComputerPlayer extends Player
      */
     private Move simpleRankedSelect(Board board)
     {
-        int bestRanking = 0;
+        int bestRanking = -99999; // TODO: this is dumb. fix your code so it isnt dumb anymore.
         int defaultMovePoints = 0;
         ArrayList<Move> bestMoves = new ArrayList<Move>();
 
-        for (Move curMove : getAllPossibleMoves(board))
+        for (Move curMove : super.getAllLegalMoves(board))
         {
-        
             int rank = calculateMovePoints(curMove, board, defaultMovePoints);
             if (rank < bestRanking) { continue; }
             if (rank > bestRanking) { bestMoves.clear(); }
@@ -92,8 +88,6 @@ public class ComputerPlayer extends Player
      */
     private int calculateMovePoints(Move move, Board board, int basePoints)
     {
-        if (move.resultsInCheck(board)) { return -1; }
-
         int points = basePoints;
         board.move(move);
 

@@ -7,10 +7,13 @@ import player.*;
 
 public class Game
 {
+    private final int NO_CAPTURE_LIMIT = 75;
     private int turn;
-    private Scanner scanner;
+    private String gameCondition;
     private Board board;
-    private ArrayList<Player> alivePlayers;
+    private Scanner scanner;
+    private ArrayList<Player> alivePlayers, stalePlayers;
+    private ArrayList<Move> eventHistory;
 
     public Game(String settingsFile, Scanner heapScanner) throws Exception
     {
@@ -24,16 +27,14 @@ public class Game
         String notationColor = reader.getStringValueOf("notationColor", 0);
 
         this.turn = 0;
+        this.gameCondition = "in_progress";
         this.scanner = heapScanner;
         this.board = new Board(length, height);
         this.alivePlayers = new ArrayList<Player>();
+        this.stalePlayers = new ArrayList<Player>();
+        this.eventHistory = new ArrayList<Move>();
 
-        /*
-         * Index starts at 1 because settings file is a JSON list that contains objects.
-         * The first object in the list is always the overall game/board settings.
-         * This will eventually be deprecated in favor of a less eye bleaching structure.
-         */
-        for (int i = 1; i <= reader.getNumPlayers(); i++)
+        for (int i = 1; i <= reader.getNumPlayers(); i++) // Index starts at 1 because settings file is a JSON list that contains objects, first object is for game settings
         {
             String color     = reader.getStringValueOf("color", i);
             String name      = reader.getStringValueOf("name", i);
@@ -46,7 +47,7 @@ public class Game
             int[][] kings    = reader.getPlayerPieces("king", i);
 
             // Should we necessarily be relying on a try-catch statement for default values? This seems inefficient
-            try
+            try 
             {
                 int difficulty = reader.getIntValueOf("difficultyLevel", i);
                 alivePlayers.add(new ComputerPlayer(name, color, difficulty));
@@ -72,7 +73,7 @@ public class Game
     public void begin()
     {
         int i = 0;
-        while (alivePlayers.size() > 1)
+        while (gameCondition.equals("in_progress"))
         {
             Player player = alivePlayers.get(i);
             System.out.println("--------------- Turn #" + (turn+1) + "---------------\n");
@@ -83,7 +84,13 @@ public class Game
             board.move(move);
             for (Player p : alivePlayers) { p.updateState(p.calculateState(board)); }
 
-            removeLosers();
+            if (player.getState().equals("check"))
+            {
+                throw new IllegalStateException("Player has been left in check at end of turn");
+            }
+
+            eventHistory.add(move);
+            updateGameCondition();
             i = i < alivePlayers.size()-1 ? i+1 : 0;
             turn++;
         }
@@ -92,24 +99,87 @@ public class Game
     public void close()
     { 
         scanner.close();
+        if (gameCondition != null) { return; } // skip calculations if everything has already been figured out
     }
 
     public void printResults()
     {
-        String result = (alivePlayers.size() == 1) ? (alivePlayers.get(0).getName() + " Wins!") : ("Draw.");
+        String result = "";
+        System.out.print("GAME END: ");
+        switch (gameCondition)
+        {
+            case "zero_sum_win": result += alivePlayers.get(0).getName() + " Wins!"; break;
+            case "stalemate":    result += "Stalemate."; break;
+            case "no_winners":   result += "Draw by impossibility of checkmate"; break; // TODO: needs implementation
+            case "75_rule":      result += "Draw by Seventy-Five-Move-Rule"; break;
+            case "50_rule":      result += "Draw by Fifty-Move-Rule"; break; // TODO: needs implementation
+            case "3_repeat":     result += "Draw by Threefold-Repetition"; break; // TODO: needs implementation
+            case "5_repeat":     result += "Draw by Fivefold-Repetition"; break; // TODO: needs implementation
+            case "mutual_draw":  result += "Draw by mutual agreement"; break; // TODO: needs implementation
+        }
         System.out.println(result);
     }
+
     // Loop through all players' game states and removes those who are in checkmate or stalemate
-    private void removeLosers()
+    private void updateGameCondition()
     {
+        // Remove losers
         for (int i = 0; i < alivePlayers.size(); i++)
         {
             String state = alivePlayers.get(i).getState();
-            if (state.equals("checkmate") || state.equals("stalemate"))
+            if (state.equals("checkmate"))
             {
                 alivePlayers.remove(i);
                 i--;
             }
+            else if (state.equals("stalemate"))
+            {
+                stalePlayers.add(alivePlayers.get(i)); 
+                alivePlayers.remove(i);
+                i--;
+            }
         }
+
+        // Determine whether the game is a draw
+        int numAlive = alivePlayers.size();
+        int numStale = stalePlayers.size();
+        if (numAlive == 1 && numStale == 0)
+        {
+            gameCondition = "zero_sum_win";
+        }
+        else if (numAlive == 1 && numStale > 0)
+        {
+            gameCondition = "stalemate";
+        }
+        else
+        {
+            gameCondition = "draw";
+        }
+
+        // If game is a draw, determine which type
+        if (!gameCondition.equals("draw")) { return; }
+        if (historyIsRepetitive())
+        {
+            gameCondition = "75_rule";
+        }
+        else // if all draw sequences exhausted, then game is still in progress
+        {
+            gameCondition = "in_progress";
+        }
+    }
+
+    // Check the past 75 moves, and if no pieces have been claimed in that time, then return true
+    private boolean historyIsRepetitive()
+    {
+        if (turn < NO_CAPTURE_LIMIT) { return false; }
+        for (int i = turn; i >= turn-NO_CAPTURE_LIMIT; i--)
+        {
+            Move event = eventHistory.get(i);
+            if (event.getDestPiece() != null)
+            {
+               return false;
+            }
+        }
+        return true;
     }
 }

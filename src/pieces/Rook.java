@@ -41,8 +41,9 @@ public class Rook extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<Move> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
+        ArrayList<Move> moves = new ArrayList<Move>();
         final int COL = super.getCol();
         final int ROW = super.getRow();
         final String COLOR = super.getColor();
@@ -66,6 +67,8 @@ public class Rook extends GamePiece
                 y += dy;
             }
         }
+
+        return moves;
     }
     
 }

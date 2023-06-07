@@ -69,8 +69,9 @@ public class Pawn extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<Move> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
+        ArrayList<Move> moves = new ArrayList<Move>();
         final String COLOR = super.getColor();
         final int[] POS = {super.getCol(), super.getRow()};
 
@@ -113,5 +114,7 @@ public class Pawn extends GamePiece
                 moves.add(new Move(board, this, move[0], move[1]));
             }
         }
+
+        return moves;
     }
 }

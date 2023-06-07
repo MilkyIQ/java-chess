@@ -2,7 +2,6 @@ package player;
 import pieces.GamePiece;
 import tools.Color;
 import java.util.Scanner;
-import java.util.ArrayList;
 import game.Board;
 import game.Move;
 
@@ -20,9 +19,8 @@ public class HumanPlayer extends Player
     public Move selectMove(Board board)
     {
         GamePiece selectedPiece = requestPieceFromUser(board);
-        int[] selectedDest = requestDestFromUser(board, selectedPiece);
-        System.out.println(Color.PURPLE + "Moving" + Color.RESET);
-        return new Move(board, selectedPiece, selectedDest[0], selectedDest[1]);
+        Move selectedDest = requestMoveFromUser(board, selectedPiece);
+        return selectedDest == null ? selectMove(board) : selectedDest;
     }
 
     // Ask user for the piece they'd like to move and return that piece
@@ -30,71 +28,78 @@ public class HumanPlayer extends Player
     {
         System.out.print(this.getColorCode() + "[" + this.getName() + "] " + Color.RESET);
         System.out.print("Choose a piece to move (x,y): ");
-
-        GamePiece piece = null;
-        String systemResponse = Color.RED;
-        int[] point = extractPointFromString(scanner.nextLine());
         
-        // Error checking
-        int returnCode = point != null ? board.checkSpace(point[0], point[1], this.getColor()) : -2;
-        switch (returnCode)
+        String userInput = scanner.nextLine().toLowerCase();
+        
+        // GARBAGE INPUT
+        int[] point = extractPointFromString(userInput);
+        if (point == null)
         {
-            case -2: systemResponse += "Invalid input. Please try again."; break;
-            case -1: systemResponse += "Out of bounds! Please try again."; break;
-            case 0:  systemResponse += "Space is empty. Please try again."; break;
-            case 2:  systemResponse += "Cannot move enemy piece. Please try again."; break;
-            case 1:
-                piece = board.getSpace(point[0], point[1]);
-                systemResponse = Color.PURPLE + "You have chosen " + piece.toFormattedPositon();
-                break;
+            System.out.println(Color.RED + "Invalid input." + Color.RESET);
+            return requestPieceFromUser(board);
         }
 
-        System.out.println(systemResponse + Color.RESET);
-        return piece == null ? requestPieceFromUser(board) : piece;
+        // ILLEGAL PIECE
+        GamePiece piece = board.getSpace(point[0], point[1]);
+        if (piece == null || piece.getOwner() != this || !piece.hasLegalMoves(board)) // a switch statement here is probably redundant
+        {
+            System.out.print(Color.RED);
+            switch (board.checkSpace(point[0], point[1], this.getColor()))
+            {
+                case -1: System.out.print("Out of bounds."); break;
+                case 0:  System.out.print("Space is empty."); break;
+                case 1:  System.out.print("Piece has no legal moves."); break;
+                case 2:  System.out.print("Cannot move enemy piece."); break;
+            }
+            System.out.print(Color.RESET + "\n");
+            return requestPieceFromUser(board);
+        }
+
+        // LEGAL PIECE
+        System.out.println(Color.PURPLE + "You have chosen " + piece.toFormattedPositon());
+        return piece;
     }
 
     // Ask user for the move they want to make and return
-    private int[] requestDestFromUser(Board board, GamePiece piece)
+    private Move requestMoveFromUser(Board board, GamePiece piece)
     {
         System.out.print(this.getColorCode() + "[" + this.getName() + "] " + Color.RESET);
         System.out.print("Choose a space to move to (x,y): ");
 
-        ArrayList<Move> validMoves = new ArrayList<Move>();
-        piece.updateValidMoves(board, validMoves);
-
-        String systemResponse = Color.RED;
+        // PROPOSE UNDO
         String userInput = scanner.nextLine().toLowerCase();
         if (userInput.equals("back") || userInput.equals("undo"))
         {
             System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET);
-            selectMove(board);
+            return null;
         }
         
-        // Error checking
+        // GARBAGE DATA
         int[] point = extractPointFromString(userInput);
         if (point == null)
         {
-            systemResponse += "Invalid input. Please try again.";
+            System.out.println(Color.RED + "Invalid input. Please try again." + Color.RESET);
+            return requestMoveFromUser(board, piece);
         }
-        else if (board.checkSpace(point[0], point[1], piece.getColor()) == -1)
+
+        // OUT OF BOUNDS
+        if (board.checkSpace(point[0], point[1], piece.getColor()) == -1)
         {
-            systemResponse  += "Out of bounds! Please try again.";
+            System.out.println(Color.RED + "Out of bounds! Please try again." + Color.RESET);
+            return requestMoveFromUser(board, piece);
         }
-        else if (!piece.checkMove(point[0], point[1], board))
+
+        // MOVE NOT VALID
+        Move move = new Move(board, piece, point[0], point[1]);
+        if (!move.isValid(board))
         {
-            systemResponse  += "Invalid move. Please try again.";
+            System.out.println(Color.RED + "Invalid move. Please try again." + Color.RESET);
+            return requestMoveFromUser(board, piece);
         }
-        else if (new Move(board, piece, point[0], point[1]).resultsInCheck(board)) // this is fucking disgusting
-        {
-            systemResponse += "Move results in check. Please try again.";
-        }
-        else
-        {
-            return point;
-        }
-        
-        System.out.println(systemResponse + Color.RESET);
-        return requestDestFromUser(board, piece);
+
+        // MOVE IS VALID
+        System.out.println(move);
+        return move;
     }
 
     // Convert string coordinate to int[], includes error handling
@@ -116,7 +121,6 @@ public class HumanPlayer extends Player
         }
         catch (NumberFormatException|StringIndexOutOfBoundsException e)
         {
-            System.out.println(Color.RED + "`" + input  + "`" + " is not a coordinate (x,y)" + Color.RESET);
             output = null;
         }
         return output;

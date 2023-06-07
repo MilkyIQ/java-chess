@@ -22,8 +22,9 @@ public class Knight extends GamePiece
     }
 
     @Override
-    public void updateValidMoves(Board board, ArrayList<Move> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
+        ArrayList<Move> moves = new ArrayList<Move>();
         final int COL = super.getCol();
         final int ROW = super.getRow();
         int[] shortEdge = {1, -1};
@@ -43,5 +44,7 @@ public class Knight extends GamePiece
                 if (moveYinBounds && moveYisFriendly) { moves.add(new Move(board, this, lShapeY[0], lShapeY[1])); }
             }
         }
+
+        return moves;
     }
 }

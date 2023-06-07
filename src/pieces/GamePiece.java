@@ -95,9 +95,21 @@ public class GamePiece
         return false;
     }
 
-    public void updateValidMoves(Board board, ArrayList<Move> moves)
+    public ArrayList<Move> getValidMoves(Board board)
     {
-        return;
+        return null;
+    }
+    
+    public boolean hasLegalMoves(Board board)
+    {
+        for (Move move : owner.getAllLegalMoves(board))
+        {
+            if (move.getOriginPiece() == this)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Calculates all possible movements from all pieces on board (excluding pawns), and continue 
@@ -108,8 +120,6 @@ public class GamePiece
         final int HEIGHT = board.getLength();
         final int PIECE_X = this.getCol();
         final int PIECE_Y = this.getRow();
-        ArrayList<Move> moves = new ArrayList<Move>();
-        Board ghostBoard = new Board(LENGTH, HEIGHT);
         
         // Check corners for pawns
         int[] xInc = {1, -1}, yInc = {1, -1};
@@ -123,67 +133,22 @@ public class GamePiece
                 if (pawnIsAttacking) { return true; }
             }
         }
-        
+
         // Iterate through board and populate ghostBoard with validMoves
-        for (int col = 0; col < LENGTH; col++)
-        {
-            for (int row = 0; row < HEIGHT; row++)
-            {
-                GamePiece space = board.getSpace(col, row);
-                if (space == null || space.getColor().equals(this.getColor())) { continue; }
-                space.updateValidMoves(board, moves);
-            }
-        }
-
-        // Place points on ghostBoard
-        for (Move move : moves)
-        {
-            ghostBoard.place(new GamePiece(move.getDestX(), move.getDestY()));
-        }
-        
-        // Place king on board and return status
-        return ghostBoard.getSpace(PIECE_X, PIECE_Y) != null;
-    }
-
-    // Calculates all possible movements from all pieces on board (excluding pawns), and continue 
-    public boolean isBeingThreatened2ElectricBoogaloo(Board board)
-    {
-        // Initialize main variables
-        final int LENGTH = board.getLength();
-        final int HEIGHT = board.getLength();
-        final int PIECE_X = this.getCol();
-        final int PIECE_Y = this.getRow();
-        ArrayList<Move> moves = new ArrayList<Move>();
         Board ghostBoard = new Board(LENGTH, HEIGHT);
-        
-        // Check corners for pawns
-        int[] xInc = {1, -1}, yInc = {1, -1};
-        for (int x : xInc)
-        {
-            for (int y : yInc)
-            {
-                if (board.coordinateOutOfBounds(PIECE_X+x, PIECE_Y+y)) { continue; };
-                GamePiece potentialPawn = board.getSpace(PIECE_X+x, PIECE_Y+y);
-                Boolean pawnIsAttacking = potentialPawn != null && potentialPawn.getTitle().equals("Pawn") && potentialPawn.checkMove(PIECE_X, PIECE_Y, board);
-                if (pawnIsAttacking) { return true; }
-            }
-        }
-        
-        // Iterate through board and populate ghostBoard with validMoves
         for (int col = 0; col < LENGTH; col++)
         {
             for (int row = 0; row < HEIGHT; row++)
             {
                 GamePiece space = board.getSpace(col, row);
-                if (space == null || space.getColor().equals(this.getColor())) { continue; }
-                space.updateValidMoves(board, moves);
+                if (space == null || space.getColor().equals(owner.getColor()) || space.getTitle().equals("Pawn")) { continue; }
+                
+                // abstracting this to get under 4 indents is a waste of time, but feel free to improve
+                for (Move move : space.getValidMoves(board))
+                {
+                    ghostBoard.place(new GamePiece(move.getDestX(), move.getDestY()));
+                }
             }
-        }
-
-        // Place points on ghostBoard
-        for (Move move : moves)
-        {
-            ghostBoard.place(new GamePiece(move.getDestX(), move.getDestY()));
         }
         
         // Place king on board and return status
