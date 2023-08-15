@@ -100,7 +100,7 @@ public class ComputerPlayer extends Player
         {
             int pieceWorth = pieceRankings.get(piece.getTitle());
             boolean isThreatened = piece.isBeingThreatened(board);
-            boolean isFriendly = piece.getOwner() == this;
+            boolean isFriendly = piece.getColor() == super.getColor();
             
             if (!isThreatened) { continue; }
             if (isFriendly)

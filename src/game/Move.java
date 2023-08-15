@@ -2,6 +2,7 @@ package game;
 import pieces.GamePiece;
 import java.util.ArrayList;
 import tools.Color;
+import tools.UnoptimizedDeepCopy;
 
 public class Move
 {
@@ -12,8 +13,9 @@ public class Move
     public Move(Board board, GamePiece piece, int toX, int toY)
     {
         this.piece = piece;
-        this.fromX = piece.getCol();
-        this.fromY = piece.getRow();
+        int[] fromPosition = piece.searchPos(board);
+        this.fromX = fromPosition[0];
+        this.fromY = fromPosition[1];
         this.space = board.getSpace(toX, toY);
         this.toX = toX;
         this.toY = toY;
@@ -51,15 +53,15 @@ public class Move
 
     public boolean resultsInCheck(Board board)
     {
-        board.move(this);
-        boolean state = piece.getOwner().getKing().isBeingThreatened(board);
-        board.undoMove(this);
+        Board copy = (Board) UnoptimizedDeepCopy.copy(board);
+        copy.move(this);
+        boolean state = copy.findPieces(piece.getColor(), "King").get(0).isBeingThreatened(copy);
         return state;
     }
 
     public boolean isValid(Board board)
     {
-        ArrayList<Move> moves = piece.getOwner().getAllLegalMoves(board);
+        ArrayList<Move> moves = piece.getValidMoves(board);
         for (Move legalMove : moves)
         {
             if (this.equals(legalMove)) { return true; }
@@ -67,12 +69,12 @@ public class Move
         return false;
     }
 
-    public String toString()
-    {
-        String fromString = piece.toFormattedPositon();
-        String toString = space != null ? space.toFormattedPositon() : toX + "," + toY;
-        return piece.getOwner().getColorCode() + "Move chosen!" + fromString + " to " + toString + Color.RESET;
-    }
+    // public String toString()
+    // {
+    //     String fromString = piece.toFormattedPositionOnBoard(board);
+    //     String toString = space != null ? space.toFormattedPositionOnBoard(board) : toX + "," + toY;
+    //     return piece.getOwner().getColorCode() + "Move chosen!" + fromString + " to " + toString + Color.RESET;
+    // }
 
     public boolean equals(Move move)
     {

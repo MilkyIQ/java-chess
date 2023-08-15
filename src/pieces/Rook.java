@@ -6,17 +6,18 @@ import java.util.ArrayList;
 
 public class Rook extends GamePiece
 {
-    public Rook(Player owner, int col, int row)
+    public Rook(String color)
     { 
-        super("Rook", "\u265C", owner, col,row);
+        super("Rook", "\u265C", color);
     }
 
     @Override
     public ArrayList<Move> getValidMoves(Board board)
     {
         ArrayList<Move> moves = new ArrayList<Move>();
-        final int COL = super.getCol();
-        final int ROW = super.getRow();
+        final int[] POSITION = super.searchPos(board);
+        final int COL = POSITION[0];
+        final int ROW = POSITION[1];
         final String COLOR = super.getColor();
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Left, Right, Down, Up
     

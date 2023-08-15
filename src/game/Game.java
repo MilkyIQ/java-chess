@@ -58,15 +58,15 @@ public class Game
             }
 
             Player cur = alivePlayers.get(i-1);
-            for (int[] p : pawns   ) { cur.give(new   Pawn(cur, p[0], p[1], direction)); }
-            for (int[] p : rooks   ) { cur.give(new   Rook(cur, p[0], p[1])); }
-            for (int[] p : knights ) { cur.give(new Knight(cur, p[0], p[1])); }
-            for (int[] p : bishops ) { cur.give(new Bishop(cur, p[0], p[1])); }
-            for (int[] p : queens  ) { cur.give(new  Queen(cur, p[0], p[1])); }
-            for (int[] p : kings   ) { cur.give(new   King(cur, p[0], p[1])); }
+            ArrayList<GamePiece> foo = cur.getAllPieces();
+            for (int[] p : pawns   ) { cur.give(new   Pawn(color, direction)); board.place(foo.get(foo.size()-1), p[0], p[1]); }
+            for (int[] p : rooks   ) { cur.give(new   Rook(color));            board.place(foo.get(foo.size()-1), p[0], p[1]); }
+            for (int[] p : knights ) { cur.give(new Knight(color));            board.place(foo.get(foo.size()-1), p[0], p[1]); }
+            for (int[] p : bishops ) { cur.give(new Bishop(color));            board.place(foo.get(foo.size()-1), p[0], p[1]); }
+            for (int[] p : queens  ) { cur.give(new  Queen(color));            board.place(foo.get(foo.size()-1), p[0], p[1]); }
+            for (int[] p : kings   ) { cur.give(new   King(color));            board.place(foo.get(foo.size()-1), p[0], p[1]); }
         }
         
-        board.populate(alivePlayers);
         board.setColors(evensColor, oddsColor, notationColor);
     }
 
@@ -142,6 +142,15 @@ public class Game
                 stalePlayers.add(alivePlayers.get(i)); 
                 alivePlayers.remove(i);
                 i--;
+            }
+        }
+
+        // Remove taken pieces
+        for (Player player : alivePlayers) {
+            for (GamePiece piece : player.getAllPieces()) {
+                if (piece.searchPos(board) == null) {
+                    player.remove(piece);
+                }
             }
         }
 

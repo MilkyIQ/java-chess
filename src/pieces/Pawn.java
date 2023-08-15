@@ -8,9 +8,9 @@ public class Pawn extends GamePiece
 {
     private final String DIR;
 
-    public Pawn(Player owner, int col, int row, String direction)
+    public Pawn(String color, String direction)
     {
-        super("Pawn", "\u265F", owner, col, row);
+        super("Pawn", "\u265F", color);
         this.DIR = direction;
 
         if (!(DIR.equals("up") || DIR.equals("down") || DIR.equals("left") || DIR.equals("right")))
@@ -24,7 +24,7 @@ public class Pawn extends GamePiece
     {
         ArrayList<Move> moves = new ArrayList<Move>();
         final String COLOR = super.getColor();
-        final int[] POS = {super.getCol(), super.getRow()};
+        final int[] POS = super.searchPos(board);
 
         // Initialize all possible pawn movements
         int[][] baseMoves = new int[4][2];

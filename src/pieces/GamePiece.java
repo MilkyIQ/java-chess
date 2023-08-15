@@ -5,33 +5,27 @@ import player.Player;
 import tools.Color;
 import java.util.ArrayList;
 
-public class GamePiece
+public class GamePiece implements java.io.Serializable
 {
     private final String TITLE;
     private final String SYMBOL;
-    private Player owner;
-    private int col;
-    private int row;
+    private String color;
     private int moveCount;
     
-    public GamePiece(String title, String symbol, Player owner, int col, int row)
+    public GamePiece(String title, String symbol, String color)
     {
         this.TITLE = title;
         this.SYMBOL = symbol;
-        this.owner = owner;
-        this.col = col;
-        this.row = row;
+        this.color = color;
         this.moveCount = 0;
     }
 
     // For use with ghost board point placement only
-    public GamePiece(int col, int row)
+    public GamePiece()
     {
-        this.col = col;
-        this.row = row;
         this.SYMBOL = "x";
         this.TITLE = null;
-        this.owner = null;
+        this.color = null;
     }
 
     public String getTitle()
@@ -46,38 +40,41 @@ public class GamePiece
 
     public String getColor()
     {
-        return owner.getColor();
+        return color;
     }
-
-    public Player getOwner()
+    public Player getOwner(ArrayList<Player> playerList)
     {
-        return owner;
+        for (Player player : playerList) {
+            if (player.getColor().equals(color)) {
+                return player;
+            }
+        }
+        throw new IllegalStateException("Piece has no owner");
     }
 
     public String getColorCode()
     {
-        return Color.getColorCodeOf(owner.getColor());
+        return Color.getColorCodeOf(color);
     }
 
-    public int getRow()
-    {
-        return row;
-    }
-
-    public int getCol()
-    {
-        return col;
+    public int[] searchPos(Board board) {
+        int[] position = new int[2];
+        for (int col = 0; col < board.getLength(); col++) {
+            for (int row = 0; row < board.getHeight(); row++) {
+                if (board.getSpace(col, row) == this) {
+                    position[0] = col;
+                    position[1] = row;
+                    return position;
+                }
+            }
+        }
+        //return null;
+        throw new IllegalStateException(this + "Piece does not exist on board"); // keep for now, may be an issue later with board history
     }
 
     public int getMoveCount()
     {
         return moveCount;
-    }
-
-    public void setPos(int x, int y)
-    {
-        col = x;
-        row = y;
     }
 
     public void incMoveCount()
@@ -97,14 +94,7 @@ public class GamePiece
     
     public boolean hasLegalMoves(Board board)
     {
-        for (Move move : owner.getAllLegalMoves(board))
-        {
-            if (move.getOriginPiece() == this)
-            {
-                return true;
-            }
-        }
-        return false;
+        return getValidMoves(board).size() > 0;
     }
 
     // Calculates all possible movements from all pieces on board (excluding pawns), and continue 
@@ -113,8 +103,9 @@ public class GamePiece
         // Initialize main variables
         final int LENGTH = board.getLength();
         final int HEIGHT = board.getLength();
-        final int PIECE_X = this.getCol();
-        final int PIECE_Y = this.getRow();
+        final int[] PIECE_POSITION = this.searchPos(board);
+        final int PIECE_X = PIECE_POSITION[0];
+        final int PIECE_Y = PIECE_POSITION[1];
 
         // Check corners for pawns
         int[][] deltas = { {1,1}, {1,-1}, {-1,1}, {-1,-1} };
@@ -145,12 +136,12 @@ public class GamePiece
             for (int row = 0; row < HEIGHT; row++)
             {
                 GamePiece space = board.getSpace(col, row);
-                if (space == null || space.getColor().equals(owner.getColor()) || space.getTitle().equals("Pawn")) { continue; }
+                if (space == null || space.getColor().equals(color) || space.getTitle().equals("Pawn")) { continue; }
                 
                 // abstracting this to get under 4 indents is a waste of time, but feel free to improve
                 for (Move move : space.getValidMoves(board))
                 {
-                    ghostBoard.place(new GamePiece(move.getDestX(), move.getDestY()));
+                    ghostBoard.place(new GamePiece(), move.getDestX(), move.getDestY());
                 }
             }
         }
@@ -159,9 +150,10 @@ public class GamePiece
         return ghostBoard.getSpace(PIECE_X, PIECE_Y) != null;
     }
 
-    public String toFormattedPositon()
+    public String toFormattedPosition(Board board)
     {
-        return SYMBOL + "(" + (col) + "," + (row) + ")";
+        int[] position = searchPos(board);
+        return SYMBOL + "(" + (position[0]) + "," + (position[1]) + ")";
     }
 
     // Print corresponding symbol of gamepiece

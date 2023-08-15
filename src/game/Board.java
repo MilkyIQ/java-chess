@@ -4,7 +4,7 @@ import player.Player;
 import tools.Color;
 import java.util.ArrayList;
 
-public class Board
+public class Board implements java.io.Serializable
 {
     private GamePiece[][] board;
     private final int LENGTH;
@@ -35,6 +35,19 @@ public class Board
         return coordinateOutOfBounds(x,y) ? null : board[y][x];
     }
 
+    public ArrayList<GamePiece> findPieces(String color, String type) {
+        ArrayList<GamePiece> piecesOnBoard = new ArrayList<GamePiece>();
+        for (int col = 0; col < LENGTH; col++) {
+            for (int row = 0; row < HEIGHT; row++) {
+                GamePiece space = board[row][col];
+                if (space != null && space.getColor().equals(color) && space.getTitle().equals(type)) {
+                    piecesOnBoard.add(space);
+                }
+            }
+        }
+        return piecesOnBoard;
+    }
+
     // Returns representative int value -1 to 2 to show whether or not a space is occupied by the given color
     public int checkSpace(int x, int y, String color)
     {
@@ -62,29 +75,16 @@ public class Board
         colors[2] = Color.getColorCodeOf(notation);
     }
 
-    public void populate(ArrayList<Player> players)
-    {
-        for (Player player : players)
-        {
-            for (GamePiece piece : player.getAllPieces())
-            {
-                this.place(piece);
-            }
-        }
-    }
-
-    public void place(GamePiece piece)
+    public void place(GamePiece piece, int x, int y)
     {
         try
         {
-            int row = piece.getRow();
-            int col = piece.getCol();
-            board[row][col] = piece;
+            board[y][x] = piece;
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
             System.out.print(Color.YELLOW + "[WARNING]: Skipping placement of ");
-            System.out.print(piece.getColorCode() + piece.toFormattedPositon());
+            System.out.print(piece.getColorCode() + piece.toFormattedPosition(this));
             System.out.println(Color.YELLOW + ", piece out of bounds." + Color.RESET);
         }
     }
@@ -98,11 +98,10 @@ public class Board
         int newPosY = move.getDestY();
         GamePiece piece = move.getOriginPiece();
         GamePiece space = move.getDestPiece();
-        if (space != null) { space.getOwner().remove(space); }
+        // if (space != null) { space.getOwner().remove(space); }
 
         board[newPosY][newPosX] = piece;
         board[move.getOriginY()][move.getOriginX()] = null;
-        piece.setPos(newPosX, newPosY);
         piece.incMoveCount();
 
     }
@@ -116,11 +115,10 @@ public class Board
         int oldY                = move.getOriginY();
         int attackedX           = move.getDestX();
         int attackedY           = move.getDestY();
-        if (attackedSpace != null) { attackedSpace.getOwner().give(attackedSpace); }
+        // if (attackedSpace != null) { attackedSpace.getOwner().give(attackedSpace); }
 
         board[oldY][oldX] = movedPiece;
         board[attackedY][attackedX] = attackedSpace;
-        movedPiece.setPos(oldX, oldY);
         movedPiece.decMoveCount();
         // no need to update attackedSpace position because it's position doesnt change after attack
     }

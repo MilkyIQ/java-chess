@@ -6,17 +6,18 @@ import java.util.ArrayList;
 
 public class Bishop extends GamePiece
 {
-    public Bishop(Player owner, int col, int row)
+    public Bishop(String color)
     {
-        super("Bishop", "\u265D", owner, col, row);
+        super("Bishop", "\u265D", color);
     }
 
     @Override
     public ArrayList<Move> getValidMoves(Board board)
     {
         ArrayList<Move> moves = new ArrayList<Move>();
-        final int COL = super.getCol();
-        final int ROW = super.getRow();
+        final int[] POS = super.searchPos(board);
+        final int COL = POS[0];
+        final int ROW = POS[1];
         final String COLOR = super.getColor();
         int[][] directions = {{-1, -1}, {1, 1}, {-1, 1}, {1, -1}}; // Left-Down, Right-Up, Left-Up, Right-Down
     
@@ -31,7 +32,10 @@ public class Bishop extends GamePiece
             {
                 int spaceStatus = board.checkSpace(x, y, COLOR);
                 if (spaceStatus == 1) { break; } // Blocked by a piece of the same color
-                moves.add(new Move(board, this, x, y));
+                Move newMove = new Move(board, this, x, y);
+                if (!newMove.resultsInCheck(board)) {
+                    moves.add(new Move(board, this, x, y));
+                }
                 if (spaceStatus == 2) { break; } // Captures an opponent's piece
     
                 x += dx;

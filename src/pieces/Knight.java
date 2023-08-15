@@ -6,17 +6,18 @@ import java.util.ArrayList;
 
 public class Knight extends GamePiece
 {
-    public Knight(Player owner, int col, int row)
+    public Knight(String color)
     {
-        super("Knight", "\u265E", owner, col, row);
+        super("Knight", "\u265E", color);
     }
 
     @Override
     public ArrayList<Move> getValidMoves(Board board)
     {
         ArrayList<Move> moves = new ArrayList<Move>();
-        final int COL = super.getCol();
-        final int ROW = super.getRow();
+        final int[] POSITION = super.searchPos(board);
+        final int COL = POSITION[0];
+        final int ROW = POSITION[1];
         int[] shortEdge = {1, -1};
         int[] longEdge = {2, -2};
 

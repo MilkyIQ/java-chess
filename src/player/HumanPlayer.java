@@ -41,7 +41,7 @@ public class HumanPlayer extends Player
 
         // ILLEGAL PIECE
         GamePiece piece = board.getSpace(point[0], point[1]);
-        if (piece == null || piece.getOwner() != this || !piece.hasLegalMoves(board)) // a switch statement here is probably redundant
+        if (piece == null || piece.getColor() != super.getColor() || !piece.hasLegalMoves(board)) // a switch statement here is probably redundant
         {
             System.out.print(Color.RED);
             switch (board.checkSpace(point[0], point[1], this.getColor()))
@@ -56,7 +56,7 @@ public class HumanPlayer extends Player
         }
 
         // LEGAL PIECE
-        System.out.println(Color.PURPLE + "You have chosen " + piece.toFormattedPositon());
+        System.out.println(Color.PURPLE + "You have chosen " + piece.toFormattedPosition(board));
         return piece;
     }
 
