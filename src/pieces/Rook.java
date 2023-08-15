@@ -1,7 +1,6 @@
 package pieces;
 import game.Board;
 import game.Move;
-import player.Player;
 import java.util.ArrayList;
 
 public class Rook extends GamePiece
@@ -12,12 +11,9 @@ public class Rook extends GamePiece
     }
 
     @Override
-    public ArrayList<Move> getValidMoves(Board board)
+    public ArrayList<Move> getValidMoves(Board board, int x, int y)
     {
         ArrayList<Move> moves = new ArrayList<Move>();
-        final int[] POSITION = super.searchPos(board);
-        final int COL = POSITION[0];
-        final int ROW = POSITION[1];
         final String COLOR = super.getColor();
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Left, Right, Down, Up
     
@@ -25,18 +21,18 @@ public class Rook extends GamePiece
         {
             int dx = direction[0];
             int dy = direction[1];
-            int x = COL + dx;
-            int y = ROW + dy;
+            int crawlX = x + dx;
+            int crawlY = y + dy;
     
-            while (x >= 0 && x < board.getLength() && y >= 0 && y < board.getHeight())
+            while (crawlX >= 0 && crawlX < board.getLength() && crawlY >= 0 && crawlY < board.getHeight())
             {
-                int spaceStatus = board.checkSpace(x, y, COLOR);
+                int spaceStatus = board.checkSpace(crawlX, crawlY, COLOR);
                 if (spaceStatus == 1) { break; } // Blocked by a piece of the same color
-                moves.add(new Move(board, this, x, y));
+                moves.add(new Move(board, this, x, y, crawlX, crawlY));
                 if (spaceStatus == 2) { break; } // Captures an opponent's piece
     
-                x += dx;
-                y += dy;
+                crawlX += dx;
+                crawlY += dy;
             }
         }
 

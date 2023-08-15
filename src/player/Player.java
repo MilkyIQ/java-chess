@@ -43,18 +43,6 @@ public class Player {
         return state;
     }
 
-    public GamePiece getKing()
-    {
-        for (GamePiece piece : hand)
-        {
-            if (piece.getTitle().equals("King"))
-            {
-                return piece;
-            }
-        }
-        throw new IllegalStateException(this.getName() + " has no king in hand.");
-    }
-
     public ArrayList<GamePiece> getAllPieces()
     {
         return hand;
@@ -63,9 +51,10 @@ public class Player {
     public ArrayList<Move> getAllLegalMoves(Board board)
     {
         ArrayList<Move> allMoves = new ArrayList<Move>();
-        for (GamePiece piece : hand)
+        for (GamePiece piece : board.findPieces(COLOR, null))
         {
-            for (Move move : piece.getValidMoves(board))
+            int[] piecePosition = piece.searchPos(board);
+            for (Move move : piece.getValidMoves(board, piecePosition[0], piecePosition[1]))
             {
                 if (!move.resultsInCheck(board))
                 {
@@ -101,7 +90,7 @@ public class Player {
     // Analyzes board and determines whether the player is in check, checkmate, stalemate, or safe
     public String calculateState(Board board)
     {
-        GamePiece king = getKing();
+        GamePiece king = board.findPieces(COLOR, King.class).get(0);
         boolean kingIsThreatened = king.isBeingThreatened(board);
         boolean playerHasMoves = getAllLegalMoves(board).size() > 0;
         

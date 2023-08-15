@@ -18,6 +18,13 @@ public class HumanPlayer extends Player
     @Override
     public Move selectMove(Board board)
     {
+        /*
+         * TODO: HumanPlayer selectMove() overhaul
+         * These functions need to entirely overhauled (again).
+         * Maybe we use a while loop instead of recursion?
+         * Or maybe we put some of the error checking in the constructors
+         * for GamePiece and Move.
+         */
         GamePiece selectedPiece = requestPieceFromUser(board);
         Move selectedDest = requestMoveFromUser(board, selectedPiece);
         return selectedDest == null ? selectMove(board) : selectedDest;
@@ -41,7 +48,7 @@ public class HumanPlayer extends Player
 
         // ILLEGAL PIECE
         GamePiece piece = board.getSpace(point[0], point[1]);
-        if (piece == null || piece.getColor() != super.getColor() || !piece.hasLegalMoves(board)) // a switch statement here is probably redundant
+        if (piece == null || piece.getColor() != super.getColor() || !piece.hasLegalMoves(board, point[0], point[1])) // a switch statement here is probably redundant
         {
             System.out.print(Color.RED);
             switch (board.checkSpace(point[0], point[1], this.getColor()))
@@ -90,7 +97,8 @@ public class HumanPlayer extends Player
         }
 
         // MOVE NOT VALID
-        Move move = new Move(board, piece, point[0], point[1]);
+        int[] piecePosition = piece.searchPos(board);
+        Move move = new Move(board, piece, piecePosition[0], piecePosition[1], point[0], point[1]); // This is really bad and needs to be fixed
         if (!move.isValid(board))
         {
             System.out.println(Color.RED + "Invalid move. Please try again." + Color.RESET);

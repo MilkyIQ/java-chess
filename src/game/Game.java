@@ -95,6 +95,7 @@ public class Game
             }
 
             eventHistory.add(move);
+            move.getOriginPiece().incMoveCount();
             updateGameCondition();
             i = i < alivePlayers.size()-1 ? i+1 : 0;
             turn++;
@@ -142,15 +143,6 @@ public class Game
                 stalePlayers.add(alivePlayers.get(i)); 
                 alivePlayers.remove(i);
                 i--;
-            }
-        }
-
-        // Remove taken pieces
-        for (Player player : alivePlayers) {
-            for (GamePiece piece : player.getAllPieces()) {
-                if (piece.searchPos(board) == null) {
-                    player.remove(piece);
-                }
             }
         }
 

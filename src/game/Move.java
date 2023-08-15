@@ -1,7 +1,7 @@
 package game;
 import pieces.GamePiece;
+import pieces.King;
 import java.util.ArrayList;
-import tools.Color;
 import tools.UnoptimizedDeepCopy;
 
 public class Move
@@ -10,12 +10,11 @@ public class Move
     private int fromX, fromY;
     private int toX, toY;
 
-    public Move(Board board, GamePiece piece, int toX, int toY)
+    public Move(Board board, GamePiece piece, int fromX, int fromY, int toX, int toY)
     {
         this.piece = piece;
-        int[] fromPosition = piece.searchPos(board);
-        this.fromX = fromPosition[0];
-        this.fromY = fromPosition[1];
+        this.fromX = fromX;
+        this.fromY = fromY;
         this.space = board.getSpace(toX, toY);
         this.toX = toX;
         this.toY = toY;
@@ -55,13 +54,13 @@ public class Move
     {
         Board copy = (Board) UnoptimizedDeepCopy.copy(board);
         copy.move(this);
-        boolean state = copy.findPieces(piece.getColor(), "King").get(0).isBeingThreatened(copy);
+        boolean state = copy.findPieces(piece.getColor(), King.class).get(0).isBeingThreatened(copy);
         return state;
     }
 
     public boolean isValid(Board board)
     {
-        ArrayList<Move> moves = piece.getValidMoves(board);
+        ArrayList<Move> moves = piece.getValidMoves(board, fromX, fromY);
         for (Move legalMove : moves)
         {
             if (this.equals(legalMove)) { return true; }

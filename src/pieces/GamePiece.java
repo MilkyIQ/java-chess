@@ -57,6 +57,12 @@ public class GamePiece implements java.io.Serializable
         return Color.getColorCodeOf(color);
     }
 
+    /*
+     * TODO:
+     * it might be worth it to learn how to create iterables so we can create
+     * streams and crap so we dont have to make these annoying for loops all
+     * the time to traverse the board.
+     */
     public int[] searchPos(Board board) {
         int[] position = new int[2];
         for (int col = 0; col < board.getLength(); col++) {
@@ -69,6 +75,7 @@ public class GamePiece implements java.io.Serializable
             }
         }
         //return null;
+        board.printBoard();
         throw new IllegalStateException(this + "Piece does not exist on board"); // keep for now, may be an issue later with board history
     }
 
@@ -87,14 +94,14 @@ public class GamePiece implements java.io.Serializable
         moveCount--;
     }
 
-    public ArrayList<Move> getValidMoves(Board board)
+    public ArrayList<Move> getValidMoves(Board board, int x, int y)
     {
         return null;
     }
     
-    public boolean hasLegalMoves(Board board)
+    public boolean hasLegalMoves(Board board, int x, int y)
     {
-        return getValidMoves(board).size() > 0;
+        return getValidMoves(board, x, y).size() > 0;
     }
 
     // Calculates all possible movements from all pieces on board (excluding pawns), and continue 
@@ -122,8 +129,8 @@ public class GamePiece implements java.io.Serializable
             }
 
             // verify direction
-            Move potentialMove = new Move(board, potentialPawn, PIECE_X, PIECE_Y);
-            for (Move move : potentialPawn.getValidMoves(board))
+            Move potentialMove = new Move(board, potentialPawn, x, y, PIECE_X, PIECE_Y);
+            for (Move move : potentialPawn.getValidMoves(board, x, y))
             {
                 if (move.equals(potentialMove)) { return true; }
             }
@@ -139,7 +146,7 @@ public class GamePiece implements java.io.Serializable
                 if (space == null || space.getColor().equals(color) || space.getTitle().equals("Pawn")) { continue; }
                 
                 // abstracting this to get under 4 indents is a waste of time, but feel free to improve
-                for (Move move : space.getValidMoves(board))
+                for (Move move : space.getValidMoves(board, col, row))
                 {
                     ghostBoard.place(new GamePiece(), move.getDestX(), move.getDestY());
                 }

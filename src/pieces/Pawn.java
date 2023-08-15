@@ -1,7 +1,6 @@
 package pieces;
 import game.Board;
 import game.Move;
-import player.Player;
 import java.util.ArrayList;
 
 public class Pawn extends GamePiece
@@ -20,18 +19,18 @@ public class Pawn extends GamePiece
     }
 
     @Override
-    public ArrayList<Move> getValidMoves(Board board)
+    public ArrayList<Move> getValidMoves(Board board, int x, int y)
     {
         ArrayList<Move> moves = new ArrayList<Move>();
         final String COLOR = super.getColor();
-        final int[] POS = super.searchPos(board);
+        final int[] PIECE_POSITION = {x, y};
 
         // Initialize all possible pawn movements
         int[][] baseMoves = new int[4][2];
         for (int i = 0; i < baseMoves.length; i++)
         {
-            baseMoves[i][0] = POS[0];
-            baseMoves[i][1] = POS[1];
+            baseMoves[i][0] = PIECE_POSITION[0];
+            baseMoves[i][1] = PIECE_POSITION[1];
         }
 
         // Adjust values according to direction
@@ -57,12 +56,12 @@ public class Pawn extends GamePiece
             if (move == null) { continue; }
 
             int spaceStatus = board.checkSpace(move[0], move[1], COLOR);
-            boolean validAttack = (move[0] != POS[0]) && (spaceStatus == 2);
-            boolean validForward = (move[axis] != POS[axis] && move[anti] == POS[anti]) && (spaceStatus == 0);
+            boolean validAttack = (move[0] != PIECE_POSITION[0]) && (spaceStatus == 2);
+            boolean validForward = (move[axis] != PIECE_POSITION[axis] && move[anti] == PIECE_POSITION[anti]) && (spaceStatus == 0);
 
             if ( (validAttack || validForward))
             {
-                moves.add(new Move(board, this, move[0], move[1]));
+                moves.add(new Move(board, this, x, y, move[0], move[1]));
             }
         }
 

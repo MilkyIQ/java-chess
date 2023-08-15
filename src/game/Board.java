@@ -1,6 +1,5 @@
 package game;
 import pieces.*;
-import player.Player;
 import tools.Color;
 import java.util.ArrayList;
 
@@ -35,12 +34,15 @@ public class Board implements java.io.Serializable
         return coordinateOutOfBounds(x,y) ? null : board[y][x];
     }
 
-    public ArrayList<GamePiece> findPieces(String color, String type) {
+    public <T> ArrayList<GamePiece> findPieces(String color, Class<T> type) {
         ArrayList<GamePiece> piecesOnBoard = new ArrayList<GamePiece>();
-        for (int col = 0; col < LENGTH; col++) {
-            for (int row = 0; row < HEIGHT; row++) {
-                GamePiece space = board[row][col];
-                if (space != null && space.getColor().equals(color) && space.getTitle().equals(type)) {
+        for (GamePiece[] row : board) {
+            for (GamePiece space : row) {
+                if (space == null) { continue; }
+
+                boolean colorMatches = color == null || color.equals(space.getColor());
+                boolean typeMatches = type == null || type.equals(space.getClass());
+                if (colorMatches && typeMatches) {
                     piecesOnBoard.add(space);
                 }
             }
@@ -98,11 +100,10 @@ public class Board implements java.io.Serializable
         int newPosY = move.getDestY();
         GamePiece piece = move.getOriginPiece();
         GamePiece space = move.getDestPiece();
-        // if (space != null) { space.getOwner().remove(space); }
+        //if (space != null) { space.getOwner().remove(space); }
 
         board[newPosY][newPosX] = piece;
         board[move.getOriginY()][move.getOriginX()] = null;
-        piece.incMoveCount();
 
     }
 

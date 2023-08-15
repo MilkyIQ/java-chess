@@ -1,7 +1,6 @@
 package pieces;
 import game.Board;
 import game.Move;
-import player.Player;
 import java.util.ArrayList;
 
 public class Queen extends GamePiece
@@ -12,28 +11,18 @@ public class Queen extends GamePiece
     }
 
     @Override
-    public ArrayList<Move> getValidMoves(Board board)
+    public ArrayList<Move> getValidMoves(Board board, int x, int y)
     {
         ArrayList<Move> moves = new ArrayList<Move>();
-        int[] queenPosition = super.searchPos(board);
-        int queenX = queenPosition[0];
-        int queenY = queenPosition[1];
         String queenColor = super.getColor();
         ArrayList<Move> validQueenMoves = new ArrayList<Move>();
-        /*
-         * TODO:
-         * This causes an error because its trying to search for the positions of
-         * two pieces on a board that does not exist. Need to update getAllValidMoves()
-         * methods to take x and y values and just deal with the positions outside of the
-         * function call.
-         */
-        new Rook(queenColor).getValidMoves(board);
-        new Bishop(queenColor).getValidMoves(board);
+        new Rook(queenColor).getValidMoves(board, x, y);
+        new Bishop(queenColor).getValidMoves(board, x, y);
 
         // Have to recreate new move objects otherwise queen will typecast to a Rook or Bishop
         for (Move move : validQueenMoves)
         {
-            moves.add(new Move(board, this, move.getDestX(), move.getDestY()));
+            moves.add(new Move(board, this, x, y, move.getDestX(), move.getDestY()));
         }
         
         return moves;

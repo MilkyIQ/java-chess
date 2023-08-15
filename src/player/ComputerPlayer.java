@@ -38,8 +38,8 @@ public class ComputerPlayer extends Player
         {
             case 0: 
                 selectedMove = randomSelect(board);
-            case 1:
-                selectedMove = simpleRankedSelect(board);
+            // case 1:
+            //     selectedMove = simpleRankedSelect(board);
         }
 
         System.out.println(selectedMove);
@@ -117,7 +117,7 @@ public class ComputerPlayer extends Player
         return basePoints + points;
     }
 
-    private ArrayList<GamePiece> getAllPiecesOnBoard(Board board)
+    public ArrayList<GamePiece> getAllPiecesOnBoard(Board board)
     {
         ArrayList<GamePiece> allPieces = new ArrayList<GamePiece>();
         for (int row = 0; row < board.getHeight(); row++)
