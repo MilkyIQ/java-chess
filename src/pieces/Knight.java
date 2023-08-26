@@ -7,7 +7,7 @@ public class Knight extends GamePiece
 {
     public Knight(String color)
     {
-        super("\u265E", color);
+        super('\u265E', color);
     }
 
     @Override

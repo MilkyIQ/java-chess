@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 public class GamePiece implements java.io.Serializable
 {
-    private final String SYMBOL;
+    private final char SYMBOL;
     private String color;
     private int moveCount;
     
-    public GamePiece(String symbol, String color)
+    public GamePiece(char symbol, String color)
     {
         this.SYMBOL = symbol;
         this.color = color;
@@ -21,19 +21,15 @@ public class GamePiece implements java.io.Serializable
     // For use with ghost board point placement only
     public GamePiece()
     {
-        this.SYMBOL = "x";
+        this.SYMBOL = 'x';
         this.color = null;
-    }
-
-    public String getSymbol()
-    {
-        return SYMBOL;
     }
 
     public String getColor()
     {
         return color;
     }
+    
     public Player getOwner(ArrayList<Player> playerList)
     {
         for (Player player : playerList) {
@@ -130,6 +126,6 @@ public class GamePiece implements java.io.Serializable
     // Print corresponding symbol of gamepiece
     public String toString()
     {
-        return SYMBOL.substring(0,1);
+        return color + "" + SYMBOL;
     }
 }

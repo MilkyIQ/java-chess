@@ -9,7 +9,7 @@ public class Pawn extends GamePiece
 
     public Pawn(String color, String direction)
     {
-        super("\u265F", color);
+        super('\u265F', color);
         this.DIR = direction;
 
         if (!(DIR.equals("up") || DIR.equals("down") || DIR.equals("left") || DIR.equals("right")))
