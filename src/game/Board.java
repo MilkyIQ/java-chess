@@ -79,7 +79,7 @@ public class Board implements java.io.Serializable
         else if (!board[y][x].getColor().equals(color)) { return 2;  } // space is occupied NOT by color
         else
         {
-            throw new IllegalArgumentException(Color.RED + "Board.checkSpace() was given bad data." + Color.RESET); // just in case
+            throw new IllegalArgumentException(Color.get("RED") + "Board.checkSpace() was given bad data." + Color.get("RESET")); // just in case
         }
     }
     
@@ -92,9 +92,9 @@ public class Board implements java.io.Serializable
 
     public void setColors(String evens, String odds, String notation)
     {
-        colors[0] = Color.getColorCodeOf(evens);
-        colors[1] = Color.getColorCodeOf(odds);
-        colors[2] = Color.getColorCodeOf(notation);
+        colors[0] = Color.get(evens);
+        colors[1] = Color.get(odds);
+        colors[2] = Color.get(notation);
     }
 
     public void place(GamePiece piece, int x, int y)
@@ -105,9 +105,9 @@ public class Board implements java.io.Serializable
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
-            System.out.print(Color.YELLOW + "[WARNING]: Skipping placement of ");
+            System.out.print(Color.get("YELLOW") + "[WARNING]: Skipping placement of ");
             System.out.print(piece.getColorCode() + piece);
-            System.out.println(Color.YELLOW + ", piece out of bounds." + Color.RESET);
+            System.out.println(Color.get("YELLOW") + ", piece out of bounds." + Color.get("RESET"));
         }
     }
 
@@ -146,34 +146,34 @@ public class Board implements java.io.Serializable
         System.out.print("  ");
         for (int col = 0; col < LENGTH; col++)
         {
-            System.out.print(colors[2] + " " + (col+"").substring(0,1) + " " + Color.RESET);
+            System.out.print(colors[2] + " " + (col+"").substring(0,1) + " " + Color.get("RESET"));
         }
         
         // row in board
         for (int row = HEIGHT-1; row >= 0; row--)
         {
             System.out.println();
-            System.out.print(colors[2] + (row+"").substring(0,1) + " " + Color.RESET); // row number (left)
+            System.out.print(colors[2] + (row+"").substring(0,1) + " " + Color.get("RESET")); // row number (left)
             
             // column in row
             for (int col = 0; col < LENGTH; col++)
             {
                 GamePiece piece = board[row][col];
                 String bgColor  = (row+col) % 2 == 0    ? colors[1]  : colors[0];
-                String fgColor  = piece         == null ? Color.CYAN : piece.getColorCode();
+                String fgColor  = piece         == null ? Color.get("CYAN") : piece.getColorCode();
                 String output   = piece         == null ? " "        : piece.toString();
                 
-                System.out.print(fgColor + bgColor + " " + output + " " + Color.RESET);
+                System.out.print(fgColor + bgColor + " " + output + " " + Color.get("RESET"));
             }
 
-            System.out.print(" " + colors[2] + (row+"").substring(0,1) + " " + Color.RESET); // row number (right)
+            System.out.print(" " + colors[2] + (row+"").substring(0,1) + " " + Color.get("RESET")); // row number (right)
         }
 
         // column numbers (bottom)
         System.out.print("\n  ");
         for (int col = 0; col < LENGTH; col++)
         {
-            System.out.print(colors[2] + " " + (col+"").substring(0,1) + " " + Color.RESET);
+            System.out.print(colors[2] + " " + (col+"").substring(0,1) + " " + Color.get("RESET"));
         }
         System.out.println();
     }

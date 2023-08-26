@@ -33,7 +33,7 @@ public class HumanPlayer extends Player
     // Ask user for the piece they'd like to move and return that piece
     private GamePiece requestPieceFromUser(Board board)
     {
-        System.out.print(this.getColorCode() + "[" + this.getName() + "] " + Color.RESET);
+        System.out.print(this.getColorCode() + "[" + this.getName() + "] " + Color.get("RESET"));
         System.out.print("Choose a piece to move (x,y): ");
         
         String userInput = scanner.nextLine().toLowerCase();
@@ -42,7 +42,7 @@ public class HumanPlayer extends Player
         int[] point = extractPointFromString(userInput);
         if (point == null)
         {
-            System.out.println(Color.RED + "Invalid input." + Color.RESET);
+            System.out.println(Color.get("RED") + "Invalid input." + Color.get("RESET"));
             return requestPieceFromUser(board);
         }
 
@@ -50,7 +50,7 @@ public class HumanPlayer extends Player
         GamePiece piece = board.getSpace(point[0], point[1]);
         if (piece == null || piece.getColor() != super.getColor() || !piece.hasLegalMoves(board, point[0], point[1])) // a switch statement here is probably redundant
         {
-            System.out.print(Color.RED);
+            System.out.print(Color.get("RED"));
             switch (board.checkSpace(point[0], point[1], this.getColor()))
             {
                 case -1: System.out.print("Out of bounds."); break;
@@ -58,26 +58,26 @@ public class HumanPlayer extends Player
                 case 1:  System.out.print("Piece has no legal moves."); break;
                 case 2:  System.out.print("Cannot move enemy piece."); break;
             }
-            System.out.print(Color.RESET + "\n");
+            System.out.print(Color.get("RESET") + "\n");
             return requestPieceFromUser(board);
         }
 
         // LEGAL PIECE
-        System.out.println(Color.PURPLE + "You have chosen " + piece);
+        System.out.println(Color.get("PURPLE") + "You have chosen " + piece);
         return piece;
     }
 
     // Ask user for the move they want to make and return
     private Move requestMoveFromUser(Board board, GamePiece piece)
     {
-        System.out.print(this.getColorCode() + "[" + this.getName() + "] " + Color.RESET);
+        System.out.print(this.getColorCode() + "[" + this.getName() + "] " + Color.get("RESET"));
         System.out.print("Choose a space to move to (x,y): ");
 
         // PROPOSE UNDO
         String userInput = scanner.nextLine().toLowerCase();
         if (userInput.equals("back") || userInput.equals("undo"))
         {
-            System.out.println(Color.PURPLE + "Undoing selection..." + Color.RESET);
+            System.out.println(Color.get("PURPLE") + "Undoing selection..." + Color.get("RESET"));
             return null;
         }
         
@@ -85,14 +85,14 @@ public class HumanPlayer extends Player
         int[] point = extractPointFromString(userInput);
         if (point == null)
         {
-            System.out.println(Color.RED + "Invalid input. Please try again." + Color.RESET);
+            System.out.println(Color.get("RED") + "Invalid input. Please try again." + Color.get("RESET"));
             return requestMoveFromUser(board, piece);
         }
 
         // OUT OF BOUNDS
         if (board.checkSpace(point[0], point[1], piece.getColor()) == -1)
         {
-            System.out.println(Color.RED + "Out of bounds! Please try again." + Color.RESET);
+            System.out.println(Color.get("RED") + "Out of bounds! Please try again." + Color.get("RESET"));
             return requestMoveFromUser(board, piece);
         }
 
@@ -101,7 +101,7 @@ public class HumanPlayer extends Player
         Move move = new Move(board, piece, piecePosition[0], piecePosition[1], point[0], point[1]); // This is really bad and needs to be fixed
         if (!move.isValid(board))
         {
-            System.out.println(Color.RED + "Invalid move. Please try again." + Color.RESET);
+            System.out.println(Color.get("RED") + "Invalid move. Please try again." + Color.get("RESET"));
             return requestMoveFromUser(board, piece);
         }
 

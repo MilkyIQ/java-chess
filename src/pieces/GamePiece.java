@@ -42,7 +42,7 @@ public class GamePiece implements java.io.Serializable
 
     public String getColorCode()
     {
-        return Color.getColorCodeOf(color);
+        return Color.get(color);
     }
 
     public int getMoveCount()

@@ -30,7 +30,7 @@ public class Player {
     {
         int underscoreIndex = COLOR.indexOf("_");
         String baseColor = underscoreIndex > -1 ? COLOR.substring(0,underscoreIndex) : COLOR;
-        return Color.getColorCodeOf(baseColor + "_bold");
+        return Color.get(baseColor + "_bold");
     }
 
     public String getName()

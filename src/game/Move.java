@@ -72,7 +72,7 @@ public class Move
     // {
     //     String fromString = piece.toFormattedPositionOnBoard(board);
     //     String toString = space != null ? space.toFormattedPositionOnBoard(board) : toX + "," + toY;
-    //     return piece.getOwner().getColorCode() + "Move chosen!" + fromString + " to " + toString + Color.RESET;
+    //     return piece.getOwner().getColorCode() + "Move chosen!" + fromString + " to " + toString + Color.get("RESET");
     // }
 
     public boolean equals(Move move)
