@@ -53,7 +53,7 @@ public class Player {
         ArrayList<Move> allMoves = new ArrayList<Move>();
         for (GamePiece piece : board.findPieces(COLOR, null))
         {
-            int[] piecePosition = piece.searchPos(board);
+            int[] piecePosition = board.findPosition(piece);
             for (Move move : piece.getValidMoves(board, piecePosition[0], piecePosition[1]))
             {
                 if (!move.resultsInCheck(board))

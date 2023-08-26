@@ -34,6 +34,26 @@ public class Board implements java.io.Serializable
         return coordinateOutOfBounds(x,y) ? null : board[y][x];
     }
 
+    /*
+     * TODO:
+     * it might be worth it to learn how to create iterables so we can create
+     * streams and crap so we dont have to make these annoying for loops all
+     * the time to traverse the board.
+     */
+    public int[] findPosition(GamePiece piece) {
+        int[] position = new int[2];
+        for (int col = 0; col < LENGTH; col++) {
+            for (int row = 0; row < HEIGHT; row++) {
+                if (board[row][col] == piece) {
+                    position[0] = col;
+                    position[1] = row;
+                    return position;
+                }
+            }
+        }
+        throw new IllegalStateException(piece + " does not exist on board"); // keep for now, may be an issue later with board history
+    }
+
     public <T> ArrayList<GamePiece> findPieces(String color, Class<T> type) {
         ArrayList<GamePiece> piecesOnBoard = new ArrayList<GamePiece>();
         for (GamePiece[] row : board) {
@@ -86,7 +106,7 @@ public class Board implements java.io.Serializable
         catch (ArrayIndexOutOfBoundsException e)
         {
             System.out.print(Color.YELLOW + "[WARNING]: Skipping placement of ");
-            System.out.print(piece.getColorCode() + piece.toFormattedPosition(this));
+            System.out.print(piece.getColorCode() + piece);
             System.out.println(Color.YELLOW + ", piece out of bounds." + Color.RESET);
         }
     }
@@ -96,12 +116,9 @@ public class Board implements java.io.Serializable
     // Move given piece from one space to another, update spaces and piece data
     public void move(Move move)
     {
-        int newPosX = move.getDestX();
-        int newPosY = move.getDestY();
+        int newPosX     = move.getDestX();
+        int newPosY     = move.getDestY();
         GamePiece piece = move.getOriginPiece();
-        GamePiece space = move.getDestPiece();
-        //if (space != null) { space.getOwner().remove(space); }
-
         board[newPosY][newPosX] = piece;
         board[move.getOriginY()][move.getOriginX()] = null;
 
@@ -116,9 +133,7 @@ public class Board implements java.io.Serializable
         int oldY                = move.getOriginY();
         int attackedX           = move.getDestX();
         int attackedY           = move.getDestY();
-        // if (attackedSpace != null) { attackedSpace.getOwner().give(attackedSpace); }
-
-        board[oldY][oldX] = movedPiece;
+        board[oldY][oldX]           = movedPiece;
         board[attackedY][attackedX] = attackedSpace;
         movedPiece.decMoveCount();
         // no need to update attackedSpace position because it's position doesnt change after attack

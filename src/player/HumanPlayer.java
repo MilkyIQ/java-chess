@@ -63,7 +63,7 @@ public class HumanPlayer extends Player
         }
 
         // LEGAL PIECE
-        System.out.println(Color.PURPLE + "You have chosen " + piece.toFormattedPosition(board));
+        System.out.println(Color.PURPLE + "You have chosen " + piece);
         return piece;
     }
 
@@ -97,7 +97,7 @@ public class HumanPlayer extends Player
         }
 
         // MOVE NOT VALID
-        int[] piecePosition = piece.searchPos(board);
+        int[] piecePosition = board.findPosition(piece);
         Move move = new Move(board, piece, piecePosition[0], piecePosition[1], point[0], point[1]); // This is really bad and needs to be fixed
         if (!move.isValid(board))
         {

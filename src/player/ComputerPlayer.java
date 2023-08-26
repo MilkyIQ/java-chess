@@ -38,8 +38,8 @@ public class ComputerPlayer extends Player
         {
             case 0: 
                 selectedMove = randomSelect(board);
-            // case 1:
-            //     selectedMove = simpleRankedSelect(board);
+            case 1:
+                selectedMove = simpleRankedSelect(board);
         }
 
         System.out.println(selectedMove);
@@ -85,7 +85,8 @@ public class ComputerPlayer extends Player
      * Calculates the number of points a given move is worth based on whether or not the move
      * will attack a piece in that move or the next, as well as the state of vulnerability that
      * all of the player's pieces will be in after the move is made
-     */
+    */
+    /* */
     private int calculateMovePoints(Move move, Board board, int basePoints)
     {
         int points = basePoints;
@@ -93,12 +94,12 @@ public class ComputerPlayer extends Player
 
         if (move.getDestPiece() != null)
         {
-            points += pieceRankings.get(move.getDestPiece().getTitle());
+            points += pieceRankings.get(move.getDestPiece().getClass().getName());
         }
         
         for (GamePiece piece : getAllPiecesOnBoard(board))
         {
-            int pieceWorth = pieceRankings.get(piece.getTitle());
+            int pieceWorth = pieceRankings.get(piece.getClass().getName());
             boolean isThreatened = piece.isBeingThreatened(board);
             boolean isFriendly = piece.getColor() == super.getColor();
             

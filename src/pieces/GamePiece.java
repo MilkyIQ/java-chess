@@ -7,14 +7,12 @@ import java.util.ArrayList;
 
 public class GamePiece implements java.io.Serializable
 {
-    private final String TITLE;
     private final String SYMBOL;
     private String color;
     private int moveCount;
     
-    public GamePiece(String title, String symbol, String color)
+    public GamePiece(String symbol, String color)
     {
-        this.TITLE = title;
         this.SYMBOL = symbol;
         this.color = color;
         this.moveCount = 0;
@@ -24,13 +22,7 @@ public class GamePiece implements java.io.Serializable
     public GamePiece()
     {
         this.SYMBOL = "x";
-        this.TITLE = null;
         this.color = null;
-    }
-
-    public String getTitle()
-    {
-        return TITLE;
     }
 
     public String getSymbol()
@@ -55,28 +47,6 @@ public class GamePiece implements java.io.Serializable
     public String getColorCode()
     {
         return Color.getColorCodeOf(color);
-    }
-
-    /*
-     * TODO:
-     * it might be worth it to learn how to create iterables so we can create
-     * streams and crap so we dont have to make these annoying for loops all
-     * the time to traverse the board.
-     */
-    public int[] searchPos(Board board) {
-        int[] position = new int[2];
-        for (int col = 0; col < board.getLength(); col++) {
-            for (int row = 0; row < board.getHeight(); row++) {
-                if (board.getSpace(col, row) == this) {
-                    position[0] = col;
-                    position[1] = row;
-                    return position;
-                }
-            }
-        }
-        //return null;
-        board.printBoard();
-        throw new IllegalStateException(this + "Piece does not exist on board"); // keep for now, may be an issue later with board history
     }
 
     public int getMoveCount()
@@ -110,7 +80,7 @@ public class GamePiece implements java.io.Serializable
         // Initialize main variables
         final int LENGTH = board.getLength();
         final int HEIGHT = board.getLength();
-        final int[] PIECE_POSITION = this.searchPos(board);
+        final int[] PIECE_POSITION = board.findPosition(this);
         final int PIECE_X = PIECE_POSITION[0];
         final int PIECE_Y = PIECE_POSITION[1];
 
@@ -123,7 +93,7 @@ public class GamePiece implements java.io.Serializable
             
             // empty or not a pawn
             GamePiece potentialPawn = board.getSpace(x, y);
-            if (potentialPawn == null || !potentialPawn.getTitle().equals("Pawn"))
+            if (potentialPawn == null || potentialPawn.getClass() != Pawn.class)
             {
                 continue;
             }
@@ -143,7 +113,7 @@ public class GamePiece implements java.io.Serializable
             for (int row = 0; row < HEIGHT; row++)
             {
                 GamePiece space = board.getSpace(col, row);
-                if (space == null || space.getColor().equals(color) || space.getTitle().equals("Pawn")) { continue; }
+                if (space == null || space.getColor().equals(color) || space.getClass() == Pawn.class) { continue; }
                 
                 // abstracting this to get under 4 indents is a waste of time, but feel free to improve
                 for (Move move : space.getValidMoves(board, col, row))
@@ -155,12 +125,6 @@ public class GamePiece implements java.io.Serializable
         
         // Place king on board and return status
         return ghostBoard.getSpace(PIECE_X, PIECE_Y) != null;
-    }
-
-    public String toFormattedPosition(Board board)
-    {
-        int[] position = searchPos(board);
-        return SYMBOL + "(" + (position[0]) + "," + (position[1]) + ")";
     }
 
     // Print corresponding symbol of gamepiece

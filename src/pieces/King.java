@@ -7,7 +7,7 @@ public class King extends GamePiece
 {
     public King(String color)
     {
-        super("King", "\u265A", color);
+        super("\u265A", color);
     }
 
     @Override
