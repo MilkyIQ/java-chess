@@ -135,7 +135,6 @@ public class Board implements java.io.Serializable
         int attackedY           = move.getDestY();
         board[oldY][oldX]           = movedPiece;
         board[attackedY][attackedX] = attackedSpace;
-        movedPiece.decMoveCount();
         // no need to update attackedSpace position because it's position doesnt change after attack
     }
 

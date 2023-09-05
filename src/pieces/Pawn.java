@@ -45,7 +45,7 @@ public class Pawn extends GamePiece
         baseMoves[3][anti] -= 1;
 
         // Edge case for starting skip 2
-        if (super.getMoveCount() != 0 || board.checkSpace(baseMoves[0][0], baseMoves[0][1], COLOR) != 0)
+        if (board.checkSpace(baseMoves[0][0], baseMoves[0][1], COLOR) != 0)
         { 
             baseMoves[1] = null;
         }

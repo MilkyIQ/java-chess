@@ -9,13 +9,11 @@ public class GamePiece implements java.io.Serializable
 {
     private final char SYMBOL;
     private String color;
-    private int moveCount;
     
     public GamePiece(char symbol, String color)
     {
         this.SYMBOL = symbol;
         this.color = color;
-        this.moveCount = 0;
     }
 
     // For use with ghost board point placement only
@@ -43,21 +41,6 @@ public class GamePiece implements java.io.Serializable
     public String getColorCode()
     {
         return Color.get(color);
-    }
-
-    public int getMoveCount()
-    {
-        return moveCount;
-    }
-
-    public void incMoveCount()
-    {
-        moveCount++;
-    }
-
-    public void decMoveCount()
-    {
-        moveCount--;
     }
 
     public ArrayList<Move> getValidMoves(Board board, int x, int y)

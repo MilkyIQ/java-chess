@@ -95,7 +95,6 @@ public class Game
             }
 
             eventHistory.add(move);
-            move.getOriginPiece().incMoveCount();
             updateGameCondition();
             i = i < alivePlayers.size()-1 ? i+1 : 0;
             turn++;
